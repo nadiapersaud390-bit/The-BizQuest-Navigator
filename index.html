@@ -206,9 +206,10 @@
             text-align: left;
         }
 
-        .industry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .industry-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .industry-grid .btn { font-size: 0.6rem; padding: 8px 4px; }
         
-        /* INCREASED FONT SIZES FOR TOP SCRIPT AREA */
+        /* SCRIPT AREA TEXT SIZES */
         .script-text { font-size: 1.4rem; line-height: 1.5; margin-bottom: 20px; }
         .instruction { color: var(--neon-gold); font-size: 0.85rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
         
@@ -247,6 +248,24 @@
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
         }
+
+        .rev-preset-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .btn-preset {
+            font-size: 0.6rem;
+            padding: 5px;
+            background: #222;
+            border: 1px solid #444;
+            color: #aaa;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-preset:hover { background: #333; color: white; }
 
         .form-input { width: 100%; background: #000; border: 1px solid #444; padding: 8px; border-radius: 8px; color: white; box-sizing: border-box; }
 
@@ -383,6 +402,14 @@
         nextStep('handoff'); 
     }
 
+    function setPresetRevenue(val) {
+        const input = document.getElementById('rev-input-field');
+        if (input) {
+            input.value = val;
+            updateRevenue(val);
+        }
+    }
+
     function updateRevenue(val) {
         const monthly = parseFloat(val) || 0;
         const yearly = monthly * 12;
@@ -393,11 +420,13 @@
         if (yearly >= 200000) {
             btn.disabled = false;
             btn.style.opacity = "1";
-            btn.innerText = "QUALIFIED";
+            btn.innerText = "QUALIFIED - CONTINUE";
+            btn.className = "btn btn-green";
         } else {
             btn.disabled = true;
             btn.style.opacity = "0.3";
             btn.innerText = "MIN $200K REQUIRED";
+            btn.className = "btn";
         }
     }
 
@@ -427,11 +456,20 @@
                 <div class="industry-grid">
                     <button class="btn" onclick="nextStep('qPartners')">RETAIL</button>
                     <button class="btn" onclick="nextStep('qPartners')">CONSTRUCTION</button>
-                    <button class="btn" onclick="nextStep('qPartners')">HVAC / PLUMBING</button>
+                    <button class="btn" onclick="nextStep('qPartners')">HVAC/PLUMB</button>
                     <button class="btn" onclick="nextStep('qPartners')">RESTAURANT</button>
-                    <button class="btn" onclick="nextStep('qPartners')">MANUFACTURING</button>
+                    <button class="btn" onclick="nextStep('qPartners')">MFG / FACTORY</button>
                     <button class="btn" onclick="nextStep('qPartners')">HEALTHCARE</button>
-                    <button class="btn btn-red" style="grid-column: span 2" onclick="nextStep('dq')">PROHIBITED (TRUCKS/LAWYER)</button>
+                    <button class="btn" onclick="nextStep('qPartners')">LOGISTICS</button>
+                    <button class="btn" onclick="nextStep('qPartners')">REAL ESTATE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">IT / TECH</button>
+                    <button class="btn" onclick="nextStep('qPartners')">SERVICES</button>
+                    <button class="btn" onclick="nextStep('qPartners')">WHOLESALE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">E-COMMERCE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">FITNESS/GYM</button>
+                    <button class="btn" onclick="nextStep('qPartners')">AUTOMOTIVE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">OTHER QUALIFIED</button>
+                    <button class="btn btn-red" style="grid-column: span 3" onclick="nextStep('dq')">PROHIBITED (ADULT/TRUCKING/ATTORNEY)</button>
                 </div></div>`;
                 break;
             case 'qPartners':
@@ -445,12 +483,18 @@
             case 'q3':
                 html = `<div class="script-main-content">
                         <div class="instruction">Revenue Verification</div>
+                        <div class="script-text" style="font-size: 1.1rem; margin-bottom: 10px;">"What is your <span class='highlight'>average monthly gross revenue</span>?"</div>
                         <div class="rev-calc-container">
-                            <input type="number" class="rev-input" placeholder="Monthly Rev" oninput="updateRevenue(this.value)">
-                            <div class="rev-row"><span class="rev-label">MONTHLY:</span><span class="rev-value" id="calc-monthly-display">$0</span></div>
-                            <div class="rev-row"><span class="rev-label">YEARLY:</span><span class="rev-value" id="calc-yearly-display" style="color:var(--neon-gold)">$0</span></div>
+                            <input type="number" id="rev-input-field" class="rev-input" placeholder="Enter Monthly Amount" oninput="updateRevenue(this.value)">
+                            <div class="rev-preset-grid">
+                                <button class="btn-preset" onclick="setPresetRevenue(17000)">$17K (Low)</button>
+                                <button class="btn-preset" onclick="setPresetRevenue(25000)">$25K (Med)</button>
+                                <button class="btn-preset" onclick="setPresetRevenue(50000)">$50K+ (High)</button>
+                            </div>
+                            <div class="rev-row" style="margin-top:5px;"><span class="rev-label">MONTHLY:</span><span class="rev-value" id="calc-monthly-display">$0</span></div>
+                            <div class="rev-row"><span class="rev-label">EST. ANNUAL:</span><span class="rev-value" id="calc-yearly-display" style="color:var(--neon-gold)">$0</span></div>
                         </div>
-                        <button id="rev-next-btn" class="btn btn-green" style="width:100%; height:50px; opacity:0.3" disabled onclick="nextStep('qualify')">CONFIRM REVENUE</button></div>`;
+                        <button id="rev-next-btn" class="btn" style="width:100%; height:50px; opacity:0.3" disabled onclick="nextStep('qualify')">MIN $200K REQUIRED</button></div>`;
                 break;
             case 'qualify':
                 html = `<div class="script-main-content">
