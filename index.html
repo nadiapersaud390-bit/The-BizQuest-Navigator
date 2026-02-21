@@ -77,6 +77,10 @@
         .calc-box { background: #1a1a1e; border: 1px solid #444; padding: 15px; border-radius: 12px; margin: 10px 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .calc-input { background: #000; border: 1px solid var(--neon-blue); color: var(--neon-green); font-size: 1.4rem; padding: 10px; border-radius: 8px; text-align: center; width: 220px; font-family: 'Courier New', Courier, monospace; }
         .calc-result { color: var(--neon-gold); font-weight: 900; font-size: 1.3rem; }
+        
+        .toggle-group { display: flex; background: #000; border-radius: 10px; padding: 4px; margin-bottom: 5px; }
+        .toggle-btn { flex: 1; padding: 8px; border-radius: 8px; font-size: 0.65rem; border: none; background: transparent; color: #666; cursor: pointer; font-weight: bold; }
+        .toggle-btn.active { background: #222; color: var(--neon-blue); border: 1px solid var(--neon-blue); }
 
         .form-group { text-align: left; margin-bottom: 12px; }
         .form-group label { display: block; font-size: 0.7rem; color: var(--neon-green); margin-bottom: 4px; }
@@ -159,6 +163,7 @@
     const engine = document.getElementById('script-engine');
     const quotes = ["SMILE WHILE YOU TALK", "TONE IS THE CLOSER", "ENERGY OVER EVERYTHING", "KEEP PUSHING", "THE NEXT CALL IS THE ONE"];
     let revenueTier = ""; // Tracks if over or under 1M
+    let calcMode = "yearly"; // Default calculator mode
 
     function init() { 
         document.getElementById('quote-display').innerText = quotes[Math.floor(Math.random() * quotes.length)]; 
@@ -185,10 +190,20 @@
     function openForm() { document.getElementById('form-overlay').style.display = 'flex'; }
     function closeForm() { document.getElementById('form-overlay').style.display = 'none'; nextStep('handoff'); }
 
+    function setCalcMode(mode) {
+        calcMode = mode;
+        const btns = document.querySelectorAll('.toggle-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        if(mode === 'monthly') btns[0].classList.add('active');
+        else btns[1].classList.add('active');
+        calculateYearly();
+    }
+
     function calculateYearly() {
-        const val = document.getElementById('monthlyRev').value;
+        const val = parseFloat(document.getElementById('monthlyRev').value) || 0;
         const result = document.getElementById('yearlyResult');
-        result.innerText = val ? "YEARLY EST: $" + (val * 12).toLocaleString() : "YEARLY EST: $0";
+        const finalVal = calcMode === 'monthly' ? val * 12 : val;
+        result.innerText = "ANNUAL TOTAL: $" + finalVal.toLocaleString();
     }
 
     function nextStep(step) {
@@ -269,10 +284,14 @@
                 break;
             case 'q4_est':
                 html = `<div class="instruction">Final Estimate</div>
-                        <div class="script-text">"Can you please provide a <span class='highlight'>rough estimate</span> of exactly how much?"</div>
+                        <div class="script-text">"Can you please provide a <span class='highlight'>rough estimate</span> of how much?"</div>
                         <div class="calc-box">
-                            <input type="number" id="monthlyRev" class="calc-input" placeholder="Enter Amount" oninput="calculateYearly()">
-                            <div id="yearlyResult" class="calc-result">ESTIMATE: $0</div>
+                            <div class="toggle-group">
+                                <button class="toggle-btn" onclick="setCalcMode('monthly')">MONTHLY</button>
+                                <button class="toggle-btn active" onclick="setCalcMode('yearly')">YEARLY</button>
+                            </div>
+                            <input type="number" id="monthlyRev" class="calc-input" placeholder="Amount" oninput="calculateYearly()">
+                            <div id="yearlyResult" class="calc-result" style="font-size: 1.1rem;">ANNUAL TOTAL: $0</div>
                         </div>
                         <button class="btn btn-green" style="width:100%; height:50px;" onclick="nextStep('qualify')">PROCEED TO QUALIFIED</button>`;
                 break;
@@ -298,6 +317,7 @@
                 break;
         }
         engine.innerHTML = html;
+        if(step === 'q4_est') calcMode = 'yearly'; // Reset default on entry
     }
 </script>
 </body>
