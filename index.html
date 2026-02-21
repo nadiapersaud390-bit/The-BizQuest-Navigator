@@ -516,11 +516,21 @@
                 break;
             case 'qualify':
                 html = `<div class="script-main-content">
-                        <div class="instruction">Transition</div><div class="script-text">"Great! It looks like you meet the pre-qualification criteria. I'm going to connect you with a <span class='highlight'>senior advisor</span> now."</div><button class="btn btn-green" onclick="openForm()">POP LEAD FORM</button></div>`;
+                        <div class="instruction">Transition</div>
+                        <div class="script-text">"Great! It looks like you meet the pre-qualification criteria."</div>
+                        <div class="explain-box" style="text-align:left; border-color:var(--neon-green)">
+                            <strong style="color:var(--neon-green)">ACTION:</strong> Collect business name, first/last name, verify phone and best email address.<br>
+                            <span style="color:var(--neon-gold)">💡 TIP: Google business name, copy address, paste in form.</span>
+                        </div>
+                        <div class="script-text">"I’m going to connect you with a <span class='highlight'>senior advisor</span> who will go over your funding options. Just hang on one moment, I’m going to stay on the line here with you during the handoff. I’ll introduce you first when they answer."</div>
+                        <button class="btn btn-green" onclick="openForm()">OPEN LEAD FORM & TRANSFER</button></div>`;
                 break;
             case 'handoff':
                 html = `<div class="script-main-content">
-                        <div class="instruction">THE HANDOFF</div><div class="script-text" style="font-size:1.1rem; border:2px solid var(--neon-green); padding:20px; border-radius: 15px;">"Hi, I have <span class='highlight'>${owner}</span> from <span class='highlight'>${biz}</span> on the line. They meet criteria for funding and would like to explore options."</div></div>`;
+                        <div class="instruction">Handoff (Slowly, Smoothly, Clearly)</div>
+                        <div class="script-text" style="font-size:1.1rem; border:2px solid var(--neon-green); padding:20px; border-radius: 15px;">
+                            "Hi, this is <span class='highlight'>(YOUR NAME)</span>, I have <span class='highlight'>${owner}</span> on the line. Their business, <span class='highlight'>${biz}</span>, meets the criteria for funding and would like to further explore with you their options. Go ahead when you’re ready. Thanks!"
+                        </div></div>`;
                 break;
             case 'dq':
                 html = `<div class="script-main-content">
