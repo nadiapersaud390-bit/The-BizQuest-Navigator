@@ -207,9 +207,12 @@
         }
 
         .industry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-        .script-text { font-size: 1.1rem; line-height: 1.4; margin-bottom: 15px; }
+        
+        /* INCREASED FONT SIZES FOR TOP SCRIPT AREA */
+        .script-text { font-size: 1.4rem; line-height: 1.5; margin-bottom: 20px; }
+        .instruction { color: var(--neon-gold); font-size: 0.85rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
+        
         .highlight { color: var(--neon-blue); font-weight: 900; }
-        .instruction { color: var(--neon-gold); font-size: 0.7rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
         
         .rev-calc-container {
             background: #1a1a1e;
@@ -455,7 +458,7 @@
                 break;
             case 'handoff':
                 html = `<div class="script-main-content">
-                        <div class="instruction">THE HANDOFF</div><div class="script-text" style="font-size:1.1rem; border:2px solid var(--neon-green); padding:20px; border-radius: 15px;">"Hi, I have <span class='highlight'>${owner}</span> from <span class='highlight'>${biz}</span> on the line. They meet criteria for funding and would like to explore options."</div></div>`;
+                        <div class="instruction">THE HANDOFF</div><div class="script-text" style="font-size:1.4rem; border:2px solid var(--neon-green); padding:20px; border-radius: 15px;">"Hi, I have <span class='highlight'>${owner}</span> from <span class='highlight'>${biz}</span> on the line. They meet criteria for funding and would like to explore options."</div></div>`;
                 break;
             case 'dq':
                 html = `<div class="script-main-content">
