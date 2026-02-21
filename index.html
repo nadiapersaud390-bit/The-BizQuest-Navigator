@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Closer’s Compass | Construction Logic</title>
+    <title>The Closer’s Compass | Industry Shield</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -94,12 +94,12 @@
 
 <div id="gatekeeper">
     <div class="modal-box" style="border-color: var(--neon-red);">
-        <h2 style="color: var(--neon-red); margin-top: 0;">ACCESS SHIELD</h2>
+        <h2 style="color: var(--neon-red); margin-top: 0;">RECOGNITION TEST</h2>
         <p>Select the <strong>3 RESTRICTED</strong> industries to enter:</p>
         <div class="industry-grid">
-            <button class="btn btn-blue" onclick="gateToggle(this, 'Trucking')">🚛 Trucking</button>
-            <button class="btn btn-blue" onclick="gateToggle(this, 'Attorneys')">⚖️ Attorneys</button>
-            <button class="btn btn-blue" onclick="gateToggle(this, 'Transport')">📦 Transport</button>
+            <button class="btn btn-blue" onclick="gateToggle(this, 'Trucking')">🚛 Trucking/Vans</button>
+            <button class="btn btn-blue" onclick="gateToggle(this, 'Attorneys')">⚖️ Attorneys/Lawyers</button>
+            <button class="btn btn-blue" onclick="gateToggle(this, 'Transport')">📦 Transportation</button>
             <button class="btn btn-blue" onclick="gateToggle(this, 'HVAC')">🛠️ HVAC</button>
             <button class="btn btn-blue" onclick="gateToggle(this, 'Medical')">🏥 Medical</button>
             <button class="btn btn-blue" onclick="gateToggle(this, 'Retail')">📦 Retail</button>
@@ -137,8 +137,8 @@
 
     <div class="sidebar">
         <h3 style="color: var(--neon-blue); text-align: center; font-size: 0.8rem;">🛡️ REBUTTALS</h3>
+        <button class="btn btn-blue" onclick="openModal('WHICH COMPANY?', '<strong>YOU:</strong> &quot;We are the Business Loan Division. We do NOT fund <span style=\'color:var(--neon-red)\'>Attorneys/Lawyers, Trucking, or Transportation (including Van services)</span>. We connect eligible owners to private lending programs.&quot;')">"WHICH COMPANY?"</button>
         <button class="btn btn-blue" onclick="openModal('SCAM?', '&quot;This is a legitimate outreach from the Business Loan Division in CA. We confirm pre-qualification for licensed lenders.&quot;')">"IS THIS A SCAM?"</button>
-        <button class="btn btn-blue" onclick="openModal('EMAIL?', '&quot;Once I connect you with the advisor, they can email you everything. I just need to confirm your details first.&quot;')">"EMAIL ME FIRST"</button>
         <button class="btn btn-blue" onclick="openModal('BANK?', '&quot;No, we are a direct private lender. We provide working capital and lines of credit directly.&quot;')">"ARE YOU A BANK?"</button>
     </div>
 </div>
@@ -184,32 +184,32 @@
                     <div class="script-text">"What type of <span class='highlight'>industry</span> are you in?"</div>
                     <div class="industry-grid">
                         <button class="btn btn-blue" onclick="nextStep('const_drill')">🛠️ Construction</button>
+                        <button class="btn btn-red" onclick="nextStep('dq_ind')">⚖️ Attorney/Lawyer</button>
+                        <button class="btn btn-red" onclick="nextStep('dq_ind')">🚛 Trucking/Vans</button>
+                        <button class="btn btn-red" onclick="nextStep('dq_ind')">📦 Transportation</button>
                         <button class="btn btn-blue" onclick="nextStep('q3')">🏥 Medical</button>
-                        <button class="btn btn-red" onclick="nextStep('dq_ind')">🚛 Trucking</button>
-                        <button class="btn btn-red" onclick="nextStep('dq_ind')">⚖️ Attorney</button>
                         <button class="btn btn-blue" onclick="nextStep('q3')">🍕 Restaurant</button>
                     </div>`;
         }
-        /* NEW CONSTRUCTION LOGIC */
         else if(step === 'const_drill') {
             html = `<div class="energy-tip">⚡ ACTIVE LISTENING: Many construction companies are actually trucking.</div>
                     <div class="instruction">Industry Drill-Down</div>
-                    <div class="script-text">"Tell me more about your company... Does it deal with <span class='highlight'>trucking or transport?</span>"</div>
+                    <div class="script-text">"Tell me more about your company... Does it deal with <span class='highlight'>trucking, vans, or transport?</span>"</div>
                     <div style="display:flex; gap:10px;">
-                        <button class="btn btn-red" style="flex:1" onclick="nextStep('const_yes_truck')">YES (DEALS W/ TRUCKS)</button>
+                        <button class="btn btn-red" style="flex:1" onclick="nextStep('const_yes_truck')">YES (DEALS W/ VEHICLES)</button>
                         <button class="btn btn-green" style="flex:1" onclick="nextStep('q3')">NO (STRICTLY CONST.)</button>
                     </div>`;
         }
         else if(step === 'const_yes_truck') {
-            html = `<div class="instruction">Trucking Investigation</div>
-                    <div class="script-text">"Is trucking a <span class='highlight'>major part</span> of the company? And what exactly will you be using the funds for?"</div>
+            html = `<div class="instruction">Transportation Investigation</div>
+                    <div class="script-text">"Is the trucking/van side a <span class='highlight'>major part</span> of the company? And what exactly will you be using the funds for?"</div>
                     <div style="display:flex; flex-direction:column; gap:10px;">
-                        <button class="btn btn-red" onclick="nextStep('dq_ind')">IT IS MAJORITY TRUCKING</button>
+                        <button class="btn btn-red" onclick="nextStep('dq_ind')">IT IS MAJORITY TRANSPORT</button>
                         <button class="btn btn-blue" onclick="nextStep('q3')">IT IS MINORITY / USE FOR CONST.</button>
                     </div>`;
         }
         else if(step === 'q3') {
-            html = `<div class="energy-tip">⚡ TONE: Keep your tone UP at the end of the question.</div>
+            html = `<div class="energy-tip">⚡ TONE: Keep your tone UP at the end of the question. Don't flatline!</div>
                     <div class="instruction">Question 3</div>
                     <div class="script-text">"Are you at least <span class='highlight'>50% owner?</span>"</div>
                     <div style="display:flex; gap:10px;"><button class="btn btn-green" style="flex:1" onclick="nextStep('q4')">YES</button><button class="btn btn-red" style="flex:1" onclick="nextStep('dq_partner')">NO</button></div>`;
@@ -236,7 +236,7 @@
             html = `<div class="script-text">"Unfortunately, we require <span class='highlight'>$200k+</span>. Please reach back out if your revenue grows!"</div><button class="btn btn-red" style="width:100%" onclick="location.reload()">NEXT</button>`;
         }
         else if(step === 'dq_ind') {
-            html = `<div class="script-text">"I apologize, we don't fund <span class='highlight'>your specific industry</span> at this time. Have a great day!"</div><button class="btn btn-red" style="width:100%" onclick="location.reload()">NEXT</button>`;
+            html = `<div class="script-text">"I apologize, we don't fund <span class='highlight'>your specific industry</span> (Law, Trucking, or Transport) at this time."</div><button class="btn btn-red" style="width:100%" onclick="location.reload()">NEXT</button>`;
         }
         
         engine.innerHTML = html;
