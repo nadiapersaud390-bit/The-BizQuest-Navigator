@@ -26,9 +26,6 @@
             height: 100vh; 
         }
 
-        /* SECURITY GATE */
-        #gatekeeper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 3000; display: flex; align-items: center; justify-content: center; }
-        
         /* MODALS */
         #modal-overlay, #form-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; align-items: center; justify-content: center; }
         .modal-box { background: var(--card-bg); border: 2px solid var(--neon-blue); padding: 40px; border-radius: 25px; max-width: 550px; text-align: center; box-shadow: 0 0 20px rgba(0, 209, 255, 0.2); }
@@ -46,7 +43,6 @@
             overflow: hidden;
         }
         
-        /* SIDEBAR WITH TABS */
         .sidebar { 
             background: var(--card-bg); 
             border-radius: 20px; 
@@ -101,7 +97,6 @@
             overflow-y: auto;
         }
 
-        /* FLOATING DISPO PANEL */
         .dispo-panel {
             background: #000;
             border: 2px solid var(--neon-blue);
@@ -110,6 +105,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            overflow-y: auto;
         }
 
         .dispo-section {
@@ -126,17 +122,6 @@
             letter-spacing: 1px;
             margin-bottom: 8px;
             display: block;
-        }
-
-        .briefing-box {
-            background: rgba(255, 204, 0, 0.1);
-            border: 1px dashed var(--neon-gold);
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            line-height: 1.3;
-            color: #fff;
-            margin-bottom: 10px;
         }
 
         .btn { padding: 10px; border-radius: 10px; border: 2px solid transparent; background: #222; color: white; cursor: pointer; font-weight: 700; text-transform: uppercase; transition: 0.2s; }
@@ -156,6 +141,26 @@
             font-size: 0.6rem;
             opacity: 0.8;
             margin-top: 2px;
+            font-weight: 700;
+        }
+
+        .explain-box {
+            border: 1px dashed var(--neon-gold);
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            background: rgba(255, 204, 0, 0.05);
+        }
+
+        /* Red Flag Warning Box */
+        .security-alert {
+            background: rgba(255, 49, 49, 0.1);
+            border: 2px solid var(--neon-red);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
         }
 
         .industry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
@@ -163,7 +168,6 @@
         .highlight { color: var(--neon-blue); font-weight: 900; }
         .instruction { color: var(--neon-gold); font-size: 0.7rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
         
-        /* REVENUE CALCULATOR BOX */
         .rev-calc-container {
             background: #1a1a1e;
             padding: 15px;
@@ -206,19 +210,6 @@
 </head>
 <body onload="init()">
 
-<div id="gatekeeper">
-    <div class="modal-box" style="border-color: var(--neon-red);">
-        <h2 style="color: var(--neon-red); margin-top: 0; letter-spacing: 2px; font-size: 1.2rem;">SELECT INDUSTRIES WE <span style="text-decoration: underline;">DON'T</span> WORK WITH</h2>
-        <div class="industry-grid">
-            <button class="btn" style="border:1px solid #444" onclick="gateToggle(this, 'Trucks')">🚛 Trucks</button>
-            <button class="btn" style="border:1px solid #444" onclick="gateToggle(this, 'Van')">🚐 Van</button>
-            <button class="btn" style="border:1px solid #444" onclick="gateToggle(this, 'Lawyer')">💼 Lawyer</button>
-            <button class="btn" style="border:1px solid #444" onclick="gateToggle(this, 'Attorney')">⚖️ Attorney</button>
-        </div>
-        <button id="unlock-btn" class="btn btn-green" style="margin-top:20px; width: 100%; display:none" onclick="unlock()">ACCESS DASHBOARD</button>
-    </div>
-</div>
-
 <div id="form-overlay">
     <div class="form-box">
         <h2 style="color: var(--neon-green); margin-top: 0; text-align: center; font-size: 1.1rem;">LEAD DATA</h2>
@@ -233,36 +224,31 @@
 </div>
 
 <div class="header">
-    <h1>THE <span style="color: var(--neon-green);">CLOSER'S</span> COMPASS</h1>
+    <h1>BUSINESS TRACKER - <span style="color: var(--neon-blue);">DISPOSITIONS</span></h1>
     <div id="quote-display" style="color: var(--neon-gold); font-weight: bold; font-size: 0.7rem;"></div>
 </div>
 
 <div class="main-container">
     <div class="sidebar">
         <div class="sidebar-tabs">
-            <button id="security-tab-btn" class="tab-btn active-security" onclick="toggleSidebarView('security')">🚨 SECURITY</button>
+            <button id="security-tab-btn" class="tab-btn active-security" onclick="toggleSidebarView('security')">🚨 FLAGS</button>
             <button id="rebuttal-tab-btn" class="tab-btn" onclick="toggleSidebarView('rebuttal')">🔄 REBUTTALS</button>
         </div>
         
         <div id="sidebar-security-content" class="sidebar-content">
-            <span class="label-tag" style="color:var(--neon-red)">Kill Switches / Pranks</span>
-            <button class="btn" onclick="openModal('🔞 PROHIBITED', 'SAY: &quot;We do not fund this industry.&quot; HANG UP.')">🔞 ADULT INDUSTRY</button>
-            <button class="btn" onclick="openModal('👤 CLOWN / PRANK', 'SAY: &quot;We cannot proceed. This line is for business matters only. Goodbye.&quot;<br><br><strong>COMMON FAKE NAMES:</strong><br>• John Smith<br>• Jane Doe<br>• Ben Dover<br>• Mike Wazowski<br>• Hugh Jass')">👤 FAKE NAMES / PRANK</button>
-            <button class="btn" onclick="openModal('🚫 UNCOOPERATIVE', 'SAY: &quot;We need basic info to proceed. If you change your mind, call back.&quot;')">🚫 REFUSAL TO ANSWER</button>
-            <button class="btn" onclick="openModal('📵 DNC REQUEST', 'SAY: &quot;No problem, I will mark you as do not call immediately.&quot;')">📵 DNC REQUEST</button>
+            <span class="label-tag" style="color:var(--neon-red)">Quick Exit</span>
+            <button class="btn" onclick="triggerSecurityExit('🔞 PROHIBITED INDUSTRY', 'ADULT / STRIP / PORN', 'SAY: &quot;I apologize, our underwriters do not provide funding for your specific industry at this time. Thank you for your time.&quot;')">🔞 ADULT / STRIP / PORN</button>
+            <button class="btn" onclick="triggerSecurityExit('👤 PRANK CALLER', 'FAKE NAMES / PRANK', 'SAY: &quot;This line is reserved for professional business funding inquiries only. We are ending the call now.&quot;')">👤 FAKE NAMES / PRANK</button>
+            <button class="btn" onclick="triggerSecurityExit('🚫 UNCOOPERATIVE', 'REFUSAL TO ANSWER', 'SAY: &quot;Since we cannot verify the basic business information needed, we are unable to proceed. Have a good day.&quot;')">🚫 REFUSAL TO ANSWER</button>
+            <button class="btn" onclick="triggerSecurityExit('📵 DNC REQUEST', 'DO NOT CALL LIST', 'SAY: &quot;Absolutely. I have marked your business as Do Not Call in our database. You will not be contacted again.&quot;')">📵 DNC REQUEST</button>
         </div>
 
         <div id="sidebar-rebuttal-content" class="sidebar-content" style="display:none">
             <span class="label-tag" style="color:var(--neon-blue)">Handling Objections</span>
-            <button class="btn" onclick="openModal('🏢 WHAT COMPANY?', 'SAY: &quot;We\'re the Business Loan Division. We help connect business owners to the right lending programs through our partner network.&quot;')">🏢 &quot;WHICH COMPANY?&quot;</button>
-            <button class="btn" onclick="openModal('🛡️ IS THIS A SCAM?', 'SAY: &quot;I understand the concern. This is a legitimate outreach from the Business Loan Division in California. We work only with licensed financial institutions. My part is to confirm basic details.&quot;')">🛡️ &quot;IS THIS A SCAM?&quot;</button>
-            <button class="btn" onclick="openModal('📧 EMAIL FIRST', 'SAY: &quot;Once I connect you with the senior advisor, they can send you all the information directly. I just need to confirm your business details first.&quot;')">📧 &quot;EMAIL ME FIRST&quot;</button>
-            <button class="btn" onclick="openModal('📞 WHY CALLING?', 'SAY: &quot;Phone is the quickest way to confirm eligibility and make sure the right person gets connected. It only takes a minute.&quot;')">📞 &quot;WHY NOT EMAIL?&quot;</button>
-            <button class="btn" onclick="openModal('🏦 ARE YOU A BANK?', 'SAY: &quot;No, we’re a direct private lender. We work with business-funding programs that provide working capital and lines of credit directly.&quot;')">🏦 &quot;ARE YOU A BANK?&quot;</button>
-            <button class="btn" onclick="openModal('📞 WHOS CALLING?', 'SAY: &quot;Again I\'m (YOUR NAME), and I am calling in regard to a personal business matter.&quot;')">👤 &quot;WHOS CALLING?&quot;</button>
-            <button class="btn" onclick="openModal('💼 PARTNERS', 'SAY: &quot;Is there a time we can get the majority partner on the line?&quot; (Set callback)')">💼 UNDER 50% OWNER</button>
-            <button class="btn" onclick="openModal('💸 ALREADY HAVE ONE', 'SAY: &quot;That\'s great, most of our clients do. We specialize in additional capital that doesn\'t interfere with existing lines.&quot;')">💸 ALREADY HAVE ONE</button>
-            <button class="btn" onclick="openModal('📉 INTEREST RATES', 'SAY: &quot;Every business is different. My advisor will give you exact rates once we know the health of the business.&quot;')">📉 &quot;WHATS THE RATE?&quot;</button>
+            <button class="btn" onclick="openModal('🏢 WHAT COMPANY?', 'SAY: &quot;We\'re the Business Loan Division. We help connect business owners to funding.&quot;')">🏢 &quot;WHICH COMPANY?&quot;</button>
+            <button class="btn" onclick="openModal('🛡️ IS THIS A SCAM?', 'SAY: &quot;This is a legitimate outreach. We only work with licensed institutions.&quot;')">🛡️ &quot;IS THIS A SCAM?&quot;</button>
+            <button class="btn" onclick="openModal('📧 EMAIL FIRST', 'SAY: &quot;My senior advisor will email you everything once we confirm these details.&quot;')">📧 &quot;EMAIL ME FIRST&quot;</button>
+            <button class="btn" onclick="openModal('🏦 ARE YOU A BANK?', 'SAY: &quot;No, we’re a direct private lender providing working capital.&quot;')">🏦 &quot;ARE YOU A BANK?&quot;</button>
         </div>
     </div>
 
@@ -271,13 +257,11 @@
         <div class="script-text">"Hi, this is <span class="highlight">(YOUR NAME)</span> from the <span class="highlight">BUSINESS LOAN DIVISION</span>. Am I speaking with the business owner?"</div>
         <div style="display: flex; gap: 10px; justify-content: center;">
             <button class="btn btn-green" onclick="nextStep('followup_direct')">YES (OWNER ON)</button>
-            <button class="btn" style="border:1px solid #444" onclick="openModal('GATEKEEPER TRANSFERRED', 'SAY: &quot;Can I please speak with the owner or the managing partner, I\'ll hold&quot;')">NO (TRANSFERRED)</button>
+            <button class="btn" style="border:1px solid #444" onclick="openModal('GATEKEEPER', 'SAY: &quot;Can I please speak with the owner, I\'ll hold&quot;')">NO (TRANSFERRED)</button>
         </div>
     </div>
 
     <div class="dispo-panel">
-        <span class="label-tag" style="color:var(--neon-blue); text-align:center">Business Tracker - Dispositions</span>
-        
         <div class="dispo-section" style="border-left: 4px solid var(--neon-green)">
             <span class="label-tag" style="color:var(--neon-green)">✅ SUCCESSFUL TRANSFER</span>
             <button class="btn btn-green btn-dispo-big" onclick="location.reload()">
@@ -288,8 +272,8 @@
 
         <div class="dispo-section" style="border-left: 4px solid var(--neon-gold)">
             <span class="label-tag" style="color:var(--neon-gold)">👤 ADVISOR ONLY</span>
-            <div class="briefing-box">
-                <strong>EXPLAIN:</strong><br>
+            <div class="explain-box">
+                <strong style="color:var(--neon-gold)">EXPLAIN:</strong><br>
                 "Client was on, but dropped. Sending lead info now."
             </div>
             <button class="btn btn-dispo-big" style="background:var(--neon-gold); color:black" onclick="location.reload()">
@@ -299,10 +283,11 @@
         </div>
 
         <div class="dispo-section" style="border-left: 4px solid var(--neon-red)">
-            <span class="label-tag" style="color:var(--neon-red)">❌ DISQUALIFIED / DROP</span>
-            <button class="btn btn-red btn-dispo-big" style="height:45px; font-size:0.8rem" onclick="location.reload()">
+            <span class="label-tag" style="color:var(--neon-red)">❌ CALL DROPPED</span>
+            <button class="btn btn-red btn-dispo-big" onclick="location.reload()">
                 NO LEAD SENT
-                <span class="tracker-subtext">DO NOT TRACK IN REVENUE</span>
+                <span class="tracker-subtext">NO CUSTOMER - NO LOAN SPECIALIST</span>
+                <span class="tracker-subtext" style="color:#ffaaaa">DO NOT SEND IN TRACKER</span>
             </button>
         </div>
     </div>
@@ -315,25 +300,6 @@
     let biz = "(Business)";
 
     function init() { document.getElementById('quote-display').innerText = quotes[Math.floor(Math.random() * quotes.length)]; }
-
-    let selectedGate = [];
-    const requiredGate = ['Trucks', 'Van', 'Lawyer', 'Attorney'];
-
-    function gateToggle(btn, ind) {
-        if(selectedGate.includes(ind)) { 
-            selectedGate = selectedGate.filter(i => i !== ind); 
-            btn.style.borderColor = "#444"; 
-            btn.style.color = "white";
-        } 
-        else { 
-            selectedGate.push(ind); 
-            btn.style.borderColor = "var(--neon-red)";
-            btn.style.color = "var(--neon-red)";
-        }
-        const isAllSelected = requiredGate.every(item => selectedGate.includes(item));
-        document.getElementById('unlock-btn').style.display = isAllSelected ? 'block' : 'none';
-    }
-    function unlock() { document.getElementById('gatekeeper').style.display = 'none'; }
 
     function toggleSidebarView(view) {
         const securityContent = document.getElementById('sidebar-security-content');
@@ -352,6 +318,25 @@
             securityTab.classList.remove('active-security');
             rebuttalTab.classList.add('active-rebuttal');
         }
+    }
+
+    // New function for direct explanation in script area
+    function triggerSecurityExit(title, reason, script) {
+        let html = `
+            <div class="security-alert">
+                <div class="instruction" style="color:var(--neon-red)">⚠️ EXIT PROTOCOL: ${title}</div>
+                <div style="font-size:0.75rem, margin-bottom: 10px; color: #888;">REASON: ${reason}</div>
+                <div class="script-text" style="margin-top:15px; border-top:1px solid #333; padding-top:15px;">
+                    ${script}
+                </div>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button class="btn btn-red" style="flex:1" onclick="location.reload()">TERMINATE CALL</button>
+                    <button class="btn" style="flex:1; background:#333;" onclick="nextStep('q2')">RE-ENTRY (WRONG FLAG)</button>
+                </div>
+            </div>
+        `;
+        engine.innerHTML = html;
+        engine.scrollTop = 0;
     }
 
     function openModal(title, text) {
@@ -377,11 +362,11 @@
         if (yearly >= 200000) {
             btn.disabled = false;
             btn.style.opacity = "1";
-            btn.innerText = yearly >= 1000000 ? "OVER $1M (QUALIFIED)" : "UNDER $1M (QUALIFIED)";
+            btn.innerText = "QUALIFIED";
         } else {
             btn.disabled = true;
             btn.style.opacity = "0.3";
-            btn.innerText = "NOT QUALIFIED (MIN $200K)";
+            btn.innerText = "MIN $200K REQUIRED";
         }
     }
 
@@ -389,63 +374,47 @@
         let html = "";
         switch(step) {
             case 'followup_direct':
-                html = `<div class="instruction">Reason (Already On)</div><div class="script-text">"Perfect I'll be quick. We're following up because you were <span class='highlight'>prequalified for working capital</span> or a business line of credit. I'm not calling to pull credit, just a few questions to see if you qualify."</div><button class="btn btn-green" onclick="nextStep('q1')">START QUESTIONS</button>`;
-                break;
-            case 'followup_transfer':
-                html = `<div class="instruction">Reason (Transferred)</div><div class="script-text">"Hi, this is (NAME) from the BUSINESS LOAN DIVISION. We're following up because you were <span class='highlight'>prequalified for working capital</span> or a business line of credit. I'm not calling to pull credit, just a few questions."</div><button class="btn btn-green" onclick="nextStep('q1')">START QUESTIONS</button>`;
+                html = `<div class="instruction">Transition</div><div class="script-text">"Perfect I'll be quick. We're following up because you were <span class='highlight'>prequalified for working capital</span>. I just have a few questions to see if you qualify."</div><button class="btn btn-green" onclick="nextStep('q1')">START QUESTIONS</button>`;
                 break;
             case 'q1':
                 html = `<div class="instruction">Time in Business</div><div class="script-text">"Have you been in business for at least <span class='highlight'>1 year</span>?"</div><button class="btn btn-green" onclick="nextStep('q2')">YES (1 YEAR+)</button>`;
                 break;
             case 'q2':
                 html = `<div class="instruction">Industry Check</div><div class="script-text">"What type of <span class='highlight'>industry</span> are you in?"</div>
-                <div style="font-size: 0.8rem; color: var(--neon-red); margin-bottom: 10px;">PROHIBITED: ATTORNEYS, TRUCKERS, TRANSPORT</div>
                 <div class="industry-grid">
                     <button class="btn" onclick="nextStep('qPartners')">RETAIL</button>
                     <button class="btn" onclick="nextStep('qPartners')">CONSTRUCTION</button>
                     <button class="btn" onclick="nextStep('qPartners')">HVAC / PLUMBING</button>
-                    <button class="btn" onclick="nextStep('qPartners')">LANDSCAPING / ROOFING</button>
                     <button class="btn" onclick="nextStep('qPartners')">RESTAURANT</button>
                     <button class="btn" onclick="nextStep('qPartners')">MANUFACTURING</button>
                     <button class="btn" onclick="nextStep('qPartners')">HEALTHCARE</button>
-                    <button class="btn" onclick="nextStep('qPartners')">CLEANING SERVICES</button>
-                    <button class="btn" onclick="nextStep('qPartners')">LOGISTICS</button>
-                    <button class="btn" onclick="nextStep('qPartners')">OTHER / SERVICE</button>
                     <button class="btn btn-red" style="grid-column: span 2" onclick="nextStep('dq')">PROHIBITED (TRUCKS/LAWYER)</button>
                 </div>`;
                 break;
             case 'qPartners':
-                html = `<div class="instruction">Ownership</div><div class="script-text">"Are you <span class='highlight'>100% owner</span> or do you have partners? (Must be at least 50%)"</div>
+                html = `<div class="instruction">Ownership</div><div class="script-text">"Are you at least <span class='highlight'>50% owner</span>?"</div>
                 <div style="display: flex; gap: 10px; justify-content: center;">
-                    <button class="btn btn-green" onclick="nextStep('q3')">100% OWNER</button>
-                    <button class="btn" onclick="nextStep('q3')">50%+ OWNER</button>
-                    <button class="btn btn-red" onclick="openModal('PARTNERS', 'Is there a time we can get the majority partner on the line?')">LESS THAN 50%</button>
+                    <button class="btn btn-green" onclick="nextStep('q3')">YES (OWNER)</button>
+                    <button class="btn btn-red" onclick="openModal('PARTNERS', 'We need to speak with the majority owner.')">NO</button>
                 </div>`;
                 break;
             case 'q3':
                 html = `<div class="instruction">Revenue Verification</div>
-                        <div class="script-text" style="font-size: 1rem;">"What is your <span class='highlight'>average monthly revenue</span>?"</div>
                         <div class="rev-calc-container">
-                            <input type="number" class="rev-input" placeholder="0.00" oninput="updateRevenue(this.value)">
-                            <div class="rev-row">
-                                <span class="rev-label">MONTHLY:</span>
-                                <span class="rev-value" id="calc-monthly-display">$0</span>
-                            </div>
-                            <div class="rev-row">
-                                <span class="rev-label">EST. YEARLY:</span>
-                                <span class="rev-value" id="calc-yearly-display" style="color:var(--neon-gold)">$0</span>
-                            </div>
+                            <input type="number" class="rev-input" placeholder="Monthly Rev" oninput="updateRevenue(this.value)">
+                            <div class="rev-row"><span class="rev-label">MONTHLY:</span><span class="rev-value" id="calc-monthly-display">$0</span></div>
+                            <div class="rev-row"><span class="rev-label">YEARLY:</span><span class="rev-value" id="calc-yearly-display" style="color:var(--neon-gold)">$0</span></div>
                         </div>
                         <button id="rev-next-btn" class="btn btn-green" style="width:100%; height:50px; opacity:0.3" disabled onclick="nextStep('qualify')">CONFIRM REVENUE</button>`;
                 break;
             case 'qualify':
-                html = `<div class="instruction">Transition</div><div class="script-text">"Great! It looks like you meet the pre-qualification criteria. I'm going to connect you with a <span class='highlight'>senior advisor</span>. I'll stay on the line to introduce you."</div><button class="btn btn-green" onclick="openForm()">POP LEAD FORM</button>`;
+                html = `<div class="instruction">Transition</div><div class="script-text">"Great! It looks like you meet the pre-qualification criteria. I'm going to connect you with a <span class='highlight'>senior advisor</span> now."</div><button class="btn btn-green" onclick="openForm()">POP LEAD FORM</button>`;
                 break;
             case 'handoff':
-                html = `<div class="instruction">THE HANDOFF (Slow & Clear)</div><div class="script-text" style="font-size:1.1rem; border:2px solid var(--neon-green); padding:20px; border-radius: 15px;">"Hi Specialist, this is <span class='highlight'>(NAME)</span>, I have <span class='highlight'>${owner}</span> from <span class='highlight'>${biz}</span> on the line. Their business meets the criteria for funding and would like to explore options. Go ahead!"</div><div style="color:var(--neon-gold); margin-top:15px; font-weight: 900; letter-spacing: 1px;">USE DISPOSITION PANEL ON RIGHT</div>`;
+                html = `<div class="instruction">THE HANDOFF</div><div class="script-text" style="font-size:1.1rem; border:2px solid var(--neon-green); padding:20px; border-radius: 15px;">"Hi, I have <span class='highlight'>${owner}</span> from <span class='highlight'>${biz}</span> on the line. They meet criteria for funding and would like to explore options."</div>`;
                 break;
             case 'dq':
-                html = `<div class="script-text">"I apologize, we cannot move forward at this time. Thank you for your time."</div><button class="btn btn-red" onclick="location.reload()">CLEAR & NEXT CALL</button>`;
+                html = `<div class="script-text">"I apologize, we cannot move forward at this time."</div><button class="btn btn-red" onclick="location.reload()">NEXT CALL</button>`;
                 break;
         }
         engine.innerHTML = html;
