@@ -70,13 +70,13 @@
         .active-gate { background: var(--neon-red) !important; color: white !important; border: 1px solid white; }
 
         .industry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .script-text { font-size: 1.4rem; line-height: 1.5; margin-bottom: 20px; }
+        .script-text { font-size: 1.3rem; line-height: 1.4; margin-bottom: 20px; }
         .highlight { color: var(--neon-blue); font-weight: 900; text-shadow: 0 0 5px rgba(0, 209, 255, 0.3); }
-        .instruction { color: var(--neon-gold); font-size: 0.9rem; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
+        .instruction { color: var(--neon-gold); font-size: 0.8rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
         
         .calc-box { background: #1a1a1e; border: 1px solid #444; padding: 15px; border-radius: 12px; margin: 10px 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .calc-input { background: #000; border: 1px solid var(--neon-blue); color: var(--neon-green); font-size: 1.4rem; padding: 10px; border-radius: 8px; text-align: center; width: 220px; font-family: 'Courier New', Courier, monospace; }
-        .calc-result { color: var(--neon-gold); font-weight: 900; font-size: 1.5rem; }
+        .calc-result { color: var(--neon-gold); font-weight: 900; font-size: 1.3rem; }
 
         .form-group { text-align: left; margin-bottom: 12px; }
         .form-group label { display: block; font-size: 0.7rem; color: var(--neon-green); margin-bottom: 4px; }
@@ -135,12 +135,13 @@
         <button class="btn btn-red" onclick="openModal('👤 NAME CLOWN', '<strong>SAY:</strong> &quot;We cannot proceed at this time. Thank you.&quot;<br><br><strong>HANG UP.</strong>')">👤 NAME: JOHN SMITH</button>
         <button class="btn btn-red" onclick="openModal('🔊 NOISE', '<strong>SAY:</strong> &quot;I cannot hear you clearly. Please call back from a quieter location later.&quot;')">🔊 PARTY NOISE</button>
         <button class="btn btn-red" onclick="openModal('🍺 INTOXICATED', '<strong>SAY:</strong> &quot;I am ending this call now. Goodbye.&quot;')">🍺 AGGRESSIVE/DRUNK</button>
+        <button class="btn btn-blue" style="margin-top: 10px;" onclick="openModal('🔑 GATEKEEPER', '<strong>IF NO:</strong> &quot;Can I please speak with the owner or the managing partner, I\'ll hold&quot;<br><br><strong>WHO\'S CALLING?</strong><br>&quot;Again I\'m (NAME), and I am calling in regard to a <span style=\'color:var(--neon-gold)\'>personal business matter</span>.&quot;')">🔑 GATEKEEPER SCRIPT</button>
     </div>
 
     <div class="script-area" id="script-engine">
-        <div class="instruction">Intro Phase</div>
+        <div class="instruction">Phase 1: The Opener</div>
         <div class="script-text">"Hi, this is <span class="highlight">(YOUR NAME)</span> from the <span class="highlight">BUSINESS LOAN DIVISION</span>. Am I speaking with the business owner?"</div>
-        <button class="btn btn-green" style="width: 200px; margin: 0 auto; height: 50px; font-size: 1rem;" onclick="nextStep('q1')">YES, PROCEED</button>
+        <button class="btn btn-green" style="width: 250px; margin: 0 auto; height: 50px; font-size: 1rem;" onclick="nextStep('followup')">YES, PROCEED</button>
     </div>
 
     <div class="sidebar">
@@ -157,7 +158,8 @@
 <script>
     const engine = document.getElementById('script-engine');
     const quotes = ["SMILE WHILE YOU TALK", "TONE IS THE CLOSER", "ENERGY OVER EVERYTHING", "KEEP PUSHING", "THE NEXT CALL IS THE ONE"];
-    
+    let revenueTier = ""; // Tracks if over or under 1M
+
     function init() { 
         document.getElementById('quote-display').innerText = quotes[Math.floor(Math.random() * quotes.length)]; 
     }
@@ -186,22 +188,27 @@
     function calculateYearly() {
         const val = document.getElementById('monthlyRev').value;
         const result = document.getElementById('yearlyResult');
-        result.innerText = val ? "YEARLY: $" + (val * 12).toLocaleString() : "YEARLY: $0";
+        result.innerText = val ? "YEARLY EST: $" + (val * 12).toLocaleString() : "YEARLY EST: $0";
     }
 
     function nextStep(step) {
         let html = "";
         switch(step) {
+            case 'followup':
+                html = `<div class="instruction">The Reason</div>
+                        <div class="script-text">"Perfect I'll be quick. We're following up because you were <span class='highlight'>prequalified for working capital</span> or a business line of credit. I'm not calling to pull your credit, we just ask a few questions to make sure you're qualified."</div>
+                        <button class="btn btn-green" style="width: 250px; margin: 0 auto; height: 50px; font-size: 1rem;" onclick="nextStep('q1')">START QUALIFYING</button>`;
+                break;
             case 'q1':
-                html = `<div class="instruction">Time In Business</div>
+                html = `<div class="instruction">Q1: Time In Business</div>
                         <div class="script-text">"Have you been in business for <span class='highlight'>at least 1 year?</span>"</div>
                         <div style="display:flex; gap:15px; width:400px; margin: 0 auto;">
-                            <button class="btn btn-green" style="flex:1; height:50px;" onclick="nextStep('q2')">YES</button>
+                            <button class="btn btn-green" style="flex:1; height:50px;" onclick="nextStep('q2')">YES (1+ YEAR)</button>
                             <button class="btn btn-red" style="flex:1; height:50px;" onclick="nextStep('dq')">NO</button>
                         </div>`;
                 break;
             case 'q2':
-                html = `<div class="instruction">Industry Validation</div>
+                html = `<div class="instruction">Q2: Industry Validation</div>
                         <div class="script-text">"What type of <span class='highlight'>industry</span> are you in?"</div>
                         <div class="industry-grid">
                             <button class="btn btn-blue" onclick="nextStep('const')">🛠️ Construction</button>
@@ -210,13 +217,11 @@
                             <button class="btn btn-blue" onclick="nextStep('q3')">🍕 Restaurant</button>
                             <button class="btn btn-blue" onclick="nextStep('q3')">🏬 Retail / Shop</button>
                             <button class="btn btn-blue" onclick="nextStep('q3')">🕺 Club / Nightlife</button>
-                            <button class="btn btn-blue" onclick="nextStep('q3')">💻 IT / Software</button>
                             <button class="btn btn-blue" onclick="nextStep('q3')">🏭 Manufacturing</button>
-                            <button class="btn btn-blue" onclick="nextStep('q3')">💊 Pharmaceutical</button>
-                            <button class="btn btn-blue" onclick="nextStep('q3')">🏠 Real Estate</button>
-                            <button class="btn btn-red" onclick="nextStep('dq')">🚛 Trucking/Vans</button>
+                            <button class="btn btn-blue" onclick="nextStep('q3')">💻 IT / Software</button>
                             <button class="btn btn-red" onclick="nextStep('dq')">⚖️ Attorney/Law</button>
-                            <button class="btn btn-blue" onclick="nextStep('q3')">🏢 Other / Services</button>
+                            <button class="btn btn-red" onclick="nextStep('dq')">🚛 Trucking/Vans</button>
+                            <button class="btn btn-blue" onclick="nextStep('q3')">🏢 Other Services</button>
                         </div>`;
                 break;
             case 'trans':
@@ -229,59 +234,60 @@
                             <button class="btn btn-blue" onclick="nextStep('q3')">📦 Delivery / Courier</button>
                             <button class="btn btn-red" onclick="nextStep('dq')">🏗️ Dump Trucks</button>
                             <button class="btn btn-blue" onclick="nextStep('q3')">🚌 Passenger / Bus</button>
-                            <button class="btn btn-blue" onclick="nextStep('q3')">🛥️ Boat / Plane</button>
-                            <button class="btn btn-blue" onclick="nextStep('q3')">🚲 Bicycle Messenger</button>
                         </div>`;
                 break;
             case 'const':
                 html = `<div class="script-text">"Does your company deal with <span class='highlight'>trucking, vans, or transport?</span>"</div>
                         <div style="display:flex; gap:15px; width:400px; margin: 0 auto;">
-                            <button class="btn btn-blue" style="flex:1" onclick="nextStep('const_funds')">YES</button>
-                            <button class="btn btn-green" style="flex:1" onclick="nextStep('q3')">NO</button>
-                        </div>`;
-                break;
-            case 'const_funds':
-                html = `<div class="script-text">"Is trucking a major part? And what will you be <span class='highlight'>using the funds for?</span>"</div>
-                        <div style="display:grid; gap:10px; width:400px; margin: 0 auto;">
-                            <button class="btn btn-red" onclick="nextStep('dq')">BUYING TRUCKS / VEHICLES</button>
-                            <button class="btn btn-green" onclick="nextStep('q3')">PAYROLL / CREW / EQUIPMENT</button>
+                            <button class="btn btn-blue" style="flex:1" onclick="nextStep('dq')">YES (TRUCKING)</button>
+                            <button class="btn btn-green" style="flex:1" onclick="nextStep('q3')">NO (GENERAL CONST)</button>
                         </div>`;
                 break;
             case 'q3':
-                html = `<div class="instruction">Ownership Check</div>
+                html = `<div class="instruction">Q3: Ownership Check</div>
                         <div class="script-text">"Are you at least <span class='highlight'>50% owner</span> of the company?"</div>
                         <div style="display:flex; gap:15px; width:400px; margin: 0 auto;">
-                            <button class="btn btn-green" style="flex:1; height:50px;" onclick="nextStep('q4')">YES</button>
+                            <button class="btn btn-green" style="flex:1; height:50px;" onclick="nextStep('q4a')">YES (50%+)</button>
+                            <button class="btn btn-red" style="flex:1; height:50px;" onclick="openModal('SET CALLBACK', 'Sir/Maam, is there a time we can get the majority partner on the line?')">NO (LESS 50%)</button>
+                        </div>`;
+                break;
+            case 'q4a':
+                html = `<div class="instruction">Q4: Revenue Audit (Tier 1)</div>
+                        <div class="script-text">"Does your business generate at least <span class='highlight'>$1 Million</span> a year in revenue?"</div>
+                        <div style="display:flex; gap:15px; width:400px; margin: 0 auto;">
+                            <button class="btn btn-green" style="flex:1; height:50px;" onclick="revenueTier='OVER_MILL'; nextStep('q4_est')">YES</button>
+                            <button class="btn btn-blue" style="flex:1; height:50px;" onclick="nextStep('q4b')">NO</button>
+                        </div>`;
+                break;
+            case 'q4b':
+                html = `<div class="instruction">Revenue Audit (Tier 2)</div>
+                        <div class="script-text">"Does your business generate at least <span class='highlight'>$200K</span> in revenue per year?"</div>
+                        <div style="display:flex; gap:15px; width:400px; margin: 0 auto;">
+                            <button class="btn btn-green" style="flex:1; height:50px;" onclick="revenueTier='UNDER_MILL'; nextStep('q4_est')">YES</button>
                             <button class="btn btn-red" style="flex:1; height:50px;" onclick="nextStep('dq')">NO</button>
                         </div>`;
                 break;
-            case 'q4':
-                html = `<div class="instruction">Revenue Audit</div>
-                        <div class="script-text">"Exactly how much revenue did the business generate in the last year?"</div>
-                        <div style="font-size:0.9rem; color:var(--neon-gold); margin-bottom:10px;">"We look for <span style='color:white;'>Gross Revenue</span> (total sales), not your Net income."</div>
+            case 'q4_est':
+                html = `<div class="instruction">Final Estimate</div>
+                        <div class="script-text">"Can you please provide a <span class='highlight'>rough estimate</span> of exactly how much?"</div>
                         <div class="calc-box">
-                            <input type="number" id="monthlyRev" class="calc-input" placeholder="Monthly Avg" oninput="calculateYearly()">
-                            <div id="yearlyResult" class="calc-result">YEARLY: $0</div>
+                            <input type="number" id="monthlyRev" class="calc-input" placeholder="Enter Amount" oninput="calculateYearly()">
+                            <div id="yearlyResult" class="calc-result">ESTIMATE: $0</div>
                         </div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                            <button class="btn btn-green" style="grid-column: span 2; height: 50px;" onclick="nextStep('qualify')">OVER $1,000,000</button>
-                            <button class="btn btn-blue" onclick="nextStep('qualify')">$200K - $1M</button>
-                            <button class="btn btn-red" onclick="nextStep('dq')">UNDER $200,000</button>
-                        </div>`;
+                        <button class="btn btn-green" style="width:100%; height:50px;" onclick="nextStep('qualify')">PROCEED TO QUALIFIED</button>`;
                 break;
             case 'qualify':
-                html = `<div class="instruction" style="color:var(--neon-green)">PRE-QUALIFIED</div>
-                        <div class="script-text">"Wonderful! You meet the prequalification criteria. Before I put you on with a senior advisor, can you <span class='highlight'>confirm the name of the business</span> and your <span class='highlight'>full name</span>?"</div>
-                        <div style="color:var(--neon-gold); font-size:0.8rem; margin-bottom:10px; text-transform:uppercase;">💡 PRO TIP: Cross-check name on Google/AI while they speak</div>
-                        <div class="script-text" style="font-size:1.1rem;">"Also, is this the <span class='highlight'>best phone number</span> and <span class='highlight'>email</span> for the advisor?"</div>
+                html = `<div class="instruction" style="color:var(--neon-green)">QUALIFIED: ${revenueTier.replace('_', ' ')}</div>
+                        <div class="script-text">"Great! It looks like you meet the pre-qualification criteria. I'm going to connect you with a <span class='highlight'>senior advisor</span>."</div>
+                        <div style="color:var(--neon-gold); font-size:0.8rem; margin-bottom:10px; text-transform:uppercase;">💡 Confirm business name via Google/AI while talking</div>
                         <button class="btn btn-green" style="width:100%; height:60px; font-size:1.1rem;" onclick="openForm()">👉 OPEN INTAKE FORM</button>`;
                 break;
             case 'handoff':
-                html = `<div class="instruction">WARM TRANSFER</div>
-                        <div class="script-text">"Excellent. I have the advisor ready now. Please hold while I connect you."</div>
+                html = `<div class="instruction">WARM TRANSFER (${revenueTier.replace('_', ' ')})</div>
+                        <div class="script-text">"Just hang on one moment, I'm going to stay on the line with you. I'll introduce you first."</div>
                         <div style="border:2px dashed var(--neon-green); padding:20px; font-size:0.95rem; background: rgba(0,255,136,0.05); border-radius:15px;">
-                            <strong style="color:var(--neon-green)">TRANFER SCRIPT:</strong><br><br>
-                            "Hi Advisor, I have <span style="color:var(--neon-gold)">(Owner)</span> from <span style="color:var(--neon-gold)">(Business)</span> on the line. They've been in business for over a year and are looking for a quote."
+                            <strong style="color:var(--neon-green)">THE HANDOFF SCRIPT:</strong><br><br>
+                            "Hi, this is (NAME), I have (CLIENT NAME) on the line. Their business meets the criteria for funding and would like to further explore with you their options. Go ahead when you're ready."
                         </div>
                         <button class="btn btn-blue" style="width:100%; margin-top:20px; height:50px;" onclick="location.reload()">NEXT CALL (RESET)</button>`;
                 break;
