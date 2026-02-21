@@ -38,7 +38,7 @@
         
         .main-container { 
             display: grid; 
-            grid-template-columns: 260px 1fr 320px; 
+            grid-template-columns: 280px 1fr 320px; 
             flex-grow: 1; 
             gap: 15px; 
             padding: 15px; 
@@ -46,15 +46,45 @@
             overflow: hidden;
         }
         
+        /* SIDEBAR WITH TABS */
         .sidebar { 
             background: var(--card-bg); 
             border-radius: 20px; 
-            padding: 15px; 
             border: 1px solid #222; 
             display: flex; 
             flex-direction: column; 
-            gap: 10px; 
-            overflow-y: auto; 
+            overflow: hidden;
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            background: #000;
+            border-bottom: 1px solid #333;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 0.65rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            border: none;
+            background: #111;
+            color: #666;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tab-btn.active-security { background: var(--neon-red); color: black; }
+        .tab-btn.active-rebuttal { background: var(--neon-blue); color: black; }
+
+        .sidebar-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            flex-grow: 1;
         }
 
         .script-area { 
@@ -111,7 +141,6 @@
 
         .btn { padding: 10px; border-radius: 10px; border: 2px solid transparent; background: #222; color: white; cursor: pointer; font-weight: 700; text-transform: uppercase; transition: 0.2s; }
         .btn-green { background: var(--neon-green); color: black; border: none; }
-        .btn-green:hover { filter: brightness(1.2); }
         .btn-red { background: var(--neon-red); color: white; border: none; }
         
         .btn-dispo-big {
@@ -181,11 +210,10 @@
     <div class="modal-box" style="border-color: var(--neon-red);">
         <h2 style="color: var(--neon-red); margin-top: 0; letter-spacing: 2px; font-size: 1.2rem;">SELECT INDUSTRIES WE <span style="text-decoration: underline;">DON'T</span> WORK WITH</h2>
         <div class="industry-grid">
-            <button class="btn" style="border:1px solid #444" onclick="gateToggle(this, 'Single')">👤 Single</button>
             <button class="btn" style="border:1px solid #444" onclick="gateToggle(this, 'Trucks')">🚛 Trucks</button>
             <button class="btn" style="border:1px solid #444" onclick="gateToggle(this, 'Van')">🚐 Van</button>
             <button class="btn" style="border:1px solid #444" onclick="gateToggle(this, 'Lawyer')">💼 Lawyer</button>
-            <button class="btn" style="border:1px solid #444; grid-column: span 2;" onclick="gateToggle(this, 'Attorney')">⚖️ Attorney</button>
+            <button class="btn" style="border:1px solid #444" onclick="gateToggle(this, 'Attorney')">⚖️ Attorney</button>
         </div>
         <button id="unlock-btn" class="btn btn-green" style="margin-top:20px; width: 100%; display:none" onclick="unlock()">ACCESS DASHBOARD</button>
     </div>
@@ -211,15 +239,27 @@
 
 <div class="main-container">
     <div class="sidebar">
-        <span class="label-tag" style="color:var(--neon-red)">🚨 Security Protocols</span>
-        <button class="btn" onclick="openModal('🔞 PROHIBITED', 'SAY: &quot;We do not fund this industry.&quot; HANG UP.')">🔞 ADULT INDUSTRY</button>
-        <button class="btn" onclick="openModal('👤 CLOWN', 'SAY: &quot;We cannot proceed. Goodbye.&quot;')">👤 FAKE NAMES</button>
+        <div class="sidebar-tabs">
+            <button id="security-tab-btn" class="tab-btn active-security" onclick="toggleSidebarView('security')">🚨 SECURITY</button>
+            <button id="rebuttal-tab-btn" class="tab-btn" onclick="toggleSidebarView('rebuttal')">🔄 REBUTTALS</button>
+        </div>
         
-        <span class="label-tag" style="color:var(--neon-blue); margin-top:10px">🔄 Critical Rebuttals</span>
-        <button class="btn" onclick="openModal('🏢 WHAT COMPANY?', 'SAY: &quot;Business Loan Division. Are you interested in a loan?&quot;')">🏢 &quot;WHAT COMPANY?&quot;</button>
-        <button class="btn" onclick="openModal('📞 WHOS CALLING?', 'SAY: &quot;Again I\'m (YOUR NAME), and I am calling in regard to a personal business matter.&quot;')">📞 WHOS CALLING?</button>
-        <button class="btn" onclick="openModal('💼 PARTNERS', 'SAY: &quot;Is there a time we can get the majority partner on the line?&quot; (Set callback)')">💼 UNDER 50% OWNER</button>
-        <button class="btn" onclick="openModal('💸 ALREADY HAVE ONE', 'SAY: &quot;That\'s great, most of our clients do. We specialize in additional capital that doesn\'t interfere with existing lines.&quot;')">💸 ALREADY HAVE ONE</button>
+        <div id="sidebar-security-content" class="sidebar-content">
+            <span class="label-tag" style="color:var(--neon-red)">Kill Switche / Pranks</span>
+            <button class="btn" onclick="openModal('🔞 PROHIBITED', 'SAY: &quot;We do not fund this industry.&quot; HANG UP.')">🔞 ADULT INDUSTRY</button>
+            <button class="btn" onclick="openModal('👤 CLOWN / PRANK', 'SAY: &quot;We cannot proceed. This line is for business matters only. Goodbye.&quot;')">👤 FAKE NAMES / PRANK</button>
+            <button class="btn" onclick="openModal('🚫 UNCOOPERATIVE', 'SAY: &quot;We need basic info to proceed. If you change your mind, call back.&quot;')">🚫 REFUSAL TO ANSWER</button>
+            <button class="btn" onclick="openModal('📵 DNC REQUEST', 'SAY: &quot;No problem, I will mark you as do not call immediately.&quot;')">📵 DNC REQUEST</button>
+        </div>
+
+        <div id="sidebar-rebuttal-content" class="sidebar-content" style="display:none">
+            <span class="label-tag" style="color:var(--neon-blue)">Handling Objections</span>
+            <button class="btn" onclick="openModal('🏢 WHAT COMPANY?', 'SAY: &quot;Business Loan Division. Are you interested in a loan?&quot;')">🏢 &quot;WHAT COMPANY?&quot;</button>
+            <button class="btn" onclick="openModal('📞 WHOS CALLING?', 'SAY: &quot;Again I\'m (YOUR NAME), and I am calling in regard to a personal business matter.&quot;')">📞 WHOS CALLING?</button>
+            <button class="btn" onclick="openModal('💼 PARTNERS', 'SAY: &quot;Is there a time we can get the majority partner on the line?&quot; (Set callback)')">💼 UNDER 50% OWNER</button>
+            <button class="btn" onclick="openModal('💸 ALREADY HAVE ONE', 'SAY: &quot;That\'s great, most of our clients do. We specialize in additional capital that doesn\'t interfere with existing lines.&quot;')">💸 ALREADY HAVE ONE</button>
+            <button class="btn" onclick="openModal('📉 INTEREST RATES', 'SAY: &quot;Every business is different. My advisor will give you exact rates once we know the health of the business.&quot;')">📉 &quot;WHATS THE RATE?&quot;</button>
+        </div>
     </div>
 
     <div class="script-area" id="script-engine">
@@ -234,7 +274,6 @@
     <div class="dispo-panel">
         <span class="label-tag" style="color:var(--neon-blue); text-align:center">Business Tracker - Dispositions</span>
         
-        <!-- SUCCESS -->
         <div class="dispo-section" style="border-left: 4px solid var(--neon-green)">
             <span class="label-tag" style="color:var(--neon-green)">✅ SUCCESSFUL TRANSFER</span>
             <button class="btn btn-green btn-dispo-big" onclick="location.reload()">
@@ -243,7 +282,6 @@
             </button>
         </div>
 
-        <!-- SPECIALIST ONLY (EXPLAIN FIRST) -->
         <div class="dispo-section" style="border-left: 4px solid var(--neon-gold)">
             <span class="label-tag" style="color:var(--neon-gold)">👤 ADVISOR ONLY</span>
             <div class="briefing-box">
@@ -256,7 +294,6 @@
             </button>
         </div>
 
-        <!-- DROPPED -->
         <div class="dispo-section" style="border-left: 4px solid var(--neon-red)">
             <span class="label-tag" style="color:var(--neon-red)">❌ DISQUALIFIED / DROP</span>
             <button class="btn btn-red btn-dispo-big" style="height:45px; font-size:0.8rem" onclick="location.reload()">
@@ -276,7 +313,7 @@
     function init() { document.getElementById('quote-display').innerText = quotes[Math.floor(Math.random() * quotes.length)]; }
 
     let selectedGate = [];
-    const requiredGate = ['Single', 'Trucks', 'Van', 'Lawyer', 'Attorney'];
+    const requiredGate = ['Trucks', 'Van', 'Lawyer', 'Attorney'];
 
     function gateToggle(btn, ind) {
         if(selectedGate.includes(ind)) { 
@@ -293,6 +330,25 @@
         document.getElementById('unlock-btn').style.display = isAllSelected ? 'block' : 'none';
     }
     function unlock() { document.getElementById('gatekeeper').style.display = 'none'; }
+
+    function toggleSidebarView(view) {
+        const securityContent = document.getElementById('sidebar-security-content');
+        const rebuttalContent = document.getElementById('sidebar-rebuttal-content');
+        const securityTab = document.getElementById('security-tab-btn');
+        const rebuttalTab = document.getElementById('rebuttal-tab-btn');
+
+        if(view === 'security') {
+            securityContent.style.display = 'flex';
+            rebuttalContent.style.display = 'none';
+            securityTab.classList.add('active-security');
+            rebuttalTab.classList.remove('active-rebuttal');
+        } else {
+            securityContent.style.display = 'none';
+            rebuttalContent.style.display = 'flex';
+            securityTab.classList.remove('active-security');
+            rebuttalTab.classList.add('active-rebuttal');
+        }
+    }
 
     function openModal(title, text) {
         document.getElementById('modal-content').innerHTML = `<h3>${title}</h3><p style="font-size: 1.1rem; line-height: 1.5;">${text}</p><button class="btn btn-green" onclick="closeModal()">BACK</button>`;
