@@ -44,7 +44,7 @@
             padding: 15px; 
             box-sizing: border-box; 
             overflow: hidden;
-            height: calc(100vh - 210px); 
+            height: calc(100vh - 230px); 
         }
         
         .sidebar { 
@@ -71,12 +71,12 @@
             box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
         }
 
-        /* NEW DISPOSITION COMMAND CENTER */
+        /* ENHANCED DISPOSITION COMMAND CENTER */
         .dispo-footer {
-            height: 160px;
+            height: 180px;
             background: #000;
             border-top: 4px solid var(--neon-blue);
-            padding: 10px 20px;
+            padding: 12px 20px;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 15px;
@@ -86,26 +86,23 @@
         .dispo-zone {
             background: #111;
             border-radius: 12px;
-            padding: 10px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            border: 1px solid #333;
+            border: 2px solid #222;
             transition: 0.3s;
         }
-        .dispo-zone:hover { border-color: var(--neon-gold); }
 
         .zone-title { 
-            font-size: 0.7rem; 
+            font-size: 0.85rem; 
             font-weight: 900; 
             letter-spacing: 1px; 
             margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            text-transform: uppercase;
         }
 
-        .zone-desc { font-size: 0.65rem; line-height: 1.2; color: #aaa; margin-bottom: 8px; }
+        .zone-desc { font-size: 0.7rem; line-height: 1.3; color: #ddd; margin-bottom: 10px; }
 
         .btn { padding: 10px; border-radius: 10px; border: 2px solid transparent; background: #222; color: white; cursor: pointer; font-weight: 700; text-transform: uppercase; font-size: 0.7rem; transition: 0.2s; }
         .btn-blue:hover { border-color: var(--neon-blue); color: var(--neon-blue); background: rgba(0, 209, 255, 0.05); }
@@ -113,6 +110,15 @@
         .btn-green { background: var(--neon-green); color: black; border: none; }
         .btn-green:hover { filter: brightness(1.2); }
         .active-gate { background: var(--neon-red) !important; color: white !important; border: 1px solid white; }
+
+        /* BIGGER TRACKER BUTTONS */
+        .btn-dispo {
+            font-size: 0.9rem;
+            height: 55px;
+            font-weight: 900;
+            line-height: 1.1;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
 
         .industry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
         .script-text { font-size: 1.2rem; line-height: 1.4; margin-bottom: 15px; }
@@ -196,24 +202,24 @@
 <!-- STICKY DISPOSITION COMMAND CENTER -->
 <div class="dispo-footer">
     <!-- SCENARIO 1: SUCCESS -->
-    <div class="dispo-zone" style="border-left: 4px solid var(--neon-green);">
+    <div class="dispo-zone" style="border-color: var(--neon-green);">
         <div class="zone-title" style="color: var(--neon-green);">✅ SUCCESSFUL TRANSFER</div>
-        <div class="zone-desc">Both the Customer AND Loan Specialist are on the line.</div>
-        <button class="btn btn-green" onclick="location.reload()">DISPO: CALL TRANSFERRED</button>
+        <div class="zone-desc">Both are on line. <strong>DISPO AS TRANSFER & SEND IN TRACKER.</strong></div>
+        <button class="btn btn-green btn-dispo" onclick="location.reload()">CALL TRANSFERRED<br><span style="font-size: 0.6rem;">+ SEND IN TRACKER</span></button>
     </div>
     
     <!-- SCENARIO 2: CUST DROPS -->
-    <div class="dispo-zone" style="border-left: 4px solid var(--neon-gold);">
+    <div class="dispo-zone" style="border-color: var(--neon-gold);">
         <div class="zone-title" style="color: var(--neon-gold);">👤 CUST DISCONNECTED</div>
-        <div class="zone-desc">Customer hangs up while Advisor is on or connecting. <strong>Explain to Advisor first.</strong></div>
-        <button class="btn btn-green" style="background: var(--neon-gold); color: black;" onclick="location.reload()">DISPO: CALL TRANSFERRED</button>
+        <div class="zone-desc">Customer gone, Advisor ON. <strong>DISPO AS TRANSFER & SEND IN TRACKER.</strong></div>
+        <button class="btn btn-green btn-dispo" style="background: var(--neon-gold); color: black;" onclick="location.reload()">CALL TRANSFERRED<br><span style="font-size: 0.6rem;">+ SEND IN TRACKER</span></button>
     </div>
 
     <!-- SCENARIO 3: DROPPED -->
-    <div class="dispo-zone" style="border-left: 4px solid var(--neon-red);">
+    <div class="dispo-zone" style="border-color: var(--neon-red);">
         <div class="zone-title" style="color: var(--neon-red);">❌ CALL DROPPED</div>
-        <div class="zone-desc">Customer hangs up <strong>BEFORE</strong> the Loan Specialist answers.</div>
-        <button class="btn btn-red" style="background: var(--neon-red); color: white;" onclick="location.reload()">DISPO: CALL DROPPED</button>
+        <div class="zone-desc">Customer hung up BEFORE specialist joined. <strong>NO TRACKER NEEDED.</strong></div>
+        <button class="btn btn-red btn-dispo" style="background: var(--neon-red); color: white;" onclick="location.reload()">CALL DROPPED<br><span style="font-size: 0.6rem;">NO TRACKER</span></button>
     </div>
 </div>
 
@@ -349,7 +355,7 @@
                             "Hi Advisor, I have <span class='highlight'>${owner}</span> from <span class='highlight'>${biz}</span>. Their business meets the criteria for funding. Go ahead when ready."
                         </div>
                         <div style="margin-top:15px; font-size: 0.7rem; color: var(--neon-gold);">
-                            🚨 Use the Bottom Command Center to end this call.
+                            🚨 Use the Command Center below to finish.
                         </div>`;
                 break;
             case 'dq':
