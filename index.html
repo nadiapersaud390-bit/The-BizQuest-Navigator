@@ -214,17 +214,20 @@
         <span class="label-tag" style="color:var(--neon-red)">🚨 Security Protocols</span>
         <button class="btn" onclick="openModal('🔞 PROHIBITED', 'SAY: &quot;We do not fund this industry.&quot; HANG UP.')">🔞 ADULT INDUSTRY</button>
         <button class="btn" onclick="openModal('👤 CLOWN', 'SAY: &quot;We cannot proceed. Goodbye.&quot;')">👤 FAKE NAMES</button>
-        <button class="btn" onclick="openModal('🏢 REBUTTAL', 'SAY: &quot;Business Loan Division. Are you interested in a loan?&quot;')">🏢 &quot;WHAT COMPANY?&quot;</button>
-        <button class="btn" onclick="openModal('📞 WHOS CALLING', 'SAY: &quot;I am calling in regard to a personal business matter.&quot;')">📞 WHOS CALLING?</button>
-        <button class="btn" onclick="openModal('💼 PARTNERS', 'SAY: &quot;Is there a time we can get the majority partner on the line?&quot;')">💼 UNDER 50% OWNER</button>
+        
+        <span class="label-tag" style="color:var(--neon-blue); margin-top:10px">🔄 Critical Rebuttals</span>
+        <button class="btn" onclick="openModal('🏢 WHAT COMPANY?', 'SAY: &quot;Business Loan Division. Are you interested in a loan?&quot;')">🏢 &quot;WHAT COMPANY?&quot;</button>
+        <button class="btn" onclick="openModal('📞 WHOS CALLING?', 'SAY: &quot;Again I\'m (YOUR NAME), and I am calling in regard to a personal business matter.&quot;')">📞 WHOS CALLING?</button>
+        <button class="btn" onclick="openModal('💼 PARTNERS', 'SAY: &quot;Is there a time we can get the majority partner on the line?&quot; (Set callback)')">💼 UNDER 50% OWNER</button>
+        <button class="btn" onclick="openModal('💸 ALREADY HAVE ONE', 'SAY: &quot;That\'s great, most of our clients do. We specialize in additional capital that doesn\'t interfere with existing lines.&quot;')">💸 ALREADY HAVE ONE</button>
     </div>
 
     <div class="script-area" id="script-engine">
         <div class="instruction">Phase 1: The Opener</div>
         <div class="script-text">"Hi, this is <span class="highlight">(YOUR NAME)</span> from the <span class="highlight">BUSINESS LOAN DIVISION</span>. Am I speaking with the business owner?"</div>
         <div style="display: flex; gap: 10px; justify-content: center;">
-            <button class="btn btn-green" onclick="nextStep('followup')">YES (PROCEED)</button>
-            <button class="btn" style="border:1px solid #444" onclick="openModal('GATEKEEPER', 'SAY: &quot;Can I please speak with the owner or managing partner? I\'ll hold.&quot;')">NO (TRANSFERRED)</button>
+            <button class="btn btn-green" onclick="nextStep('followup')">YES (OWNER ON)</button>
+            <button class="btn" style="border:1px solid #444" onclick="openModal('GATEKEEPER TRANSFERRED', 'SAY: &quot;Can I please speak with the owner or the managing partner, I\'ll hold&quot;')">NO (TRANSFERRED)</button>
         </div>
     </div>
 
@@ -236,7 +239,7 @@
             <span class="label-tag" style="color:var(--neon-green)">✅ SUCCESSFUL TRANSFER</span>
             <button class="btn btn-green btn-dispo-big" onclick="location.reload()">
                 SEND LEAD
-                <span class="tracker-subtext">CLIENT + ADVISOR CONNECTED</span>
+                <span class="tracker-subtext">DISPO: TRANSFERRED</span>
             </button>
         </div>
 
@@ -245,11 +248,11 @@
             <span class="label-tag" style="color:var(--neon-gold)">👤 ADVISOR ONLY</span>
             <div class="briefing-box">
                 <strong>EXPLAIN:</strong><br>
-                "Client dropped during connect. Sending info now."
+                "Client was on, but dropped. Sending lead info now."
             </div>
             <button class="btn btn-dispo-big" style="background:var(--neon-gold); color:black" onclick="location.reload()">
                 SEND LEAD
-                <span class="tracker-subtext">CLIENT DROPPED EARLY</span>
+                <span class="tracker-subtext">DISPO: TRANSFERRED</span>
             </button>
         </div>
 
@@ -258,7 +261,7 @@
             <span class="label-tag" style="color:var(--neon-red)">❌ DISQUALIFIED / DROP</span>
             <button class="btn btn-red btn-dispo-big" style="height:45px; font-size:0.8rem" onclick="location.reload()">
                 NO LEAD SENT
-                <span class="tracker-subtext">NOT QUALIFIED / HANGUP</span>
+                <span class="tracker-subtext">DO NOT TRACK IN REVENUE</span>
             </button>
         </div>
     </div>
