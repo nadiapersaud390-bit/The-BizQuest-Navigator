@@ -26,7 +26,6 @@
             height: 100vh; 
         }
 
-        /* MODALS */
         #modal-overlay, #form-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; align-items: center; justify-content: center; }
         .modal-box { background: var(--card-bg); border: 2px solid var(--neon-blue); padding: 40px; border-radius: 25px; max-width: 550px; text-align: center; box-shadow: 0 0 20px rgba(0, 209, 255, 0.2); }
         .form-box { background: #111; border: 3px solid var(--neon-green); padding: 30px; border-radius: 20px; width: 400px; }
@@ -287,8 +286,7 @@
     </div>
 
     <div class="script-area">
-        <div id="script-engine">
-            </div>
+        <div id="script-engine"></div>
 
         <div class="rebuttal-dock">
             <span class="label-tag" style="color:var(--neon-blue)">🔄 LIVE REBUTTALS</span>
@@ -379,7 +377,6 @@
         nextStep('handoff'); 
     }
 
-    // REVENUE CALCULATION LOGIC
     function updateRevenue(val) {
         const monthly = parseFloat(val) || 0;
         const yearly = monthly * 12;
@@ -443,24 +440,57 @@
                 html = `<div class="script-main-content">
                         <div class="instruction">Industry Check</div><div class="script-text">"What type of <span class='highlight'>industry</span> are you in?"</div>
                 <div class="industry-grid">
-                    <button class="btn" onclick="nextStep('qPartners')">RETAIL</button>
-                    <button class="btn" onclick="nextStep('qPartners')">CONSTRUCTION</button>
-                    <button class="btn" onclick="nextStep('qPartners')">HVAC / PLUMBING</button>
-                    <button class="btn" onclick="nextStep('qPartners')">RESTAURANT</button>
+                    <button class="btn" onclick="nextStep('qConstruction')">CONSTRUCTION</button>
+                    <button class="btn" onclick="nextStep('qPartners')">AGRICULTURE / FARMING</button>
+                    <button class="btn" onclick="nextStep('qPartners')">OIL / GAS / MINING</button>
+                    <button class="btn" onclick="nextStep('qPartners')">UTILITIES</button>
                     <button class="btn" onclick="nextStep('qPartners')">MANUFACTURING</button>
-                    <button class="btn" onclick="nextStep('qPartners')">HEALTHCARE</button>
-                    <button class="btn" onclick="nextStep('qPartners')">TRANSPORT (GENERAL)</button>
-                    <button class="btn" onclick="nextStep('qPartners')">E-COMMERCE</button>
-                    <button class="btn" onclick="nextStep('qPartners')">WHOLESALE</button>
-                    <button class="btn" onclick="nextStep('qPartners')">CONSULTING</button>
-                    <button class="btn btn-red" onclick="nextStep('dq')">TRUCKING (NO)</button>
-                    <button class="btn btn-red" onclick="nextStep('dq')">VAN LINE (NO)</button>
-                    <button class="btn btn-red" onclick="nextStep('dq')">PORN / ADULT (NO)</button>
-                    <button class="btn btn-red" onclick="nextStep('dq')">STRIP CLUB (NO)</button>
-                    <button class="btn btn-red" onclick="nextStep('dq')">DRUGS / CANNABIS (NO)</button>
-                    <button class="btn btn-red" onclick="nextStep('dq')">LAWYERS (NO)</button>
-                    <button class="btn btn-red" onclick="nextStep('dq')">ATTORNEY (NO)</button>
+                    <button class="btn" onclick="nextStep('qPartners')">PHARMACEUTICAL</button>
+                    <button class="btn" onclick="nextStep('qPartners')">WHOLESALE TRADE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">RETAIL / E-COMM</button>
+                    <button class="btn" onclick="nextStep('qPartners')">MEDIA / BROADCAST</button>
+                    <button class="btn" onclick="nextStep('qPartners')">IT / TECH / CYBER</button>
+                    <button class="btn" onclick="nextStep('qPartners')">FINANCE / INSURANCE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">REAL ESTATE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">PROFESSIONAL SERVICES</button>
+                    <button class="btn" onclick="nextStep('qPartners')">ADMIN / WASTE SVCS</button>
+                    <button class="btn" onclick="nextStep('qPartners')">EDUCATION / TRAINING</button>
+                    <button class="btn" onclick="nextStep('qPartners')">HEALTHCARE / MEDICAL</button>
+                    <button class="btn" onclick="nextStep('qPartners')">ARTS / RECREATION</button>
+                    <button class="btn" onclick="nextStep('qPartners')">RESTAURANT / HVAC</button>
+                    <button class="btn btn-red" onclick="nextStep('dq')">FREIGHT CARRIER (NO)</button>
+                    <button class="btn btn-red" onclick="nextStep('dq')">TRUCKING / LOGISTICS (NO)</button>
+                    <button class="btn btn-red" onclick="nextStep('dq')">ADULT / PORN (NO)</button>
+                    <button class="btn btn-red" onclick="nextStep('dq')">ATTORNEY / LAW (NO)</button>
                 </div></div>`;
+                break;
+            case 'qConstruction':
+                html = `<div class="script-main-content">
+                        <div class="instruction">Construction Verification</div>
+                        <div class="script-text">"Does your business deal with <span class='highlight'>trucks</span>?"</div>
+                        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom:10px;">
+                            <button class="btn btn-green" onclick="nextStep('qTruckMajor')">YES</button>
+                            <button class="btn" onclick="nextStep('qPartners')">NO</button>
+                        </div></div>`;
+                break;
+            case 'qTruckMajor':
+                html = `<div class="script-main-content">
+                        <div class="instruction">Trucking Depth</div>
+                        <div class="script-text">"Is transportation or trucking a <span class='highlight'>major part</span> of the company?"</div>
+                        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom:10px;">
+                            <button class="btn btn-green" onclick="nextStep('qTruckFunds')">YES</button>
+                            <button class="btn" onclick="nextStep('qPartners')">NO</button>
+                        </div></div>`;
+                break;
+            case 'qTruckFunds':
+                html = `<div class="script-main-content">
+                        <div class="instruction">Fund Usage</div>
+                        <div class="script-text">"What would you be using the <span class='highlight'>funds</span> for?"</div>
+                        <div class="industry-grid">
+                            <button class="btn" onclick="nextStep('qPartners')">PAYROLL / MATERIALS</button>
+                            <button class="btn" onclick="nextStep('qPartners')">MARKETING / GROWTH</button>
+                            <button class="btn btn-red" onclick="nextStep('dq_truck')">BUY MORE TRUCKS</button>
+                        </div></div>`;
                 break;
             case 'qPartners':
                 html = `<div class="script-main-content">
@@ -494,7 +524,11 @@
                 break;
             case 'dq':
                 html = `<div class="script-main-content">
-                        <div class="script-text">"I apologize, we cannot move forward at this time."</div><button class="btn btn-red" onclick="location.reload()">NEXT CALL</button></div>`;
+                        <div class="script-text">"I apologize, our underwriters do not provide funding for your specific industry at this time. Thank you for your time."</div><button class="btn btn-red" onclick="location.reload()">NEXT CALL</button></div>`;
+                break;
+            case 'dq_truck':
+                html = `<div class="script-main-content">
+                        <div class="script-text" style="color:var(--neon-red)">"Unfortunately, we are unable to provide funding specifically for the purchase of additional trucks at this time. Thank you for your time."</div><button class="btn btn-red" onclick="location.reload()">NEXT CALL</button></div>`;
                 break;
         }
         engine.innerHTML = html;
