@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Closer’s Compass | Step-By-Step</title>
+    <title>The Closer’s Compass | Pro Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,13 +13,12 @@
             --neon-blue: #00d1ff;
             --neon-red: #ff3131;
             --neon-gold: #ffcc00;
-            --text-main: #f0f0f0;
         }
 
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--bg-dark);
-            color: var(--text-main);
+            color: #f0f0f0;
             margin: 0;
             overflow: hidden;
             display: flex;
@@ -44,10 +43,7 @@
             padding: 40px; border-radius: 25px;
             max-width: 500px; text-align: center;
             box-shadow: 0 0 50px rgba(0, 209, 255, 0.3);
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
         /* --- LAYOUT --- */
         .header {
@@ -90,9 +86,9 @@
             display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
         }
 
-        .script-text { font-size: 1.8rem; line-height: 1.4; margin-bottom: 40px; font-weight: 400; }
+        .script-text { font-size: 1.7rem; line-height: 1.4; margin-bottom: 30px; font-weight: 400; }
         .highlight { color: var(--neon-blue); font-weight: 900; }
-        .instruction { color: var(--neon-gold); font-size: 1rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
+        .instruction { color: var(--neon-gold); font-size: 0.9rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
     </style>
 </head>
 <body>
@@ -103,14 +99,14 @@
 
 <div class="header">
     <h1 style="font-size: 1.1rem; letter-spacing: 3px;">THE <span style="color: var(--neon-green);">CLOSER'S</span> COMPASS</h1>
-    <div id="quote" style="color: var(--neon-gold); font-size: 0.9rem;">"SELL THE APPOINTMENT, NOT THE LOAN."</div>
+    <div id="quote" style="color: var(--neon-gold); font-weight: bold;">"MOTIVATION: YOUR NEXT 'YES' IS BEHIND THE NEXT 'NO'."</div>
 </div>
 
 <div class="main-container">
     <div class="sidebar">
-        <h3 style="color: var(--neon-red); text-align: center; font-size: 0.9rem;">🚨 PRANK RADAR</h3>
-        <button class="btn btn-red" onclick="openModal('CLOWN DETECTED', 'They are asking for personal money (rent, bills, car). <br><br><strong>SAY:</strong> &quot;We only provide capital for business operations. Have a great day.&quot;')">🤡 PERSONAL ASK</button>
-        <button class="btn btn-red" onclick="openModal('SHADOW BUSINESS', 'Giggling or loud games in the background.<br><br><strong>SAY:</strong> &quot;It sounds like you aren’t ready for a professional line of credit. Call us back when you are.&quot;')">🌫️ GIGGLING / GAMES</button>
+        <h3 style="color: var(--neon-red); text-align: center;">🚨 PRANK RADAR</h3>
+        <button class="btn btn-red" onclick="openModal('CLOWN DETECTED', 'Asking for personal money.<br><br><strong>SAY:</strong> &quot;Unfortunately, we only provide capital for business operations. Feel free to reach back out if you start a formal business.&quot;')">🤡 PERSONAL ASK</button>
+        <button class="btn btn-red" onclick="openModal('PRANK CALL', 'Giggling or loud background games.<br><br><strong>SAY:</strong> &quot;It sounds like you aren’t ready for a professional line of credit. Have a great day.&quot;')">🌫️ GIGGLING</button>
     </div>
 
     <div class="script-area" id="script-engine">
@@ -125,7 +121,7 @@
     </div>
 
     <div class="sidebar">
-        <h3 style="color: var(--neon-blue); text-align: center; font-size: 0.9rem;">🛡️ REBUTTAL VAULT</h3>
+        <h3 style="color: var(--neon-blue); text-align: center;">🛡️ REBUTTAL VAULT</h3>
         <button class="btn btn-blue" onclick="openModal('SCAM DEFENSE', '<strong>YOU:</strong> &quot;Not at all. I’m not even authorized to pull your credit. I’m just verifying your pre-qualification.&quot;')">"IS THIS A SCAM?"</button>
         <button class="btn btn-blue" onclick="openModal('TIME DEFENSE', '<strong>YOU:</strong> &quot;I\'ll be very quick. I just have 4 questions to see if you meet the funding criteria on file.&quot;')">"I'M BUSY"</button>
     </div>
@@ -151,7 +147,7 @@
         
         else if(step === 'intro_yes') {
             html = `<div class="instruction">The Hook</div>
-                    <div class="script-text">"Perfect! We're following up because you were <span class='highlight'>prequalified</span> for a business line of credit. I'm not pulling credit, just asking a few questions to see if you qualify..."</div>
+                    <div class="script-text">"Perfect! We're following up because you were <span class='highlight'>prequalified</span> for a business line of credit. I'm not pulling credit, just asking a few questions..."</div>
                     <button class="btn btn-green" onclick="nextStep('q1')">START QUALIFYING</button>`;
         }
 
@@ -160,7 +156,7 @@
                     <div class="script-text">"Have you been in business for <span class='highlight'>at least 1 year?</span>"</div>
                     <div style="display:flex; gap:10px; justify-content:center;">
                         <button class="btn btn-green" style="flex:1" onclick="nextStep('q2')">YES (1 YEAR+)</button>
-                        <button class="btn btn-red" style="flex:1" onclick="nextStep('dq')">NO (UNDER 1 YR)</button>
+                        <button class="btn btn-red" style="flex:1" onclick="nextStep('dq_time')">NO (UNDER 1 YR)</button>
                     </div>`;
         }
 
@@ -170,38 +166,26 @@
                     <div class="industry-grid">
                         <button class="btn btn-blue" onclick="nextStep('q3')">🛠️ Construction</button>
                         <button class="btn btn-blue" onclick="nextStep('q3')">🍕 Restaurant</button>
-                        <button class="btn btn-blue" onclick="nextStep('q3')">🏥 Healthcare</button>
-                        <button class="btn btn-blue" onclick="nextStep('q3')">📦 Retail</button>
                         <button class="btn btn-red" onclick="nextStep('dq_ind')">🚛 Trucking</button>
                         <button class="btn btn-red" onclick="nextStep('dq_ind')">⚖️ Attorney</button>
-                        <button class="btn btn-red" onclick="nextStep('dq_ind')">📦 Transport</button>
                         <button class="btn btn-blue" onclick="nextStep('q3')">🏢 Other</button>
                     </div>`;
         }
 
         else if(step === 'q3') {
             html = `<div class="instruction">Question 3</div>
-                    <div class="script-text">"Are you the <span class='highlight'>100% owner</span>, or do you have partners?"</div>
-                    <div style="display:flex; flex-direction:column; gap:10px;">
-                        <button class="btn btn-green" onclick="nextStep('q4')">I AM 100% OWNER</button>
-                        <button class="btn btn-blue" onclick="nextStep('q3_partner')">I HAVE PARTNERS</button>
-                    </div>`;
-        }
-
-        else if(step === 'q3_partner') {
-            html = `<div class="instruction">Partner Check</div>
-                    <div class="script-text">"Do you own <span class='highlight'>at least 50%</span> of the business?"</div>
+                    <div class="script-text">"Are you the <span class='highlight'>majority owner</span> (50%+ balance)?"</div>
                     <div style="display:flex; gap:10px; justify-content:center;">
-                        <button class="btn btn-green" style="flex:1" onclick="nextStep('q4')">YES (50%+)</button>
-                        <button class="btn btn-red" style="flex:1" onclick="openModal('PARTNER NEEDED', 'We need the majority partner. <br><br><strong>SAY:</strong> &quot;Is there a time we can get the majority partner on the line?&quot;')">NO (UNDER 50%)</button>
+                        <button class="btn btn-green" style="flex:1" onclick="nextStep('q4')">YES</button>
+                        <button class="btn btn-red" style="flex:1" onclick="nextStep('dq_partner')">NO (UNDER 50%)</button>
                     </div>`;
         }
 
         else if(step === 'q4') {
-            html = `<div class="instruction">Question 4 (Revenue)</div>
+            html = `<div class="instruction">Question 4</div>
                     <div class="script-text">"Does the business generate at least <span class='highlight'>$1 Million</span> a year in revenue?"</div>
                     <div style="display:flex; gap:10px; justify-content:center;">
-                        <button class="btn btn-green" style="flex:1" onclick="nextStep('qualified_over')">YES ($1M+)</button>
+                        <button class="btn btn-green" style="flex:1" onclick="nextStep('est_over')">YES ($1M+)</button>
                         <button class="btn btn-blue" style="flex:1" onclick="nextStep('q4_under')">NO (UNDER $1M)</button>
                     </div>`;
         }
@@ -210,33 +194,55 @@
             html = `<div class="instruction">Revenue Floor</div>
                     <div class="script-text">"Does it generate at least <span class='highlight'>$200,000</span> per year?"</div>
                     <div style="display:flex; gap:10px; justify-content:center;">
-                        <button class="btn btn-blue" style="flex:1" onclick="nextStep('qualified_under')">YES ($200K+)</button>
-                        <button class="btn btn-red" style="flex:1" onclick="nextStep('dq')">NO (UNDER $200K)</button>
+                        <button class="btn btn-blue" style="flex:1" onclick="nextStep('est_under')">YES ($200K+)</button>
+                        <button class="btn btn-red" style="flex:1" onclick="nextStep('dq_rev')">NO (UNDER $200K)</button>
                     </div>`;
         }
 
+        /* REVENUE ESTIMATE STEPS */
+        else if(step === 'est_over') {
+            html = `<div class="instruction">Estimate</div>
+                    <div class="script-text">"Can you please provide a <span class='highlight'>rough estimate</span> of how much?"</div>
+                    <button class="btn btn-green" onclick="nextStep('qualified_over')">GO TO TRANSFER</button>`;
+        }
+        else if(step === 'est_under') {
+            html = `<div class="instruction">Estimate</div>
+                    <div class="script-text">"Can you please provide a <span class='highlight'>rough estimate</span> of how much?"</div>
+                    <button class="btn btn-blue" onclick="nextStep('qualified_under')">GO TO TRANSFER</button>`;
+        }
+
+        /* FINAL QUALIFIED SCREENS */
         else if(step === 'qualified_over') {
-            html = `<div class="instruction" style="color:var(--neon-green)">Status: High Value</div>
-                    <div class="script-text">"Great! It looks like you meet the pre-qualification criteria. Hang on while I connect you with a <span class='highlight'>Senior Advisor</span>."</div>
-                    <button class="btn btn-green" style="width:100%; font-size:1.4rem;" onclick="location.reload()">TRANSFER: OVER 1 MILL</button>`;
+            html = `<div class="instruction" style="color:var(--neon-green)">HIGH VALUE TRANSFER</div>
+                    <div class="script-text">"Great! I'm going to connect you with a senior advisor. I'll stay on the line and introduce you."</div>
+                    <button class="btn btn-green" style="width:100%" onclick="location.reload()">TRANSFER: OVER 1 MILL</button>`;
         }
-
         else if(step === 'qualified_under') {
-            html = `<div class="instruction" style="color:var(--neon-blue)">Status: Qualified</div>
-                    <div class="script-text">"Great! It looks like you meet the criteria. Hang on while I connect you with a <span class='highlight'>Senior Advisor</span>."</div>
-                    <button class="btn btn-blue" style="width:100%; font-size:1.4rem;" onclick="location.reload()">TRANSFER: UNDER 1 MILL</button>`;
+            html = `<div class="instruction" style="color:var(--neon-blue)">QUALIFIED TRANSFER</div>
+                    <div class="script-text">"Great! I'm going to connect you with a senior advisor. I'll stay on the line and introduce you."</div>
+                    <button class="btn btn-blue" style="width:100%" onclick="location.reload()">TRANSFER: UNDER 1 MILL</button>`;
         }
 
+        /* DISQUALIFIED EXIT SCRIPTS */
+        else if(step === 'dq_time') {
+            html = `<div class="instruction" style="color:var(--neon-red)">EXIT: TIME REQUIREMENT</div>
+                    <div class="script-text">"Unfortunately, you are <span class='highlight'>not qualified</span> yet. To be eligible, you need to be in business for 1 year or more. <br><br>If you are interested when a year has reached, you can always reach out back to us!"</div>
+                    <button class="btn btn-red" style="width:100%" onclick="location.reload()">END CALL / NEXT</button>`;
+        }
+        else if(step === 'dq_rev') {
+            html = `<div class="instruction" style="color:var(--neon-red)">EXIT: REVENUE REQUIREMENT</div>
+                    <div class="script-text">"Unfortunately, you are <span class='highlight'>not qualified</span> at this time. Our current programs require at least $200k in annual revenue. <br><br>If your revenue increases in the future, please reach back out!"</div>
+                    <button class="btn btn-red" style="width:100%" onclick="location.reload()">END CALL / NEXT</button>`;
+        }
         else if(step === 'dq_ind') {
-            html = `<div class="instruction" style="color:var(--neon-red)">Status: Restricted Industry</div>
-                    <div class="script-text">"I apologize, but we currently don't have programs for your specific industry. Have a great day!"</div>
-                    <button class="btn btn-red" style="width:100%" onclick="location.reload()">NEXT CALL</button>`;
+            html = `<div class="instruction" style="color:var(--neon-red)">EXIT: RESTRICTED INDUSTRY</div>
+                    <div class="script-text">"I apologize, but we currently do not have funding programs for <span class='highlight'>your specific industry</span>. Have a great day!"</div>
+                    <button class="btn btn-red" style="width:100%" onclick="location.reload()">END CALL / NEXT</button>`;
         }
-
-        else if(step === 'dq') {
-            html = `<div class="instruction" style="color:var(--neon-red)">Status: Disqualified</div>
-                    <div class="script-text">"I apologize, but based on those numbers we don't have a program available for you at this time."</div>
-                    <button class="btn btn-red" style="width:100%" onclick="location.reload()">NEXT CALL</button>`;
+        else if(step === 'dq_partner') {
+            html = `<div class="instruction" style="color:var(--neon-red)">EXIT: PARTNER NEEDED</div>
+                    <div class="script-text">"Since we need a majority partner for these options, is there a time we can get the <span class='highlight'>majority partner</span> on a brief 2-minute call?"</div>
+                    <button class="btn btn-red" style="width:100%" onclick="location.reload()">SET CALLBACK / NEXT</button>`;
         }
 
         engine.innerHTML = html;
