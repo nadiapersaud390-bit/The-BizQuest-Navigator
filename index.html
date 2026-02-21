@@ -103,7 +103,6 @@
             min-height: 220px;
         }
 
-        /* Rebuttals Inline Styling */
         .rebuttal-dock {
             margin-top: 20px;
             padding-top: 15px;
@@ -243,6 +242,7 @@
             border-radius: 10px;
             font-family: 'Montserrat', sans-serif;
             font-weight: 700;
+            box-sizing: border-box;
         }
 
         .form-input { width: 100%; background: #000; border: 1px solid #444; padding: 8px; border-radius: 8px; color: white; box-sizing: border-box; }
@@ -288,8 +288,7 @@
 
     <div class="script-area">
         <div id="script-engine">
-            <!-- Content Injected by JS -->
-        </div>
+            </div>
 
         <div class="rebuttal-dock">
             <span class="label-tag" style="color:var(--neon-blue)">🔄 LIVE REBUTTALS</span>
@@ -380,14 +379,25 @@
         nextStep('handoff'); 
     }
 
+    // REVENUE CALCULATION LOGIC
     function updateRevenue(val) {
         const monthly = parseFloat(val) || 0;
         const yearly = monthly * 12;
-        document.getElementById('calc-monthly-display').innerText = '$' + monthly.toLocaleString();
-        document.getElementById('calc-yearly-display').innerText = '$' + yearly.toLocaleString();
+        updateDisplays(monthly, yearly);
+    }
+
+    function updateRevenueFromYearly(val) {
+        const yearly = parseFloat(val) || 0;
+        const monthly = yearly / 12;
+        updateDisplays(monthly, yearly);
+    }
+
+    function updateDisplays(m, y) {
+        document.getElementById('calc-monthly-display').innerText = '$' + Math.round(m).toLocaleString();
+        document.getElementById('calc-yearly-display').innerText = '$' + Math.round(y).toLocaleString();
         
         const btn = document.getElementById('rev-next-btn');
-        if (yearly >= 200000) {
+        if (y >= 200000) {
             btn.disabled = false;
             btn.style.opacity = "1";
             btn.innerText = "QUALIFIED";
@@ -395,6 +405,17 @@
             btn.disabled = true;
             btn.style.opacity = "0.3";
             btn.innerText = "MIN $200K REQUIRED";
+        }
+    }
+
+    function toggleRevMode(mode) {
+        const container = document.getElementById('rev-input-wrapper');
+        if (mode === 'yearly') {
+            container.innerHTML = `
+                <div class="instruction">Enter Yearly Revenue</div>
+                <input type="number" class="rev-input" placeholder="Annual Amount" oninput="updateRevenueFromYearly(this.value)">
+                <button class="btn" style="font-size:0.6rem; margin-top:5px; padding:5px; background:#333;" onclick="nextStep('q3')">← BACK TO MONTHLY</button>
+            `;
         }
     }
 
@@ -443,7 +464,11 @@
                 html = `<div class="script-main-content">
                         <div class="instruction">Revenue Verification</div>
                         <div class="rev-calc-container">
-                            <input type="number" class="rev-input" placeholder="Monthly Rev" oninput="updateRevenue(this.value)">
+                            <div id="rev-input-wrapper">
+                                <div class="instruction">Enter Monthly Revenue</div>
+                                <input type="number" class="rev-input" placeholder="Monthly Rev" oninput="updateRevenue(this.value)">
+                                <button class="btn" style="font-size:0.6rem; margin-top:5px; padding:5px; background:#333;" onclick="toggleRevMode('yearly')">DON'T KNOW MONTHLY? USE YEARLY</button>
+                            </div>
                             <div class="rev-row"><span class="rev-label">MONTHLY:</span><span class="rev-value" id="calc-monthly-display">$0</span></div>
                             <div class="rev-row"><span class="rev-label">YEARLY:</span><span class="rev-value" id="calc-yearly-display" style="color:var(--neon-gold)">$0</span></div>
                         </div>
