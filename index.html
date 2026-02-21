@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Closer’s Compass | Business Loan Division</title>
+    <title>The Closer’s Compass | Pro Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0f0f0f;
-            --card-bg: #1a1a1a;
+            --bg-dark: #0a0a0c;
+            --card-bg: #16161a;
             --neon-green: #00ff88;
             --neon-blue: #00d1ff;
             --neon-red: #ff3131;
-            --neon-yellow: #f39c12;
-            --text-main: #e0e0e0;
+            --neon-gold: #ffcc00;
+            --text-main: #f0f0f0;
         }
 
         body {
@@ -22,240 +22,221 @@
             color: var(--text-main);
             margin: 0;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
 
-        /* --- GATEKEEPER OVERLAY --- */
+        /* --- FANCY MODAL (POP-UP) --- */
+        #modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .modal-box {
+            background: var(--card-bg);
+            border: 2px solid var(--neon-blue);
+            padding: 40px;
+            border-radius: 25px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0, 209, 255, 0.3);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* --- GATEKEEPER --- */
         #gatekeeper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 999;
+            background: var(--bg-dark);
+            z-index: 2000;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: 0.5s;
         }
 
-        .gate-content {
-            text-align: center;
-            padding: 40px;
-            border: 2px solid var(--neon-blue);
-            border-radius: 20px;
-            background: var(--card-bg);
-            box-shadow: 0 0 30px var(--neon-blue);
-        }
-
-        .gate-options {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        /* --- MAIN LAYOUT --- */
-        .dashboard {
-            display: grid;
-            grid-template-columns: 280px 1fr 300px;
-            grid-template-rows: 80px 1fr;
-            height: 100vh;
-            gap: 15px;
-            padding: 15px;
-            box-sizing: border-box;
-        }
-
-        header {
-            grid-column: 1 / 4;
+        /* --- DASHBOARD LAYOUT --- */
+        .header {
+            height: 80px;
+            background: #111;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 0 40px;
+            border-bottom: 2px solid #222;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            flex-grow: 1;
+            gap: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .sidebar {
             background: var(--card-bg);
-            padding: 0 30px;
-            border-radius: 15px;
-            border-bottom: 2px solid var(--neon-green);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid #222;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .ticker {
-            color: var(--neon-green);
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .script-area {
+            background: #111;
+            border-radius: 25px;
+            padding: 40px;
+            border: 1px solid #333;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+            text-align: center;
         }
 
-        /* --- BUTTON STYLING --- */
+        /* --- BUTTONS --- */
         .btn {
-            padding: 15px;
-            border-radius: 10px;
+            padding: 18px;
+            border-radius: 12px;
             border: 2px solid transparent;
-            background: #2a2a2a;
+            background: #222;
             color: white;
             cursor: pointer;
             font-weight: 700;
-            transition: 0.3s;
-            text-align: center;
-            margin-bottom: 10px;
-            display: block;
-            width: 100%;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            text-transform: uppercase;
         }
 
-        .btn-green:hover { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); }
-        .btn-blue:hover { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); }
-        .btn-red:hover { border-color: var(--neon-red); box-shadow: 0 0 15px var(--neon-red); }
-        .active-btn { background: var(--neon-green) !important; color: black !important; }
+        .btn-blue:hover { border-color: var(--neon-blue); color: var(--neon-blue); box-shadow: 0 0 15px rgba(0,209,255,0.2); }
+        .btn-red:hover { border-color: var(--neon-red); color: var(--neon-red); box-shadow: 0 0 15px rgba(255,49,49,0.2); }
+        .btn-green { background: var(--neon-green); color: black; border: none; }
+        .btn-green:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,255,136,0.4); }
 
-        /* --- SCRIPT BOX --- */
-        .script-area {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid #333;
-            overflow-y: auto;
-            position: relative;
-        }
+        .active-gate { background: var(--neon-red) !important; border-color: white !important; }
 
-        .script-line {
-            font-size: 1.4rem;
-            line-height: 1.6;
-            margin-bottom: 25px;
-            display: none;
-            animation: fadeIn 0.5s forwards;
-        }
-
+        .script-text { font-size: 1.6rem; line-height: 1.4; margin-bottom: 30px; min-height: 100px; }
         .highlight { color: var(--neon-blue); font-weight: 900; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- SIDEBARS --- */
-        .sidebar {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid #333;
-        }
-
-        h3 { border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 0; color: var(--neon-blue); }
-
     </style>
 </head>
 <body>
 
-<div id="gatekeeper">
-    <div class="gate-content">
-        <h1 style="color: var(--neon-red); margin-top: 0;">ACCESS DENIED</h1>
-        <p>Select the <strong>3 RESTRICTED</strong> industries to unlock your desk:</p>
-        <div class="gate-options">
-            <button class="btn btn-blue" onclick="toggleGate(this, 'Construction')">🏗️ Construction</button>
-            <button class="btn btn-blue" onclick="toggleGate(this, 'Trucking')">🚛 Trucking</button>
-            <button class="btn btn-blue" onclick="toggleGate(this, 'Attorneys')">⚖️ Attorneys</button>
-            <button class="btn btn-blue" onclick="toggleGate(this, 'Transport')">📦 Transport</button>
+<div id="modal-overlay" onclick="closeModal()">
+    <div class="modal-box" id="modal-content" onclick="event.stopPropagation()">
         </div>
-        <button id="unlock-btn" class="btn btn-green" style="margin-top: 30px; display: none;" onclick="unlock()">START DIALING</button>
+</div>
+
+<div id="gatekeeper">
+    <div class="modal-box" style="border-color: var(--neon-red);">
+        <h2 style="color: var(--neon-red);">SECURITY CHECK</h2>
+        <p>Click the 3 <strong>DISQUALIFIED</strong> industries:</p>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <button class="btn btn-blue" onclick="gateToggle(this, 'Trucking')">🚛 Trucking</button>
+            <button class="btn btn-blue" onclick="gateToggle(this, 'Lawyers')">⚖️ Attorneys</button>
+            <button class="btn btn-blue" onclick="gateToggle(this, 'Construction')">🏗️ Construction (Trucks)</button>
+            <button class="btn btn-blue" onclick="gateToggle(this, 'Retail')">🍕 Retail/Food</button>
+        </div>
+        <button id="unlock-btn" class="btn btn-green" style="margin-top:20px; display:none; width:100%;" onclick="unlock()">ACCESS DASHBOARD</button>
     </div>
 </div>
 
-<div class="dashboard">
-    <header>
-        <h2 style="margin:0; letter-spacing: 2px;">THE <span style="color: var(--neon-green);">CLOSER'S</span> COMPASS</h2>
-        <div class="ticker" id="motivation">"YOUR NEXT CALL IS A $1M LEAD."</div>
-    </header>
+<div class="header">
+    <h1 style="font-size: 1.2rem; letter-spacing: 4px;">THE <span style="color: var(--neon-green);">CLOSER'S</span> COMPASS</h1>
+    <div id="quote" style="color: var(--neon-gold); font-weight:bold;">"THE PERSON ASKING THE QUESTIONS CONTROLS THE CALL."</div>
+</div>
 
+<div class="main-container">
     <div class="sidebar">
-        <h3>🚨 PRANK RADAR</h3>
-        <button class="btn btn-red" onclick="alert('EXIT: We only provide capital for business operations. Have a great day.')">🤡 PERSONAL LOAN</button>
-        <button class="btn btn-red" onclick="alert('EXIT: It sounds like you are not ready for a line of credit yet. Call us back later.')">🌫️ VAGUE / NO EIN</button>
-        <button class="btn btn-red" onclick="alert('EXIT: We are not a credit repair agency; we provide capital for businesses.')">📈 CREDIT FIXER</button>
-        <p style="font-size: 0.8rem; color: #888; text-align: center; margin-top: 20px;">If you hear loud background games or giggling, click above to exit.</p>
+        <h3 style="color: var(--neon-red); text-align: center;">🚨 PRANK RADAR</h3>
+        <button class="btn btn-red" onclick="openModal('CLOWN DETECTED', 'This person is asking for personal cash or rent money. <br><br><strong>SAY:</strong> &quot;We only provide working capital for established business operations. It sounds like you need a personal bank. Have a great day.&quot;')">🤡 PERSONAL LOAN</button>
+        <button class="btn btn-red" onclick="openModal('SHADOW BUSINESS', 'Caller is giggling, has loud games in the background, or can\'t name their own revenue.<br><br><strong>SAY:</strong> &quot;It sounds like you aren’t ready for a professional line of credit yet. Call us back when your business reaches $200k.&quot;')">🌫️ THE VAGUE-IST</button>
+        <button class="btn btn-red" onclick="openModal('CREDIT TRAP', 'They only want to talk about fixing their 400 credit score.<br><br><strong>SAY:</strong> &quot;We aren\'t a credit repair agency. We provide growth capital for healthy businesses.&quot;')">📈 CREDIT FIXER</button>
     </div>
 
     <div class="script-area">
-        <div id="step-1" class="script-line" style="display: block;">
-            <p>"Hi, this is <span class="highlight">(YOUR NAME)</span> from the <span class="highlight">BUSINESS LOAN DIVISION</span>[cite: 2, 5]. Am I speaking with the business owner?" [cite: 2]</p>
-            <button class="btn btn-green" onclick="showStep(2)">YES, OWNER IS ON LINE</button>
-            <button class="btn btn-blue" onclick="showStep('gatekeeper-script')">NO / TRANSFER NEEDED</button>
+        <div id="display-text" class="script-text">
+            "Hi, this is <span class="highlight">(YOUR NAME)</span> from the <span class="highlight">BUSINESS LOAN DIVISION</span>. Am I speaking with the business owner?"
         </div>
-
-        <div id="step-gatekeeper-script" class="script-line">
-            <p>"Can I please speak with the owner or the managing partner, I'll hold"[cite: 3].</p>
-            <button class="btn btn-blue" onclick="showStep(2)">OWNER IS NOW ON LINE</button>
-        </div>
-
-        <div id="step-2" class="script-line">
-            <p>"Perfect, I'll be quick. We're following up because you were <span class="highlight">prequalified</span> for working capital or a business line of credit[cite: 4, 6]. I'm not calling to pull your credit, we just ask a few questions to make sure your business is qualified[cite: 4, 7]."</p>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn btn-green" onclick="showStep(3)">CONTINUE TO QUESTIONS</button>
-            </div>
-        </div>
-
-        <div id="step-3" class="script-line">
-            <h3 style="color: var(--neon-green);">QUALIFICATION CHECK</h3>
-            <p>1. Have you been in business for <span class="highlight">at least 1 year?</span> [cite: 8]<br>
-               2. Are you at least <span class="highlight">50% owner?</span> [cite: 9, 10]</p>
-            <button class="btn btn-green" onclick="showStep(4)">YES TO BOTH</button>
-            <button class="btn btn-red" onclick="showStep('dq')">NO / DISQUALIFIED</button>
-        </div>
-
-        <div id="step-4" class="script-line">
-            <h3 style="color: var(--neon-green);">REVENUE SELECTION</h3>
-            <p>What is your rough estimate of gross annual revenue? [cite: 13, 16]</p>
-            <button class="btn btn-green" onclick="showStep('over1m')">💰 OVER $1 MILLION</button>
-            <button class="btn btn-blue" onclick="showStep('under1m')">💵 $200K - $1 MILLION</button>
-            <button class="btn btn-red" onclick="showStep('dq')">❌ UNDER $200K</button>
-        </div>
-
-        <div id="step-over1m" class="script-line">
-            <h2 style="color: var(--neon-green);">✅ QUALIFIED: OVER $1M</h2>
-            <p>"Great! I'm connecting you with a senior advisor. Hang on one moment..." [cite: 21, 22]</p>
-            <button class="btn btn-green" style="font-size: 1.5rem;" onclick="location.reload()">TRANSFER: OVER 1 MILL BUTTON</button>
-        </div>
-
-        <div id="step-under1m" class="script-line">
-            <h2 style="color: var(--neon-blue);">✅ QUALIFIED: UNDER $1M</h2>
-            <p>"Great! I'm connecting you with a senior advisor who will go over options..." [cite: 21]</p>
-            <button class="btn btn-blue" style="font-size: 1.5rem;" onclick="location.reload()">TRANSFER: UNDER 1 MILL BUTTON</button>
-        </div>
-
-        <div id="step-dq" class="script-line">
-            <h2 style="color: var(--neon-red);">❌ DOES NOT QUALIFY</h2>
-            <p>Politely end the call. (Business under 1 year, under $200k, or restricted industry) [cite: 8, 18].</p>
-            <button class="btn btn-red" onclick="location.reload()">NEXT CALL</button>
+        <div id="action-buttons">
+            <button class="btn btn-green" onclick="flow(1)">YES, OWNER IS HERE</button>
+            <button class="btn btn-blue" style="margin-top:10px;" onclick="flow('gatekeeper')">NO / TRANSFER OWNER</button>
         </div>
     </div>
 
     <div class="sidebar">
-        <h3>🛡️ REBUTTAL VAULT</h3>
-        <button class="btn btn-blue" onclick="alert('REBUTTAL: I’m not calling to pull your credit; we just ask a few questions to see if you qualify for the pre-approved capital.')">"IS THIS A SCAM?"</button>
-        <button class="btn btn-blue" onclick="alert('REBUTTAL: I’ll be very quick—only 4 questions to see if you qualify for the funding options on file.')">"I'M BUSY / HANG UP"</button>
-        <button class="btn btn-blue" onclick="alert('REBUTTAL: That’s great! Most clients use this as a backup line for emergencies or growth.')">"I ALREADY HAVE A LOAN"</button>
+        <h3 style="color: var(--neon-blue); text-align: center;">🛡️ REBUTTAL VAULT</h3>
+        <button class="btn btn-blue" onclick="openModal('SCAM DEFENSE', '<strong>CUSTOMER:</strong> &quot;Is this a scam?&quot;<br><br><strong>YOU:</strong> &quot;Not at all. I’m not even authorized to pull your credit. I’m just verifying your pre-qualification for the business line of credit.&quot;')">"IS THIS A SCAM?"</button>
+        <button class="btn btn-blue" onclick="openModal('TIME DEFENSE', '<strong>CUSTOMER:</strong> &quot;I\'m too busy!&quot;<br><br><strong>YOU:</strong> &quot;I\'ll be very quick. I just have 4 questions to see if you meet the criteria for the funding options we have on file.&quot;')">"I'M BUSY / HANG UP"</button>
+        <button class="btn btn-blue" onclick="openModal('TRUST DEFENSE', '<strong>CUSTOMER:</strong> &quot;How did you get my number?&quot;<br><br><strong>YOU:</strong> &quot;Your business was flagged in our database as prequalified for working capital based on your industry and size.&quot;')">"WHO IS THIS?"</button>
     </div>
 </div>
 
 <script>
-    let selectedDQs = [];
-    const forbidden = ['Trucking', 'Attorneys', 'Transport'];
+    /* MODAL LOGIC */
+    function openModal(title, text) {
+        const content = document.getElementById('modal-content');
+        content.innerHTML = `<h2 style="color:var(--neon-blue)">${title}</h2><p style="line-height:1.6; font-size:1.1rem;">${text}</p><button class="btn btn-green" style="width:100%" onclick="closeModal()">GOT IT</button>`;
+        document.getElementById('modal-overlay').style.display = 'flex';
+    }
+    function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
 
-    function toggleGate(btn, industry) {
-        if (selectedDQs.includes(industry)) {
-            selectedDQs = selectedDQs.filter(i => i !== industry);
-            btn.classList.remove('active-btn');
-        } else {
-            selectedDQs.push(industry);
-            btn.classList.add('active-btn');
+    /* GATEKEEPER LOGIC */
+    let selected = [];
+    function gateToggle(btn, ind) {
+        if(selected.includes(ind)) { selected = selected.filter(i => i !== ind); btn.classList.remove('active-gate'); }
+        else { selected.push(ind); btn.classList.add('active-gate'); }
+        const core = ['Trucking', 'Lawyers', 'Construction'];
+        const isReady = core.every(c => selected.includes(c)) && selected.length === 3;
+        document.getElementById('unlock-btn').style.display = isReady ? 'block' : 'none';
+    }
+    function unlock() { document.getElementById('gatekeeper').style.display = 'none'; }
+
+    /* SCRIPT FLOW LOGIC */
+    function flow(step) {
+        const text = document.getElementById('display-text');
+        const btns = document.getElementById('action-buttons');
+
+        if(step === 'gatekeeper') {
+            text.innerHTML = `"Can I please speak with the owner or the managing partner? I'll hold."`;
+            btns.innerHTML = `<button class="btn btn-green" onclick="flow(1)">OWNER IS NOW ON LINE</button>`;
         }
-
-        const isCorrect = forbidden.every(f => selectedDQs.includes(f)) && selectedDQs.length === 3;
-        document.getElementById('unlock-btn').style.display = isCorrect ? 'block' : 'none';
-    }
-
-    function unlock() {
-        document.getElementById('gatekeeper').style.opacity = '0';
-        setTimeout(() => document.getElementById('gatekeeper').style.display = 'none', 500);
-    }
-
-    function showStep(stepNum) {
-        const lines = document.querySelectorAll('.script-line');
-        lines.forEach(line => line.style.display = 'none');
-        document.getElementById('step-' + stepNum).style.display = 'block';
+        else if(step === 1) {
+            text.innerHTML = `"Perfect, I'll be quick. We're following up because you were <span class='highlight'>prequalified</span> for a business line of credit. I'm not pulling credit, just checking 4 qualifying questions..."`;
+            btns.innerHTML = `<button class="btn btn-green" onclick="flow(2)">PROCEED TO QUESTIONS</button>`;
+        }
+        else if(step === 2) {
+            text.innerHTML = `<span class='highlight'>QUALIFICATION:</span><br>1. Business open 1+ Year?<br>2. You own 50%+?`;
+            btns.innerHTML = `<button class="btn btn-green" onclick="flow(3)">YES TO BOTH</button><button class="btn btn-red" style="margin-top:10px;" onclick="flow('dq')">NO / DISQUALIFY</button>`;
+        }
+        else if(step === 3) {
+            text.innerHTML = `<span class='highlight'>REVENUE CHECK:</span><br>What is your rough estimate of gross annual revenue?`;
+            btns.innerHTML = `
+                <button class="btn btn-green" onclick="flow('over')">💰 OVER $1 MILLION</button>
+                <button class="btn btn-blue" style="margin-top:10px;" onclick="flow('under')">💵 $200K - $1M</button>
+                <button class="btn btn-red" style="margin-top:10px;" onclick="flow('dq')">❌ UNDER $200K</button>`;
+        }
+        else if(step === 'over') {
+            text.innerHTML = `<h2 style='color:var(--neon-green)'>🔥 HIGH VALUE LEAD</h2>Connect to Senior Advisor using <strong>OVER 1 MILLION</strong> button.`;
+            btns.innerHTML = `<button class="btn btn-green" onclick="location.reload()">COMPLETE HANDOFF</button>`;
+        }
+        else if(step === 'under') {
+            text.innerHTML = `<h2 style='color:var(--neon-blue)'>✅ QUALIFIED</h2>Connect to Senior Advisor using <strong>UNDER 1 MILLION</strong> button.`;
+            btns.innerHTML = `<button class="btn btn-blue" onclick="location.reload()">COMPLETE HANDOFF</button>`;
+        }
+        else if(step === 'dq') {
+            text.innerHTML = `<h2 style='color:var(--neon-red)'>❌ NOT QUALIFIED</h2>Industry, Revenue, or Time in business does not meet criteria.`;
+            btns.innerHTML = `<button class="btn btn-red" onclick="location.reload()">NEXT CALL</button>`;
+        }
     }
 </script>
-
 </body>
 </html>
