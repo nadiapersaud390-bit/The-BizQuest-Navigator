@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Closer’s Compass | Master Suite</title>
+    <title>BIZ Playbook</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -278,6 +278,9 @@
         
         <div id="sidebar-security-content" class="sidebar-content">
             <span class="label-tag" style="color:var(--neon-red)">Quick Exit</span>
+            <button class="btn" style="background: var(--neon-red); color: black;" onclick="openModal('SECURITY FLAG', 'This flag is used to immediately identify high-risk or prohibited interactions. Follow the displayed exit script precisely to maintain compliance and end the call safely.')">🚩 SECURITY FLAG</button>
+            <hr style="width: 100%; border: 0; border-top: 1px solid #333;">
+            
             <button class="btn" onclick="triggerSecurityExit('🔞 PROHIBITED INDUSTRY', 'ADULT / STRIP / PORN', 'SAY: &quot;I apologize, our underwriters do not provide funding for your specific industry at this time. Thank you for your time.&quot;')">🔞 ADULT / STRIP / PORN</button>
             <button class="btn" onclick="triggerSecurityExit('👤 PRANK CALLER', 'FAKE NAMES / PRANK', 'SAY: &quot;This line is reserved for professional business funding inquiries only. We are ending the call now.&quot;')">👤 FAKE NAMES / PRANK</button>
             <button class="btn" onclick="triggerSecurityExit('🚫 UNCOOPERATIVE', 'REFUSAL TO ANSWER', 'SAY: &quot;Since we cannot verify the basic business information needed, we are unable to proceed. Have a good day.&quot;')">🚫 REFUSAL TO ANSWER</button>
