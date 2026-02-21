@@ -2,98 +2,260 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BizLoan Pro Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Closer’s Compass | Business Loan Division</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #1a1a1a; color: white; margin: 0; }
-        .container { display: flex; height: 100vh; }
-        .sidebar { width: 250px; background: #252525; padding: 20px; border-right: 2px solid #444; }
-        .main { flex-grow: 1; padding: 30px; overflow-y: auto; }
-        .card { background: #333; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 5px solid #00ff88; }
-        .btn { padding: 10px 20px; margin: 5px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
-        .btn-green { background: #00ff88; color: black; }
-        .btn-red { background: #ff4444; color: white; }
-        .btn-blue { background: #44aaff; color: white; }
-        #gatekeeper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; display: flex; align-items: center; justify-content: center; text-align: center; }
-        .restricted { color: #ff4444; font-weight: bold; }
-        .motivation { font-style: italic; color: #aaa; margin-bottom: 20px; }
+        :root {
+            --bg-dark: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --neon-green: #00ff88;
+            --neon-blue: #00d1ff;
+            --neon-red: #ff3131;
+            --neon-yellow: #f39c12;
+            --text-main: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* --- GATEKEEPER OVERLAY --- */
+        #gatekeeper {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.5s;
+        }
+
+        .gate-content {
+            text-align: center;
+            padding: 40px;
+            border: 2px solid var(--neon-blue);
+            border-radius: 20px;
+            background: var(--card-bg);
+            box-shadow: 0 0 30px var(--neon-blue);
+        }
+
+        .gate-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            grid-template-rows: 80px 1fr;
+            height: 100vh;
+            gap: 15px;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        header {
+            grid-column: 1 / 4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card-bg);
+            padding: 0 30px;
+            border-radius: 15px;
+            border-bottom: 2px solid var(--neon-green);
+        }
+
+        .ticker {
+            color: var(--neon-green);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- BUTTON STYLING --- */
+        .btn {
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background: #2a2a2a;
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.3s;
+            text-align: center;
+            margin-bottom: 10px;
+            display: block;
+            width: 100%;
+        }
+
+        .btn-green:hover { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); }
+        .btn-blue:hover { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); }
+        .btn-red:hover { border-color: var(--neon-red); box-shadow: 0 0 15px var(--neon-red); }
+        .active-btn { background: var(--neon-green) !important; color: black !important; }
+
+        /* --- SCRIPT BOX --- */
+        .script-area {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid #333;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .script-line {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            display: none;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .highlight { color: var(--neon-blue); font-weight: 900; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- SIDEBARS --- */
+        .sidebar {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid #333;
+        }
+
+        h3 { border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 0; color: var(--neon-blue); }
+
     </style>
 </head>
 <body>
 
 <div id="gatekeeper">
-    <div style="background: #333; padding: 40px; border-radius: 15px;">
-        <h2>DAILY SECURITY CHECK</h2>
-        <p>What are the 3 RESTRICTED industries?</p>
-        <input type="text" id="gate-answer" placeholder="Answer here..." style="padding: 10px; width: 250px;"><br><br>
-        <button class="btn btn-green" onclick="checkGate()">Unlock Dashboard</button>
+    <div class="gate-content">
+        <h1 style="color: var(--neon-red); margin-top: 0;">ACCESS DENIED</h1>
+        <p>Select the <strong>3 RESTRICTED</strong> industries to unlock your desk:</p>
+        <div class="gate-options">
+            <button class="btn btn-blue" onclick="toggleGate(this, 'Construction')">🏗️ Construction</button>
+            <button class="btn btn-blue" onclick="toggleGate(this, 'Trucking')">🚛 Trucking</button>
+            <button class="btn btn-blue" onclick="toggleGate(this, 'Attorneys')">⚖️ Attorneys</button>
+            <button class="btn btn-blue" onclick="toggleGate(this, 'Transport')">📦 Transport</button>
+        </div>
+        <button id="unlock-btn" class="btn btn-green" style="margin-top: 30px; display: none;" onclick="unlock()">START DIALING</button>
     </div>
 </div>
 
-<div class="container">
+<div class="dashboard">
+    <header>
+        <h2 style="margin:0; letter-spacing: 2px;">THE <span style="color: var(--neon-green);">CLOSER'S</span> COMPASS</h2>
+        <div class="ticker" id="motivation">"YOUR NEXT CALL IS A $1M LEAD."</div>
+    </header>
+
     <div class="sidebar">
         <h3>🚨 PRANK RADAR</h3>
-        <p><small>If you hear these, end call:</small></p>
-        <ul>
-            <li>Asks for personal money</li>
-            <li>In business < 1 year [cite: 8]</li>
-            <li>Background: Video games/Loud TV</li>
-            <li>Can't name their own revenue [cite: 18]</li>
-        </ul>
-        <hr>
-        <div class="motivation" id="quote-box">"Your next call is a $1M lead."</div>
+        <button class="btn btn-red" onclick="alert('EXIT: We only provide capital for business operations. Have a great day.')">🤡 PERSONAL LOAN</button>
+        <button class="btn btn-red" onclick="alert('EXIT: It sounds like you are not ready for a line of credit yet. Call us back later.')">🌫️ VAGUE / NO EIN</button>
+        <button class="btn btn-red" onclick="alert('EXIT: We are not a credit repair agency; we provide capital for businesses.')">📈 CREDIT FIXER</button>
+        <p style="font-size: 0.8rem; color: #888; text-align: center; margin-top: 20px;">If you hear loud background games or giggling, click above to exit.</p>
     </div>
 
-    <div class="main">
-        <h1>Business Loan Division</h1>
-        
-        <div class="card" id="script-box">
-            <h3>Step 1: Introduction</h3>
-            <p>"Hi, this is <strong>(YOUR NAME)</strong>. Am I speaking with the business owner?" [cite: 2]</p>
-            <button class="btn btn-green" onclick="nextStep('qualify')">YES</button>
-            <button class="btn btn-blue" onclick="nextStep('transfer')">TRANSFER/PARTNER</button>
+    <div class="script-area">
+        <div id="step-1" class="script-line" style="display: block;">
+            <p>"Hi, this is <span class="highlight">(YOUR NAME)</span> from the <span class="highlight">BUSINESS LOAN DIVISION</span>[cite: 2, 5]. Am I speaking with the business owner?" [cite: 2]</p>
+            <button class="btn btn-green" onclick="showStep(2)">YES, OWNER IS ON LINE</button>
+            <button class="btn btn-blue" onclick="showStep('gatekeeper-script')">NO / TRANSFER NEEDED</button>
         </div>
 
-        <div class="card" id="revenue-box" style="display:none;">
-            <h3>Step 2: Revenue Check</h3>
-            <p>What is your rough estimate of gross annual revenue? </p>
-            <input type="number" id="rev-input" placeholder="e.g. 500000">
-            <button class="btn btn-green" onclick="calcRev()">Check Qualification</button>
+        <div id="step-gatekeeper-script" class="script-line">
+            <p>"Can I please speak with the owner or the managing partner, I'll hold"[cite: 3].</p>
+            <button class="btn btn-blue" onclick="showStep(2)">OWNER IS NOW ON LINE</button>
         </div>
 
-        <div id="result" class="card" style="display:none; border-left: 5px solid #44aaff;">
+        <div id="step-2" class="script-line">
+            <p>"Perfect, I'll be quick. We're following up because you were <span class="highlight">prequalified</span> for working capital or a business line of credit[cite: 4, 6]. I'm not calling to pull your credit, we just ask a few questions to make sure your business is qualified[cite: 4, 7]."</p>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-green" onclick="showStep(3)">CONTINUE TO QUESTIONS</button>
             </div>
+        </div>
+
+        <div id="step-3" class="script-line">
+            <h3 style="color: var(--neon-green);">QUALIFICATION CHECK</h3>
+            <p>1. Have you been in business for <span class="highlight">at least 1 year?</span> [cite: 8]<br>
+               2. Are you at least <span class="highlight">50% owner?</span> [cite: 9, 10]</p>
+            <button class="btn btn-green" onclick="showStep(4)">YES TO BOTH</button>
+            <button class="btn btn-red" onclick="showStep('dq')">NO / DISQUALIFIED</button>
+        </div>
+
+        <div id="step-4" class="script-line">
+            <h3 style="color: var(--neon-green);">REVENUE SELECTION</h3>
+            <p>What is your rough estimate of gross annual revenue? [cite: 13, 16]</p>
+            <button class="btn btn-green" onclick="showStep('over1m')">💰 OVER $1 MILLION</button>
+            <button class="btn btn-blue" onclick="showStep('under1m')">💵 $200K - $1 MILLION</button>
+            <button class="btn btn-red" onclick="showStep('dq')">❌ UNDER $200K</button>
+        </div>
+
+        <div id="step-over1m" class="script-line">
+            <h2 style="color: var(--neon-green);">✅ QUALIFIED: OVER $1M</h2>
+            <p>"Great! I'm connecting you with a senior advisor. Hang on one moment..." [cite: 21, 22]</p>
+            <button class="btn btn-green" style="font-size: 1.5rem;" onclick="location.reload()">TRANSFER: OVER 1 MILL BUTTON</button>
+        </div>
+
+        <div id="step-under1m" class="script-line">
+            <h2 style="color: var(--neon-blue);">✅ QUALIFIED: UNDER $1M</h2>
+            <p>"Great! I'm connecting you with a senior advisor who will go over options..." [cite: 21]</p>
+            <button class="btn btn-blue" style="font-size: 1.5rem;" onclick="location.reload()">TRANSFER: UNDER 1 MILL BUTTON</button>
+        </div>
+
+        <div id="step-dq" class="script-line">
+            <h2 style="color: var(--neon-red);">❌ DOES NOT QUALIFY</h2>
+            <p>Politely end the call. (Business under 1 year, under $200k, or restricted industry) [cite: 8, 18].</p>
+            <button class="btn btn-red" onclick="location.reload()">NEXT CALL</button>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <h3>🛡️ REBUTTAL VAULT</h3>
+        <button class="btn btn-blue" onclick="alert('REBUTTAL: I’m not calling to pull your credit; we just ask a few questions to see if you qualify for the pre-approved capital.')">"IS THIS A SCAM?"</button>
+        <button class="btn btn-blue" onclick="alert('REBUTTAL: I’ll be very quick—only 4 questions to see if you qualify for the funding options on file.')">"I'M BUSY / HANG UP"</button>
+        <button class="btn btn-blue" onclick="alert('REBUTTAL: That’s great! Most clients use this as a backup line for emergencies or growth.')">"I ALREADY HAVE A LOAN"</button>
     </div>
 </div>
 
 <script>
-    function checkGate() {
-        const ans = document.getElementById('gate-answer').value.toLowerCase();
-        if(ans.includes('attorney') && ans.includes('trucker')) {
-            document.getElementById('gatekeeper').style.display = 'none';
+    let selectedDQs = [];
+    const forbidden = ['Trucking', 'Attorneys', 'Transport'];
+
+    function toggleGate(btn, industry) {
+        if (selectedDQs.includes(industry)) {
+            selectedDQs = selectedDQs.filter(i => i !== industry);
+            btn.classList.remove('active-btn');
         } else {
-            alert("Incorrect. Hint: Check Industry Restrictions in your script.");
+            selectedDQs.push(industry);
+            btn.classList.add('active-btn');
         }
+
+        const isCorrect = forbidden.every(f => selectedDQs.includes(f)) && selectedDQs.length === 3;
+        document.getElementById('unlock-btn').style.display = isCorrect ? 'block' : 'none';
     }
 
-    function nextStep(step) {
-        if(step === 'qualify') {
-            document.getElementById('revenue-box').style.display = 'block';
-        }
+    function unlock() {
+        document.getElementById('gatekeeper').style.opacity = '0';
+        setTimeout(() => document.getElementById('gatekeeper').style.display = 'none', 500);
     }
 
-    function calcRev() {
-        const rev = document.getElementById('rev-input').value;
-        const res = document.getElementById('result');
-        res.style.display = 'block';
-
-        if (rev >= 1000000) {
-            res.innerHTML = "<h3>✅ QUALIFIED: OVER $1M</h3><p>Use the <strong>OVER 1 MILLION</strong> button. [cite: 28]</p><p>'I'm connecting you with a senior advisor...' [cite: 21]</p>";
-        } else if (rev >= 200000) {
-            res.innerHTML = "<h3>✅ QUALIFIED: UNDER $1M</h3><p>Use the <strong>UNDER 1 MILLION</strong> button. [cite: 29]</p>";
-        } else {
-            res.innerHTML = "<h3>❌ DISQUALIFIED</h3><p>Nothing under $200k. [cite: 18] Politely end call.</p>";
-        }
+    function showStep(stepNum) {
+        const lines = document.querySelectorAll('.script-line');
+        lines.forEach(line => line.style.display = 'none');
+        document.getElementById('step-' + stepNum).style.display = 'block';
     }
 </script>
+
 </body>
 </html>
