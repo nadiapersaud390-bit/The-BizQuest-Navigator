@@ -98,11 +98,11 @@
         }
 
         .sticky-protocol {
-            background: rgba(255, 49, 49, 0.1);
-            border: 1px solid var(--neon-red);
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--neon-green);
             padding: 12px;
             border-radius: 10px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             line-height: 1.4;
         }
 
@@ -160,11 +160,11 @@
         <button class="btn btn-red" onclick="openModal('🔊 NOISE', '<strong>SAY:</strong> &quot;I cannot hear you clearly. Please call back from a quieter location later.&quot;')">🔊 PARTY NOISE</button>
         <button class="btn btn-red" onclick="openModal('🍺 INTOXICATED', '<strong>SAY:</strong> &quot;I am ending this call now. Goodbye.&quot;')">🍺 AGGRESSIVE/DRUNK</button>
         
-        <div class="sticky-protocol" style="margin-top: 20px;">
-            <div style="font-weight: 900; color: var(--neon-red); margin-bottom: 5px; text-transform: uppercase;">⚠️ Disposition Rules</div>
-            <strong>Connect to Advisor:</strong> Dispo as <u>CALL TRANSFERRED</u> & send in tracker.<br><br>
-            <strong>Dropped (Pre-Advisor):</strong> Customer gone before specialist answers? Dispo <u>CALL DROPPED</u>.<br><br>
-            <strong>Advisor On/Customer Off:</strong> Explain to specialist, then dispo <u>CALL TRANSFERRED</u>.
+        <div class="sticky-protocol" style="margin-top: 20px; background: rgba(255, 49, 49, 0.1); border-color: var(--neon-red);">
+            <div style="font-weight: 900; color: var(--neon-red); margin-bottom: 5px; text-transform: uppercase;">⚠️ Disposition Protocol</div>
+            <strong>Connect to Advisor:</strong> Use <u>CALL TRANSFERRED</u>.<br><br>
+            <strong>Customer Off/Advisor On:</strong> Use <u>CALL TRANSFERRED</u> (Explain to advisor).<br><br>
+            <strong>Only Use <span style="text-decoration: underline;">DROPPED</span></strong> if the customer hangs up <em>before</em> the specialist picks up.
         </div>
     </div>
 
@@ -178,19 +178,30 @@
         <h3 style="color: var(--neon-blue); text-align: center; font-size: 0.8rem; letter-spacing: 2px;">🛡️ REBUTTAL VAULT</h3>
         <button class="btn btn-red" style="border-color: var(--neon-red); color: white;" onclick="openModal('🏢 COMPANY NAME?', '<strong>PRIMARY RESPONSE:</strong><br>&quot;As I mentioned, we are the <span style=\'color:var(--neon-green)\'>Business Loan Division</span>.&quot;<br><br><strong>IF THEY PERSIST:</strong><br>&quot;Sir/Ma\'am, are you interested in a business loan today, or would you like to be put on the <span style=\'color:var(--neon-red)\'>Do Not Call List</span>?&quot;')">🏢 &quot;WHAT COMPANY?&quot;</button>
         <button class="btn btn-blue" onclick="openModal('WHICH COMPANY?', '&quot;We\'re the Business Loan Division. We help connect business owners to the right lending programs through our partner network.&quot;')">&quot;WHICH COMPANY?&quot;</button>
-        <button class="btn btn-blue" onclick="openModal('IS THIS A SCAM?', '&quot;I understand the concern. This is a legitimate outreach from the Business Loan Division in California. We work only with licensed financial institutions.&quot;')">&quot;IS THIS A SCAM?&quot;</button>
-        <button class="btn btn-blue" onclick="openModal('EMAIL ME FIRST', '&quot;Once I connect you with the senior advisor, they can send you all the information directly. I just need to confirm your details first.&quot;')">&quot;EMAIL ME FIRST&quot;</button>
-        <button class="btn btn-blue" onclick="openModal('WHY CALLING?', '&quot;Phone is the quickest way to confirm eligibility and make sure the right person gets connected. It only takes a minute.&quot;')">&quot;WHY CALLING?&quot;</button>
-        <button class="btn btn-blue" onclick="openModal('ARE YOU A BANK?', '&quot;No, we’re a direct private lender. We work with business-funding programs that provide working capital and lines of credit directly.&quot;')">&quot;ARE YOU A BANK?&quot;</button>
-        <button class="btn btn-blue" style="margin-top: 10px;" onclick="openModal('🔑 GATEKEEPER', '<strong>IF NO:</strong> &quot;Can I please speak with the owner or the managing partner, I\'ll hold&quot;<br><br><strong>WHO\'S CALLING?</strong><br>&quot;Again I\'m (NAME), and I am calling in regard to a <span style=\'color:var(--neon-gold)\'>personal business matter</span>.&quot;')">🔑 GATEKEEPER SCRIPT</button>
+        
+        <div class="sticky-protocol" style="margin-top: 15px;">
+            <div style="font-weight: 900; color: var(--neon-green); margin-bottom: 8px; text-transform: uppercase;">⚡ Transfer Vault</div>
+            <strong>Warm Introduce:</strong><br>
+            <span style="color: #ccc; font-style: italic;">"Hi Advisor, I have ${owner || 'Owner'} from ${biz || 'Business'}... they are looking for working capital."</span>
+            <br><br>
+            <div style="border-top: 1px solid rgba(0,255,136,0.2); padding-top: 8px;">
+                <strong>Always Dispo:</strong><br>
+                <span style="color: var(--neon-gold);">✅ CALL TRANSFERRED</span>
+            </div>
+        </div>
+
+        <button class="btn btn-blue" style="margin-top:15px" onclick="openModal('IS THIS A SCAM?', '&quot;I understand the concern. This is a legitimate outreach from the Business Loan Division. We work only with licensed financial institutions.&quot;')">&quot;IS THIS A SCAM?&quot;</button>
+        <button class="btn btn-blue" onclick="openModal('🔑 GATEKEEPER', '<strong>IF NO:</strong> &quot;Can I please speak with the owner or the managing partner, I\'ll hold&quot;<br><br><strong>WHO\'S CALLING?</strong><br>&quot;Again I\'m (NAME), and I am calling in regard to a <span style=\'color:var(--neon-gold)\'>personal business matter</span>.&quot;')">🔑 GATEKEEPER SCRIPT</button>
     </div>
 </div>
 
 <script>
     const engine = document.getElementById('script-engine');
     const quotes = ["SMILE WHILE YOU TALK", "TONE IS THE CLOSER", "ENERGY OVER EVERYTHING", "KEEP PUSHING", "THE NEXT CALL IS THE ONE"];
-    let revenueTier = ""; // Tracks if over or under 1M
-    let calcMode = "yearly"; // Default calculator mode
+    let revenueTier = ""; 
+    let calcMode = "yearly"; 
+    let owner = "(Owner)";
+    let biz = "(Business)";
 
     function init() { 
         document.getElementById('quote-display').innerText = quotes[Math.floor(Math.random() * quotes.length)]; 
@@ -215,7 +226,12 @@
     }
     function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
     function openForm() { document.getElementById('form-overlay').style.display = 'flex'; }
-    function closeForm() { document.getElementById('form-overlay').style.display = 'none'; nextStep('handoff'); }
+    function closeForm() { 
+        biz = document.getElementById('form-biz-name').value || '(BIZ NAME)';
+        owner = document.getElementById('form-owner-name').value || '(CLIENT NAME)';
+        document.getElementById('form-overlay').style.display = 'none'; 
+        nextStep('handoff'); 
+    }
 
     function setCalcMode(mode) {
         calcMode = mode;
@@ -337,10 +353,8 @@
                         <button class="btn btn-green" style="width:100%; height:60px; font-size:1.1rem;" onclick="openForm()">👉 ENTER & CONFIRM DETAILS</button>`;
                 break;
             case 'handoff':
-                const biz = document.getElementById('form-biz-name').value || '(BIZ NAME)';
-                const owner = document.getElementById('form-owner-name').value || '(CLIENT NAME)';
                 html = `<div class="instruction">WARM TRANSFER IN PROGRESS</div>
-                        <div class="dispo-tag">DISPOSITION: CALL TRANSFERRED (SEND IN TRACKER)</div>
+                        <div class="dispo-tag">DISPOSITION: CALL TRANSFERRED (UNLESS DROPPED)</div>
                         <div class="script-text">"Just hang on one moment, I'm going to stay on the line with you. I'll introduce you first."</div>
                         
                         <div style="border:2px dashed var(--neon-green); padding:20px; font-size:0.95rem; background: rgba(0,255,136,0.05); border-radius:15px; text-align: left;">
@@ -348,7 +362,7 @@
                             "Hi, this is (NAME), I have <span class="highlight">${owner}</span> from <span class="highlight">${biz}</span> on the line. Their business meets the criteria for funding and would like to further explore with you their options. Go ahead when you're ready."
                         </div>
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px;">
-                            <button class="btn btn-blue" onclick="location.reload()">✅ TRANSFERRED</button>
+                            <button class="btn btn-blue" onclick="location.reload()">✅ CALL TRANSFERRED</button>
                             <button class="btn btn-red" onclick="location.reload()">⚠️ CALL DROPPED</button>
                         </div>`;
                 break;
@@ -359,7 +373,7 @@
                 break;
         }
         engine.innerHTML = html;
-        if(step === 'q4_est') calcMode = 'yearly'; // Reset default on entry
+        if(step === 'q4_est') calcMode = 'yearly'; 
     }
 </script>
 </body>
