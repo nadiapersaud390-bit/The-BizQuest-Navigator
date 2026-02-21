@@ -86,6 +86,17 @@
         .form-group label { display: block; font-size: 0.7rem; color: var(--neon-green); margin-bottom: 4px; }
         .form-input { width: 100%; background: #000; border: 1px solid #444; padding: 10px; border-radius: 8px; color: white; font-size: 0.9rem; box-sizing: border-box; }
         
+        .dispo-tag { 
+            background: #ffcc00; 
+            color: black; 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-weight: 900; 
+            font-size: 0.65rem; 
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
@@ -302,13 +313,29 @@
                         <button class="btn btn-green" style="width:100%; height:60px; font-size:1.1rem;" onclick="openForm()">👉 OPEN INTAKE FORM</button>`;
                 break;
             case 'handoff':
-                html = `<div class="instruction">WARM TRANSFER (${revenueTier.replace('_', ' ')})</div>
+                html = `<div class="instruction">WARM TRANSFER IN PROGRESS</div>
+                        <div class="dispo-tag">DISPOSITION: CALL TRANSFERRED (SEND IN TRACKER)</div>
                         <div class="script-text">"Just hang on one moment, I'm going to stay on the line with you. I'll introduce you first."</div>
+                        
+                        <div style="background:#222; padding:15px; border-radius:10px; border-left:4px solid var(--neon-red); margin-bottom:15px;">
+                            <div class="instruction" style="color:var(--neon-red); font-size:0.6rem;">🚨 EMERGENCY PROTOCOL</div>
+                            <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">
+                                <strong>1. CALL DROPPED:</strong> If customer drops before Senior Advisor answers:<br>
+                                <span style="color:var(--neon-gold)">→ DISPO: CALL DROPPED (RESET CALL)</span><br><br>
+                                <strong>2. CUSTOMER DISCONNECTS (ADVISOR ON LINE):</strong> If advisor answers but customer is gone:<br>
+                                <span style="color:var(--neon-gold)">→ EXPLAIN TO ADVISOR: "Customer disconnected during transfer."</span><br>
+                                <span style="color:var(--neon-gold)">→ DISPO: CALL TRANSFERRED</span>
+                            </p>
+                        </div>
+
                         <div style="border:2px dashed var(--neon-green); padding:20px; font-size:0.95rem; background: rgba(0,255,136,0.05); border-radius:15px;">
                             <strong style="color:var(--neon-green)">THE HANDOFF SCRIPT:</strong><br><br>
                             "Hi, this is (NAME), I have (CLIENT NAME) on the line. Their business meets the criteria for funding and would like to further explore with you their options. Go ahead when you're ready."
                         </div>
-                        <button class="btn btn-blue" style="width:100%; margin-top:20px; height:50px;" onclick="location.reload()">NEXT CALL (RESET)</button>`;
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px;">
+                            <button class="btn btn-blue" onclick="location.reload()">✅ TRANSFERRED</button>
+                            <button class="btn btn-red" onclick="location.reload()">⚠️ CALL DROPPED</button>
+                        </div>`;
                 break;
             case 'dq':
                 html = `<div class="instruction" style="color:var(--neon-red)">DISQUALIFIED</div>
