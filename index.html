@@ -97,6 +97,15 @@
             margin-bottom: 10px;
         }
 
+        .sticky-protocol {
+            background: rgba(255, 49, 49, 0.1);
+            border: 1px solid var(--neon-red);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            line-height: 1.4;
+        }
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
@@ -123,10 +132,10 @@
     <div class="form-box">
         <h2 style="color: var(--neon-green); margin-top: 0; text-align: center;">CLIENT INTAKE</h2>
         <div style="color: var(--neon-gold); font-size: 0.65rem; text-align: center; margin-bottom: 15px; text-transform: uppercase;">⚠️ Confirm business name via Google/AI before saving</div>
-        <div class="form-group"><label>BUSINESS LEGAL NAME</label><input type="text" class="form-input"></div>
-        <div class="form-group"><label>OWNER FULL NAME</label><input type="text" class="form-input"></div>
-        <div class="form-group"><label>BEST PHONE NUMBER</label><input type="text" class="form-input"></div>
-        <div class="form-group"><label>BEST EMAIL ADDRESS</label><input type="email" class="form-input"></div>
+        <div class="form-group"><label>BUSINESS LEGAL NAME</label><input type="text" class="form-input" id="form-biz-name"></div>
+        <div class="form-group"><label>OWNER FULL NAME</label><input type="text" class="form-input" id="form-owner-name"></div>
+        <div class="form-group"><label>BEST PHONE NUMBER</label><input type="text" class="form-input" id="form-phone"></div>
+        <div class="form-group"><label>BEST EMAIL ADDRESS</label><input type="email" class="form-input" id="form-email"></div>
         <button class="btn btn-green" style="width: 100%; margin-top: 10px; height: 45px;" onclick="closeForm()">SAVE & FINISH</button>
     </div>
 </div>
@@ -150,7 +159,13 @@
         <button class="btn btn-red" onclick="openModal('👤 NAME CLOWN', '<strong>SAY:</strong> &quot;We cannot proceed at this time. Thank you.&quot;<br><br><strong>HANG UP.</strong>')">👤 NAME: JOHN SMITH</button>
         <button class="btn btn-red" onclick="openModal('🔊 NOISE', '<strong>SAY:</strong> &quot;I cannot hear you clearly. Please call back from a quieter location later.&quot;')">🔊 PARTY NOISE</button>
         <button class="btn btn-red" onclick="openModal('🍺 INTOXICATED', '<strong>SAY:</strong> &quot;I am ending this call now. Goodbye.&quot;')">🍺 AGGRESSIVE/DRUNK</button>
-        <button class="btn btn-blue" style="margin-top: 10px;" onclick="openModal('🔑 GATEKEEPER', '<strong>IF NO:</strong> &quot;Can I please speak with the owner or the managing partner, I\'ll hold&quot;<br><br><strong>WHO\'S CALLING?</strong><br>&quot;Again I\'m (NAME), and I am calling in regard to a <span style=\'color:var(--neon-gold)\'>personal business matter</span>.&quot;')">🔑 GATEKEEPER SCRIPT</button>
+        
+        <div class="sticky-protocol" style="margin-top: 20px;">
+            <div style="font-weight: 900; color: var(--neon-red); margin-bottom: 5px; text-transform: uppercase;">⚠️ Disposition Rules</div>
+            <strong>Connect to Advisor:</strong> Dispo as <u>CALL TRANSFERRED</u> & send in tracker.<br><br>
+            <strong>Dropped (Pre-Advisor):</strong> Customer gone before specialist answers? Dispo <u>CALL DROPPED</u>.<br><br>
+            <strong>Advisor On/Customer Off:</strong> Explain to specialist, then dispo <u>CALL TRANSFERRED</u>.
+        </div>
     </div>
 
     <div class="script-area" id="script-engine">
@@ -167,6 +182,7 @@
         <button class="btn btn-blue" onclick="openModal('EMAIL ME FIRST', '&quot;Once I connect you with the senior advisor, they can send you all the information directly. I just need to confirm your details first.&quot;')">&quot;EMAIL ME FIRST&quot;</button>
         <button class="btn btn-blue" onclick="openModal('WHY CALLING?', '&quot;Phone is the quickest way to confirm eligibility and make sure the right person gets connected. It only takes a minute.&quot;')">&quot;WHY CALLING?&quot;</button>
         <button class="btn btn-blue" onclick="openModal('ARE YOU A BANK?', '&quot;No, we’re a direct private lender. We work with business-funding programs that provide working capital and lines of credit directly.&quot;')">&quot;ARE YOU A BANK?&quot;</button>
+        <button class="btn btn-blue" style="margin-top: 10px;" onclick="openModal('🔑 GATEKEEPER', '<strong>IF NO:</strong> &quot;Can I please speak with the owner or the managing partner, I\'ll hold&quot;<br><br><strong>WHO\'S CALLING?</strong><br>&quot;Again I\'m (NAME), and I am calling in regard to a <span style=\'color:var(--neon-gold)\'>personal business matter</span>.&quot;')">🔑 GATEKEEPER SCRIPT</button>
     </div>
 </div>
 
@@ -308,29 +324,28 @@
                 break;
             case 'qualify':
                 html = `<div class="instruction" style="color:var(--neon-green)">QUALIFIED: ${revenueTier.replace('_', ' ')}</div>
-                        <div class="script-text">"Great! It looks like you meet the pre-qualification criteria. I'm going to connect you with a <span class='highlight'>senior advisor</span>."</div>
-                        <div style="color:var(--neon-gold); font-size:0.8rem; margin-bottom:10px; text-transform:uppercase;">💡 Confirm business name via Google/AI while talking</div>
-                        <button class="btn btn-green" style="width:100%; height:60px; font-size:1.1rem;" onclick="openForm()">👉 OPEN INTAKE FORM</button>`;
+                        <div class="script-text">"Great! It looks like you meet the pre-qualification criteria. Before I connect you with a senior advisor..."</div>
+                        <div style="background: rgba(0, 209, 255, 0.05); border: 1px solid var(--neon-blue); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                            <p style="font-size: 0.9rem; color: var(--neon-blue); margin-top: 0;"><strong>"Can you please confirm the following for me?"</strong></p>
+                            <ul style="text-align: left; font-size: 0.85rem; color: #ccc;">
+                                <li>The <strong>Legal Name</strong> of the company?</li>
+                                <li>Your <strong>Full Name</strong>?</li>
+                                <li>Confirming the <strong>Phone Number</strong>?</li>
+                                <li>What is the best <strong>Email Address</strong>?</li>
+                            </ul>
+                        </div>
+                        <button class="btn btn-green" style="width:100%; height:60px; font-size:1.1rem;" onclick="openForm()">👉 ENTER & CONFIRM DETAILS</button>`;
                 break;
             case 'handoff':
+                const biz = document.getElementById('form-biz-name').value || '(BIZ NAME)';
+                const owner = document.getElementById('form-owner-name').value || '(CLIENT NAME)';
                 html = `<div class="instruction">WARM TRANSFER IN PROGRESS</div>
                         <div class="dispo-tag">DISPOSITION: CALL TRANSFERRED (SEND IN TRACKER)</div>
                         <div class="script-text">"Just hang on one moment, I'm going to stay on the line with you. I'll introduce you first."</div>
                         
-                        <div style="background:#222; padding:15px; border-radius:10px; border-left:4px solid var(--neon-red); margin-bottom:15px;">
-                            <div class="instruction" style="color:var(--neon-red); font-size:0.6rem;">🚨 EMERGENCY PROTOCOL</div>
-                            <p style="font-size:0.8rem; color:#ccc; margin:5px 0;">
-                                <strong>1. CALL DROPPED:</strong> If customer drops before Senior Advisor answers:<br>
-                                <span style="color:var(--neon-gold)">→ DISPO: CALL DROPPED (RESET CALL)</span><br><br>
-                                <strong>2. CUSTOMER DISCONNECTS (ADVISOR ON LINE):</strong> If advisor answers but customer is gone:<br>
-                                <span style="color:var(--neon-gold)">→ EXPLAIN TO ADVISOR: "Customer disconnected during transfer."</span><br>
-                                <span style="color:var(--neon-gold)">→ DISPO: CALL TRANSFERRED</span>
-                            </p>
-                        </div>
-
-                        <div style="border:2px dashed var(--neon-green); padding:20px; font-size:0.95rem; background: rgba(0,255,136,0.05); border-radius:15px;">
+                        <div style="border:2px dashed var(--neon-green); padding:20px; font-size:0.95rem; background: rgba(0,255,136,0.05); border-radius:15px; text-align: left;">
                             <strong style="color:var(--neon-green)">THE HANDOFF SCRIPT:</strong><br><br>
-                            "Hi, this is (NAME), I have (CLIENT NAME) on the line. Their business meets the criteria for funding and would like to further explore with you their options. Go ahead when you're ready."
+                            "Hi, this is (NAME), I have <span class="highlight">${owner}</span> from <span class="highlight">${biz}</span> on the line. Their business meets the criteria for funding and would like to further explore with you their options. Go ahead when you're ready."
                         </div>
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px;">
                             <button class="btn btn-blue" onclick="location.reload()">✅ TRANSFERRED</button>
