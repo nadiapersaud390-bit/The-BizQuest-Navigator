@@ -107,6 +107,7 @@
 <div id="form-overlay">
     <div class="form-box">
         <h2 style="color: var(--neon-green); margin-top: 0; text-align: center;">CLIENT INTAKE</h2>
+        <div style="color: var(--neon-gold); font-size: 0.65rem; text-align: center; margin-bottom: 15px; text-transform: uppercase;">⚠️ Confirm business name via Google/AI before saving</div>
         <div class="form-group"><label>BUSINESS LEGAL NAME</label><input type="text" class="form-input"></div>
         <div class="form-group"><label>OWNER FULL NAME</label><input type="text" class="form-input"></div>
         <div class="form-group"><label>BEST PHONE NUMBER</label><input type="text" class="form-input"></div>
@@ -204,9 +205,14 @@
                         <div class="industry-grid">
                             <button class="btn btn-blue" onclick="nextStep('const')">🛠️ Construction</button>
                             <button class="btn btn-blue" onclick="nextStep('trans')">📦 Transportation</button>
-                            <button class="btn btn-blue" onclick="nextStep('q3')">💊 Pharmaceutical</button>
                             <button class="btn btn-blue" onclick="nextStep('q3')">🏥 Medical/Dental</button>
                             <button class="btn btn-blue" onclick="nextStep('q3')">🍕 Restaurant</button>
+                            <button class="btn btn-blue" onclick="nextStep('q3')">🏬 Retail / Shop</button>
+                            <button class="btn btn-blue" onclick="nextStep('q3')">🕺 Club / Nightlife</button>
+                            <button class="btn btn-blue" onclick="nextStep('q3')">💻 IT / Software</button>
+                            <button class="btn btn-blue" onclick="nextStep('q3')">🏭 Manufacturing</button>
+                            <button class="btn btn-blue" onclick="nextStep('q3')">💊 Pharmaceutical</button>
+                            <button class="btn btn-blue" onclick="nextStep('q3')">🏠 Real Estate</button>
                             <button class="btn btn-red" onclick="nextStep('dq')">🚛 Trucking/Vans</button>
                             <button class="btn btn-red" onclick="nextStep('dq')">⚖️ Attorney/Law</button>
                             <button class="btn btn-blue" onclick="nextStep('q3')">🏢 Other / Services</button>
@@ -265,6 +271,7 @@
             case 'qualify':
                 html = `<div class="instruction" style="color:var(--neon-green)">PRE-QUALIFIED</div>
                         <div class="script-text">"Wonderful! You meet the prequalification criteria. Before I put you on with a senior advisor, can you <span class='highlight'>confirm the name of the business</span> and your <span class='highlight'>full name</span>?"</div>
+                        <div style="color:var(--neon-gold); font-size:0.8rem; margin-bottom:10px; text-transform:uppercase;">💡 PRO TIP: Cross-check name on Google/AI while they speak</div>
                         <div class="script-text" style="font-size:1.1rem;">"Also, is this the <span class='highlight'>best phone number</span> and <span class='highlight'>email</span> for the advisor?"</div>
                         <button class="btn btn-green" style="width:100%; height:60px; font-size:1.1rem;" onclick="openForm()">👉 OPEN INTAKE FORM</button>`;
                 break;
