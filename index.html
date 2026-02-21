@@ -245,17 +245,21 @@
         </div>
         
         <div id="sidebar-security-content" class="sidebar-content">
-            <span class="label-tag" style="color:var(--neon-red)">Kill Switche / Pranks</span>
+            <span class="label-tag" style="color:var(--neon-red)">Kill Switches / Pranks</span>
             <button class="btn" onclick="openModal('🔞 PROHIBITED', 'SAY: &quot;We do not fund this industry.&quot; HANG UP.')">🔞 ADULT INDUSTRY</button>
-            <button class="btn" onclick="openModal('👤 CLOWN / PRANK', 'SAY: &quot;We cannot proceed. This line is for business matters only. Goodbye.&quot;')">👤 FAKE NAMES / PRANK</button>
+            <button class="btn" onclick="openModal('👤 CLOWN / PRANK', 'SAY: &quot;We cannot proceed. This line is for business matters only. Goodbye.&quot;<br><br><strong>COMMON FAKE NAMES:</strong><br>• John Smith<br>• Jane Doe<br>• Ben Dover<br>• Mike Wazowski<br>• Hugh Jass')">👤 FAKE NAMES / PRANK</button>
             <button class="btn" onclick="openModal('🚫 UNCOOPERATIVE', 'SAY: &quot;We need basic info to proceed. If you change your mind, call back.&quot;')">🚫 REFUSAL TO ANSWER</button>
             <button class="btn" onclick="openModal('📵 DNC REQUEST', 'SAY: &quot;No problem, I will mark you as do not call immediately.&quot;')">📵 DNC REQUEST</button>
         </div>
 
         <div id="sidebar-rebuttal-content" class="sidebar-content" style="display:none">
             <span class="label-tag" style="color:var(--neon-blue)">Handling Objections</span>
-            <button class="btn" onclick="openModal('🏢 WHAT COMPANY?', 'SAY: &quot;Business Loan Division. Are you interested in a loan?&quot;')">🏢 &quot;WHAT COMPANY?&quot;</button>
-            <button class="btn" onclick="openModal('📞 WHOS CALLING?', 'SAY: &quot;Again I\'m (YOUR NAME), and I am calling in regard to a personal business matter.&quot;')">📞 WHOS CALLING?</button>
+            <button class="btn" onclick="openModal('🏢 WHAT COMPANY?', 'SAY: &quot;We\'re the Business Loan Division. We help connect business owners to the right lending programs through our partner network.&quot;')">🏢 &quot;WHICH COMPANY?&quot;</button>
+            <button class="btn" onclick="openModal('🛡️ IS THIS A SCAM?', 'SAY: &quot;I understand the concern. This is a legitimate outreach from the Business Loan Division in California. We work only with licensed financial institutions. My part is to confirm basic details.&quot;')">🛡️ &quot;IS THIS A SCAM?&quot;</button>
+            <button class="btn" onclick="openModal('📧 EMAIL FIRST', 'SAY: &quot;Once I connect you with the senior advisor, they can send you all the information directly. I just need to confirm your business details first.&quot;')">📧 &quot;EMAIL ME FIRST&quot;</button>
+            <button class="btn" onclick="openModal('📞 WHY CALLING?', 'SAY: &quot;Phone is the quickest way to confirm eligibility and make sure the right person gets connected. It only takes a minute.&quot;')">📞 &quot;WHY NOT EMAIL?&quot;</button>
+            <button class="btn" onclick="openModal('🏦 ARE YOU A BANK?', 'SAY: &quot;No, we’re a direct private lender. We work with business-funding programs that provide working capital and lines of credit directly.&quot;')">🏦 &quot;ARE YOU A BANK?&quot;</button>
+            <button class="btn" onclick="openModal('📞 WHOS CALLING?', 'SAY: &quot;Again I\'m (YOUR NAME), and I am calling in regard to a personal business matter.&quot;')">👤 &quot;WHOS CALLING?&quot;</button>
             <button class="btn" onclick="openModal('💼 PARTNERS', 'SAY: &quot;Is there a time we can get the majority partner on the line?&quot; (Set callback)')">💼 UNDER 50% OWNER</button>
             <button class="btn" onclick="openModal('💸 ALREADY HAVE ONE', 'SAY: &quot;That\'s great, most of our clients do. We specialize in additional capital that doesn\'t interfere with existing lines.&quot;')">💸 ALREADY HAVE ONE</button>
             <button class="btn" onclick="openModal('📉 INTEREST RATES', 'SAY: &quot;Every business is different. My advisor will give you exact rates once we know the health of the business.&quot;')">📉 &quot;WHATS THE RATE?&quot;</button>
@@ -266,7 +270,7 @@
         <div class="instruction">Phase 1: The Opener</div>
         <div class="script-text">"Hi, this is <span class="highlight">(YOUR NAME)</span> from the <span class="highlight">BUSINESS LOAN DIVISION</span>. Am I speaking with the business owner?"</div>
         <div style="display: flex; gap: 10px; justify-content: center;">
-            <button class="btn btn-green" onclick="nextStep('followup')">YES (OWNER ON)</button>
+            <button class="btn btn-green" onclick="nextStep('followup_direct')">YES (OWNER ON)</button>
             <button class="btn" style="border:1px solid #444" onclick="openModal('GATEKEEPER TRANSFERRED', 'SAY: &quot;Can I please speak with the owner or the managing partner, I\'ll hold&quot;')">NO (TRANSFERRED)</button>
         </div>
     </div>
@@ -384,8 +388,11 @@
     function nextStep(step) {
         let html = "";
         switch(step) {
-            case 'followup':
-                html = `<div class="instruction">The Reason</div><div class="script-text">"Perfect I'll be quick. We're following up because you were <span class='highlight'>prequalified for working capital</span> or a business line of credit. I'm not calling to pull credit, just a few questions to see if you qualify."</div><button class="btn btn-green" onclick="nextStep('q1')">START QUESTIONS</button>`;
+            case 'followup_direct':
+                html = `<div class="instruction">Reason (Already On)</div><div class="script-text">"Perfect I'll be quick. We're following up because you were <span class='highlight'>prequalified for working capital</span> or a business line of credit. I'm not calling to pull credit, just a few questions to see if you qualify."</div><button class="btn btn-green" onclick="nextStep('q1')">START QUESTIONS</button>`;
+                break;
+            case 'followup_transfer':
+                html = `<div class="instruction">Reason (Transferred)</div><div class="script-text">"Hi, this is (NAME) from the BUSINESS LOAN DIVISION. We're following up because you were <span class='highlight'>prequalified for working capital</span> or a business line of credit. I'm not calling to pull credit, just a few questions."</div><button class="btn btn-green" onclick="nextStep('q1')">START QUESTIONS</button>`;
                 break;
             case 'q1':
                 html = `<div class="instruction">Time in Business</div><div class="script-text">"Have you been in business for at least <span class='highlight'>1 year</span>?"</div><button class="btn btn-green" onclick="nextStep('q2')">YES (1 YEAR+)</button>`;
@@ -394,14 +401,21 @@
                 html = `<div class="instruction">Industry Check</div><div class="script-text">"What type of <span class='highlight'>industry</span> are you in?"</div>
                 <div style="font-size: 0.8rem; color: var(--neon-red); margin-bottom: 10px;">PROHIBITED: ATTORNEYS, TRUCKERS, TRANSPORT</div>
                 <div class="industry-grid">
-                    <button class="btn" onclick="nextStep('qPartners')">RETAIL/SERVICES</button>
+                    <button class="btn" onclick="nextStep('qPartners')">RETAIL</button>
                     <button class="btn" onclick="nextStep('qPartners')">CONSTRUCTION</button>
+                    <button class="btn" onclick="nextStep('qPartners')">HVAC / PLUMBING</button>
+                    <button class="btn" onclick="nextStep('qPartners')">LANDSCAPING / ROOFING</button>
                     <button class="btn" onclick="nextStep('qPartners')">RESTAURANT</button>
-                    <button class="btn btn-red" onclick="nextStep('dq')">TRUCKS/LAWYER</button>
+                    <button class="btn" onclick="nextStep('qPartners')">MANUFACTURING</button>
+                    <button class="btn" onclick="nextStep('qPartners')">HEALTHCARE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">CLEANING SERVICES</button>
+                    <button class="btn" onclick="nextStep('qPartners')">LOGISTICS</button>
+                    <button class="btn" onclick="nextStep('qPartners')">OTHER / SERVICE</button>
+                    <button class="btn btn-red" style="grid-column: span 2" onclick="nextStep('dq')">PROHIBITED (TRUCKS/LAWYER)</button>
                 </div>`;
                 break;
             case 'qPartners':
-                html = `<div class="instruction">Ownership</div><div class="script-text">"Are you <span class='highlight'>100% owner</span> or do you have partners?"</div>
+                html = `<div class="instruction">Ownership</div><div class="script-text">"Are you <span class='highlight'>100% owner</span> or do you have partners? (Must be at least 50%)"</div>
                 <div style="display: flex; gap: 10px; justify-content: center;">
                     <button class="btn btn-green" onclick="nextStep('q3')">100% OWNER</button>
                     <button class="btn" onclick="nextStep('q3')">50%+ OWNER</button>
