@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BizLoan Pro Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #1a1a1a; color: white; margin: 0; }
+        .container { display: flex; height: 100vh; }
+        .sidebar { width: 250px; background: #252525; padding: 20px; border-right: 2px solid #444; }
+        .main { flex-grow: 1; padding: 30px; overflow-y: auto; }
+        .card { background: #333; padding: 20px; border-radius: 10px; margin-bottom: 20px; border-left: 5px solid #00ff88; }
+        .btn { padding: 10px 20px; margin: 5px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
+        .btn-green { background: #00ff88; color: black; }
+        .btn-red { background: #ff4444; color: white; }
+        .btn-blue { background: #44aaff; color: white; }
+        #gatekeeper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .restricted { color: #ff4444; font-weight: bold; }
+        .motivation { font-style: italic; color: #aaa; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div id="gatekeeper">
+    <div style="background: #333; padding: 40px; border-radius: 15px;">
+        <h2>DAILY SECURITY CHECK</h2>
+        <p>What are the 3 RESTRICTED industries?</p>
+        <input type="text" id="gate-answer" placeholder="Answer here..." style="padding: 10px; width: 250px;"><br><br>
+        <button class="btn btn-green" onclick="checkGate()">Unlock Dashboard</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="sidebar">
+        <h3>🚨 PRANK RADAR</h3>
+        <p><small>If you hear these, end call:</small></p>
+        <ul>
+            <li>Asks for personal money</li>
+            <li>In business < 1 year [cite: 8]</li>
+            <li>Background: Video games/Loud TV</li>
+            <li>Can't name their own revenue [cite: 18]</li>
+        </ul>
+        <hr>
+        <div class="motivation" id="quote-box">"Your next call is a $1M lead."</div>
+    </div>
+
+    <div class="main">
+        <h1>Business Loan Division</h1>
+        
+        <div class="card" id="script-box">
+            <h3>Step 1: Introduction</h3>
+            <p>"Hi, this is <strong>(YOUR NAME)</strong>. Am I speaking with the business owner?" [cite: 2]</p>
+            <button class="btn btn-green" onclick="nextStep('qualify')">YES</button>
+            <button class="btn btn-blue" onclick="nextStep('transfer')">TRANSFER/PARTNER</button>
+        </div>
+
+        <div class="card" id="revenue-box" style="display:none;">
+            <h3>Step 2: Revenue Check</h3>
+            <p>What is your rough estimate of gross annual revenue? </p>
+            <input type="number" id="rev-input" placeholder="e.g. 500000">
+            <button class="btn btn-green" onclick="calcRev()">Check Qualification</button>
+        </div>
+
+        <div id="result" class="card" style="display:none; border-left: 5px solid #44aaff;">
+            </div>
+    </div>
+</div>
+
+<script>
+    function checkGate() {
+        const ans = document.getElementById('gate-answer').value.toLowerCase();
+        if(ans.includes('attorney') && ans.includes('trucker')) {
+            document.getElementById('gatekeeper').style.display = 'none';
+        } else {
+            alert("Incorrect. Hint: Check Industry Restrictions in your script.");
+        }
+    }
+
+    function nextStep(step) {
+        if(step === 'qualify') {
+            document.getElementById('revenue-box').style.display = 'block';
+        }
+    }
+
+    function calcRev() {
+        const rev = document.getElementById('rev-input').value;
+        const res = document.getElementById('result');
+        res.style.display = 'block';
+
+        if (rev >= 1000000) {
+            res.innerHTML = "<h3>✅ QUALIFIED: OVER $1M</h3><p>Use the <strong>OVER 1 MILLION</strong> button. [cite: 28]</p><p>'I'm connecting you with a senior advisor...' [cite: 21]</p>";
+        } else if (rev >= 200000) {
+            res.innerHTML = "<h3>✅ QUALIFIED: UNDER $1M</h3><p>Use the <strong>UNDER 1 MILLION</strong> button. [cite: 29]</p>";
+        } else {
+            res.innerHTML = "<h3>❌ DISQUALIFIED</h3><p>Nothing under $200k. [cite: 18] Politely end call.</p>";
+        }
+    }
+</script>
+</body>
+</html>
