@@ -1,409 +1,516 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { 
-  ShieldAlert, 
-  CheckCircle2, 
-  UserCircle2, 
-  XCircle, 
-  ChevronRight, 
-  TrendingUp, 
-  AlertTriangle,
-  Info,
-  PhoneCall,
-  Mail,
-  Building2
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Closer’s Compass | Master Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0c;
+            --card-bg: #16161a;
+            --neon-green: #00ff88;
+            --neon-blue: #00d1ff;
+            --neon-red: #ff3131;
+            --neon-gold: #ffcc00;
+        }
 
-const App = () => {
-  const [step, setStep] = useState('start');
-  const [revenue, setRevenue] = useState('');
-  const [revenueType, setRevenueType] = useState('monthly'); // 'monthly' or 'yearly'
-  const [industry, setIndustry] = useState(null);
-  const [drillDown, setDrillDown] = useState(null);
-  const [leadData, setLeadData] = useState({
-    bizName: '',
-    ownerName: '',
-    phone: '',
-    email: ''
-  });
-  const [showRebuttal, setShowRebuttal] = useState(null);
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--bg-dark); 
+            color: #f0f0f0; 
+            margin: 0; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+        }
 
-  const quotes = [
-    "SMILE WHILE YOU TALK",
-    "TONE IS THE CLOSER",
-    "ENERGY OVER EVERYTHING",
-    "BIZ PLAYBOOK PROTOCOL",
-    "THE FORTUNE IS IN THE FOLLOW-UP"
-  ];
+        /* MODALS */
+        #modal-overlay, #form-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(12px); z-index: 2000; display: none; align-items: center; justify-content: center; }
+        .modal-box { background: var(--card-bg); border: 2px solid var(--neon-blue); padding: 40px; border-radius: 25px; max-width: 550px; text-align: center; box-shadow: 0 0 20px rgba(0, 209, 255, 0.2); }
+        .form-box { background: #111; border: 3px solid var(--neon-green); padding: 30px; border-radius: 20px; width: 400px; }
 
-  const currentQuote = useMemo(() => quotes[Math.floor(Math.random() * quotes.length)], []);
-
-  // Revenue Logic
-  const yearlyRevenue = useMemo(() => {
-    const val = parseFloat(revenue) || 0;
-    return revenueType === 'monthly' ? val * 12 : val;
-  }, [revenue, revenueType]);
-
-  const qualTier = useMemo(() => {
-    if (yearlyRevenue >= 1000000) return 'OVER_1M';
-    if (yearlyRevenue >= 200000) return 'UNDER_1M';
-    return 'DQ';
-  }, [yearlyRevenue]);
-
-  const handleRebuttal = (id) => {
-    const rebuttals = {
-      'COMPANY': {
-        title: "WHICH COMPANY?",
-        text: "WE'RE THE BUSINESS LOAN DIVISION. WE HELP CONNECT BUSINESS OWNERS TO THE RIGHT LENDING PROGRAMS THROUGH OUR PARTNER NETWORK."
-      },
-      'SCAM': {
-        title: "IS THIS A SCAM?",
-        text: "I COMPLETELY UNDERSTAND THE CONCERN. THIS IS A LEGITIMATE OUTREACH FROM THE BUSINESS LOAN DIVISION IN CALIFORNIA. WE WORK ONLY WITH LICENSED FINANCIAL INSTITUTIONS."
-      },
-      'EMAIL': {
-        title: "EMAIL ME FIRST",
-        text: "I'D BE HAPPY TO. ONCE I CONNECT YOU WITH THE SENIOR ADVISOR, THEY CAN SEND OVER ALL THE SPECIFIC PROGRAMS AND RATES DIRECTLY TO YOUR INBOX."
-      },
-      'NOT_INT': {
-        title: "NOT INTERESTED",
-        text: "I UNDERSTAND. MOST PEOPLE AREN'T UNTIL THEY SEE THE RATES WE'RE SECURING. IT ONLY TAKES 30 SECONDS TO SEE IF YOU QUALIFY FOR A BETTER LINE OF CREDIT."
-      }
-    };
-    setShowRebuttal(rebuttals[id]);
-  };
-
-  const renderScript = () => {
-    switch (step) {
-      case 'start':
-        return (
-          <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4">
-            <h2 className="text-[#FFD700] text-xs tracking-[0.2em] font-black">PHASE 1: THE OPENER</h2>
-            <p className="text-2xl font-bold leading-tight">
-              "HI, THIS IS <span className="text-[#00E5FF]">(YOUR NAME)</span> FROM THE <span className="text-[#00E5FF]">BUSINESS LOAN DIVISION</span>. AM I SPEAKING WITH THE BUSINESS OWNER?"
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-              <button onClick={() => setStep('intro_on_line')} className="bg-[#00FF7F] text-black font-black p-4 rounded-xl hover:brightness-110 transition-all">YES (OWNER ON)</button>
-              <button onClick={() => setStep('gatekeeper')} className="bg-[#1a1a1a] text-white border border-[#333] font-black p-4 rounded-xl hover:bg-[#222] transition-all">NO (TRANSFER ME)</button>
-            </div>
-          </div>
-        );
-
-      case 'gatekeeper':
-        return (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[#FFD700] text-xs tracking-[0.2em] font-black">GATEKEEPER PROTOCOL</h2>
-            <p className="text-2xl font-bold leading-tight italic text-gray-400">
-              "CAN I PLEASE SPEAK WITH THE OWNER OR THE MANAGING PARTNER, I'LL HOLD."
-            </p>
-            <div className="bg-[#0f0f0f] border border-[#00E5FF] p-4 rounded-xl text-sm">
-              <span className="text-[#00E5FF] block mb-2 font-black">IF ASKED WHO'S CALLING:</span>
-              "AGAIN I'M (YOUR NAME), AND I AM CALLING IN REGARD TO A PERSONAL BUSINESS MATTER."
-            </div>
-            <button onClick={() => setStep('intro_transferred')} className="bg-[#00FF7F] text-black font-black p-4 rounded-xl">OWNER IS ON NOW</button>
-          </div>
-        );
-
-      case 'intro_on_line':
-      case 'intro_transferred':
-        return (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[#FFD700] text-xs tracking-[0.2em] font-black">THE PITCH</h2>
-            <p className="text-2xl font-bold leading-tight">
-              "PERFECT I'LL BE QUICK. WE'RE FOLLOWING UP BECAUSE YOU WERE <span className="text-[#00FF7F]">PREQUALIFIED</span> FOR WORKING CAPITAL OR A BUSINESS LINE OF CREDIT."
-            </p>
-            <p className="text-sm text-gray-400 uppercase font-black tracking-widest">
-              "I'm not calling to pull your credit or anything, we just ask a few questions to make sure your business is qualified for this."
-            </p>
-            <button onClick={() => setStep('q1')} className="bg-[#00FF7F] text-black font-black p-4 rounded-xl">START QUALIFICATION</button>
-          </div>
-        );
-
-      case 'q1':
-        return (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[#FFD700] text-xs tracking-[0.2em] font-black">QUESTION 1: TIME</h2>
-            <p className="text-2xl font-bold">"HAVE YOU BEEN IN BUSINESS FOR AT LEAST <span className="text-[#00E5FF]">1 YEAR?</span>"</p>
-            <div className="grid grid-cols-2 gap-4">
-              <button onClick={() => setStep('q2')} className="bg-[#00FF7F] text-black font-black p-4 rounded-xl">YES (1 YEAR+)</button>
-              <button onClick={() => setStep('dq')} className="bg-[#FF3B30] text-white font-black p-4 rounded-xl">NO (UNDER 1 YEAR)</button>
-            </div>
-          </div>
-        );
-
-      case 'q2':
-        return (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[#FFD700] text-xs tracking-[0.2em] font-black">QUESTION 2: INDUSTRY</h2>
-            <p className="text-2xl font-bold">"WHAT TYPE OF <span className="text-[#00E5FF]">INDUSTRY</span> ARE YOU IN?"</p>
-            <div className="grid grid-cols-3 gap-2">
-              {['RETAIL', 'HEALTHCARE', 'RESTAURANT', 'MANUFACTURING', 'SERVICES', 'IT/TECH'].map(ind => (
-                <button key={ind} onClick={() => setStep('q3')} className="bg-[#111] border border-[#333] p-3 rounded-lg text-[10px] font-black hover:border-[#00E5FF] transition-all">{ind}</button>
-              ))}
-              <button onClick={() => setStep('drilldown_construction')} className="bg-[#111] border border-[#FFD700] p-3 rounded-lg text-[10px] font-black text-[#FFD700]">CONSTRUCTION</button>
-              <button onClick={() => setStep('drilldown_transport')} className="bg-[#111] border border-[#00E5FF] p-3 rounded-lg text-[10px] font-black text-[#00E5FF]">TRANSPORTATION</button>
-              <button onClick={() => setStep('dq')} className="bg-[#300] border border-[#FF3B30] p-3 rounded-lg text-[10px] font-black text-[#FF3B30]">TRUCKING / LAW</button>
-            </div>
-          </div>
-        );
-
-      case 'drilldown_construction':
-        return (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[#FFD700] text-xs tracking-[0.2em] font-black">CONSTRUCTION DRILL-DOWN</h2>
-            <p className="text-lg font-bold">"DOES YOUR BUSINESS DEAL WITH <span className="text-[#FF3B30]">TRUCKS</span>? AND IS IT A MAJOR PART OF THE COMPANY?"</p>
-            <div className="bg-[#1a1300] p-4 rounded-xl border border-dashed border-[#FFD700] text-xs text-[#FFD700] font-black">
-              ACTIVE LISTENING: IF FUNDS ARE FOR BUYING TRUCKS = DQ. IF FOR PAYROLL/EQUIPMENT = QUALIFY.
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <button onClick={() => setStep('q3')} className="bg-[#00FF7F] text-black font-black p-4 rounded-xl">CREW/EQUIPMENT</button>
-              <button onClick={() => setStep('dq')} className="bg-[#FF3B30] text-white font-black p-4 rounded-xl">BUYING TRUCKS</button>
-            </div>
-          </div>
-        );
-
-      case 'drilldown_transport':
-        return (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[#00E5FF] text-xs tracking-[0.2em] font-black">TRANSPORT DRILL-DOWN</h2>
-            <p className="text-lg font-bold">"WHAT SPECIFIC VEHICLES DO YOU OPERATE?"</p>
-            <div className="grid grid-cols-2 gap-4">
-              <button onClick={() => setStep('q3')} className="bg-[#111] border border-[#00FF7F] p-4 rounded-xl font-black text-xs">LIMOS / LUXURY / BOATS</button>
-              <button onClick={() => setStep('dq')} className="bg-[#111] border border-[#FF3B30] p-4 rounded-xl font-black text-xs">SEMI-TRUCKS / VANS</button>
-            </div>
-          </div>
-        );
-
-      case 'q3':
-        return (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[#FFD700] text-xs tracking-[0.2em] font-black">QUESTION 3: OWNERSHIP</h2>
-            <p className="text-2xl font-bold">"ARE YOU THE <span className="text-[#00E5FF]">100% OWNER</span> OR DO YOU HAVE PARTNERS?"</p>
-            <div className="grid grid-cols-2 gap-4">
-              <button onClick={() => setStep('q4')} className="bg-[#00FF7F] text-black font-black p-4 rounded-xl">100% OWNER</button>
-              <button onClick={() => setStep('q3_partners')} className="bg-[#1a1a1a] text-white border border-[#333] font-black p-4 rounded-xl">I HAVE PARTNERS</button>
-            </div>
-          </div>
-        );
-
-      case 'q3_partners':
-        return (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[#FFD700] text-xs tracking-[0.2em] font-black">PARTNERSHIP CHECK</h2>
-            <p className="text-2xl font-bold">"DO YOU OWN AT LEAST <span className="text-[#00FF7F]">50%?</span>"</p>
-            <div className="grid grid-cols-2 gap-4">
-              <button onClick={() => setStep('q4')} className="bg-[#00FF7F] text-black font-black p-4 rounded-xl">YES (MIN 50%)</button>
-              <button onClick={() => setStep('callback_set')} className="bg-[#FF3B30] text-white font-black p-4 rounded-xl">NO (UNDER 50%)</button>
-            </div>
-          </div>
-        );
-
-      case 'q4':
-        return (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[#FFD700] text-xs tracking-[0.2em] font-black">QUESTION 4: REVENUE</h2>
-            <div className="flex flex-col gap-4 bg-[#0a0a0a] p-6 rounded-2xl border border-[#333]">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-[10px] font-black text-gray-500 uppercase tracking-tighter">Enter Monthly Rev:</span>
-                <div className="flex gap-2">
-                  <button onClick={() => setRevenueType('monthly')} className={`text-[8px] px-2 py-1 rounded ${revenueType === 'monthly' ? 'bg-[#00E5FF] text-black' : 'bg-black text-white'}`}>MONTHLY</button>
-                  <button onClick={() => setRevenueType('yearly')} className={`text-[8px] px-2 py-1 rounded ${revenueType === 'yearly' ? 'bg-[#00E5FF] text-black' : 'bg-black text-white'}`}>YEARLY</button>
-                </div>
-              </div>
-              <input 
-                type="number" 
-                value={revenue}
-                onChange={(e) => setRevenue(e.target.value)}
-                className="bg-black border-2 border-[#00E5FF] text-[#00FF7F] text-4xl font-black text-center p-4 rounded-xl focus:outline-none"
-                placeholder="0"
-              />
-              <div className="flex justify-between text-xs font-black uppercase tracking-widest mt-4">
-                <span className="text-gray-500">Projected Yearly:</span>
-                <span className={yearlyRevenue >= 200000 ? 'text-[#00FF7F]' : 'text-[#FF3B30]'}>
-                  ${yearlyRevenue.toLocaleString()}
-                </span>
-              </div>
-            </div>
-            
-            {qualTier === 'DQ' && revenue && <p className="text-[#FF3B30] text-[10px] font-black animate-pulse">MINIMUM $200K YEARLY REQUIRED</p>}
-            
-            <button 
-              disabled={qualTier === 'DQ'}
-              onClick={() => setStep('lead_form')}
-              className={`p-4 rounded-xl font-black transition-all ${qualTier !== 'DQ' ? 'bg-[#00FF7F] text-black scale-105 shadow-lg shadow-[#00FF7F]/20' : 'bg-gray-800 text-gray-600 cursor-not-allowed'}`}
-            >
-              {qualTier === 'OVER_1M' ? 'QUALIFIED: OVER $1M (HIGH TIER)' : qualTier === 'UNDER_1M' ? 'QUALIFIED: STANDARD' : 'NOT QUALIFIED'}
-            </button>
-          </div>
-        );
-
-      case 'lead_form':
-        return (
-          <div className="flex flex-col gap-4">
-            <h2 className="text-[#FFD700] text-xs tracking-[0.2em] font-black text-center">COLLECT LEAD DATA</h2>
-            <div className="grid grid-cols-1 gap-3">
-              <input className="bg-black border border-[#333] p-4 rounded-xl text-white uppercase text-xs font-black" placeholder="BUSINESS NAME" onChange={(e) => setLeadData({...leadData, bizName: e.target.value})} />
-              <input className="bg-black border border-[#333] p-4 rounded-xl text-white uppercase text-xs font-black" placeholder="FIRST & LAST NAME" onChange={(e) => setLeadData({...leadData, ownerName: e.target.value})} />
-              <input className="bg-black border border-[#333] p-4 rounded-xl text-white uppercase text-xs font-black" placeholder="BEST PHONE NUMBER" onChange={(e) => setLeadData({...leadData, phone: e.target.value})} />
-              <input className="bg-black border border-[#333] p-4 rounded-xl text-white uppercase text-xs font-black" placeholder="BEST EMAIL ADDRESS" onChange={(e) => setLeadData({...leadData, email: e.target.value})} />
-            </div>
-            <button onClick={() => setStep('handoff')} className="bg-[#00FF7F] text-black font-black p-4 rounded-xl mt-4 shadow-xl shadow-[#00FF7F]/20">GENERATE HANDOFF SCRIPT</button>
-          </div>
-        );
-
-      case 'handoff':
-        return (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[#00FF7F] text-xs tracking-[0.2em] font-black">THE BIZ HANDOFF (SPEAK SLOWLY)</h2>
-            <div className="bg-[#050505] border-2 border-[#00FF7F] p-8 rounded-2xl relative">
-              <div className="absolute -top-3 left-6 bg-black px-2 text-[8px] text-[#00FF7F] font-black">OFFICIAL SCRIPT</div>
-              <p className="text-xl font-bold leading-relaxed">
-                "HI, THIS IS <span className="text-[#00E5FF] uppercase">(YOUR NAME)</span>, I HAVE <span className="text-[#00E5FF] uppercase">{leadData.ownerName || '(CLIENT)'}</span> ON THE LINE. THEIR BUSINESS MEETS THE CRITERIA FOR FUNDING AND WOULD LIKE TO FURTHER EXPLORE WITH YOU THEIR OPTIONS. GO AHEAD WHEN YOU'RE READY. THANKS."
-              </p>
-            </div>
-            <button onClick={() => window.location.reload()} className="bg-[#111] text-[#00FF7F] font-black p-4 rounded-xl border border-[#00FF7F]">NEXT CALL</button>
-          </div>
-        );
-
-      case 'dq':
-        return (
-          <div className="flex flex-col gap-6 text-center py-12">
-            <XCircle size={64} className="text-[#FF3B30] mx-auto mb-4" />
-            <h2 className="text-2xl font-black text-[#FF3B30]">DOES NOT QUALIFY</h2>
-            <p className="text-gray-400">"I APOLOGIZE, WE CANNOT MOVE FORWARD AT THIS TIME. THANK YOU FOR YOUR TIME."</p>
-            <button onClick={() => window.location.reload()} className="bg-white text-black font-black p-4 rounded-xl">RESET TRACKER</button>
-          </div>
-        );
-
-      case 'callback_set':
-        return (
-          <div className="flex flex-col gap-6">
-            <h2 className="text-[#FFD700] text-xs tracking-[0.2em] font-black">SET CALLBACK PROTOCOL</h2>
-            <p className="text-2xl font-bold italic">"IS THERE A TIME WE CAN GET THE MAJORITY PARTNER ON THE LINE?"</p>
-            <button onClick={() => window.location.reload()} className="bg-[#111] text-white p-4 rounded-xl border border-[#333] font-black uppercase">LOG AS CALLBACK</button>
-          </div>
-        );
-
-      default: return null;
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-black text-white font-['Montserrat',sans-serif] p-4 flex flex-col uppercase overflow-hidden">
-      {/* HEADER */}
-      <header className="flex justify-between items-center h-16 border-b border-[#1a1a1a] px-4 shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#00FF7F] rounded flex items-center justify-center">
-            <TrendingUp size={18} className="text-black" />
-          </div>
-          <h1 className="text-sm font-black tracking-[0.3em]">BIZ PLAYBOOK</h1>
-        </div>
-        <div className="text-[10px] font-black text-[#FFD700] tracking-widest hidden md:block">
-          ENERGY TIP: {currentQuote}
-        </div>
-      </header>
-
-      {/* MAIN GRID */}
-      <main className="flex-grow grid grid-cols-1 md:grid-cols-[280px_1fr_320px] gap-4 p-4 overflow-hidden">
+        .header { height: 50px; background: #111; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; border-bottom: 2px solid #222; flex-shrink: 0; }
         
-        {/* LEFT COLUMN: SECURITY */}
-        <section className="flex flex-col gap-4">
-          <div className="bg-[#330000] p-3 rounded-lg border border-[#FF3B30] flex items-center gap-2">
-            <ShieldAlert size={16} className="text-[#FF3B30]" />
-            <span className="text-[10px] font-black text-[#FF3B30] tracking-widest">SECURITY FLAGS</span>
-          </div>
-          
-          <div className="flex flex-col gap-2 p-4 bg-[#0a0a0a] rounded-xl border border-[#1a1a1a] flex-grow">
-            <h3 className="text-[8px] font-black text-gray-500 mb-2 tracking-widest">QUICK EXIT PROTOCOLS</h3>
-            {[
-              { label: 'ADULT / STRIP / PORN', color: '#FF3B30' },
-              { label: 'FAKE NAMES / PRANK', color: '#FF3B30' },
-              { label: 'REFUSAL TO ANSWER', color: '#FFD700' },
-              { label: 'DNC REQUEST', color: '#999' }
-            ].map(flag => (
-              <button key={flag.label} onClick={() => setStep('dq')} className="text-left p-4 bg-[#111] hover:bg-[#1a1a1a] rounded-xl border border-[#222] text-[10px] font-black transition-all flex justify-between items-center group">
-                {flag.label}
-                <XCircle size={14} className="opacity-0 group-hover:opacity-100 text-[#FF3B30]" />
-              </button>
-            ))}
-          </div>
-        </section>
+        .main-container { 
+            display: grid; 
+            grid-template-columns: 280px 1fr 320px; 
+            flex-grow: 1; 
+            gap: 15px; 
+            padding: 15px; 
+            box-sizing: border-box; 
+            overflow: hidden;
+        }
+        
+        .sidebar { 
+            background: var(--card-bg); 
+            border-radius: 20px; 
+            border: 1px solid #222; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden;
+        }
 
-        {/* MIDDLE COLUMN: SCRIPT ENGINE */}
-        <section className="flex flex-col bg-[#050505] rounded-3xl border border-[#1a1a1a] overflow-hidden relative shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]">
-          <div className="flex-grow p-8 flex flex-col justify-center overflow-y-auto">
-            {renderScript()}
-          </div>
+        .sidebar-tabs {
+            display: flex;
+            background: #000;
+            border-bottom: 1px solid #333;
+        }
 
-          {/* REBUTTAL VAULT */}
-          <div className="p-6 border-t border-[#1a1a1a] bg-[#000]">
-            <h3 className="text-[9px] font-black text-[#00E5FF] mb-4 tracking-[0.2em] flex items-center gap-2">
-              <Info size={12} /> REBUTTAL VAULT
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {['COMPANY', 'SCAM', 'NOT_INT', 'EMAIL'].map(id => (
-                <button 
-                  key={id}
-                  onClick={() => handleRebuttal(id)}
-                  className="p-3 border border-[#00E5FF] text-[#00E5FF] rounded-lg text-[8px] font-black hover:bg-[#00E5FF] hover:text-black transition-all"
-                >
-                  {id.replace('_', ' ')}?
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            font-size: 0.65rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            border: none;
+            background: #111;
+            color: #666;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-        {/* RIGHT COLUMN: DISPOSITION */}
-        <section className="flex flex-col gap-4 border border-[#00E5FF] rounded-2xl p-4 bg-[#0a0a0a]">
-          {/* Card 1: Success */}
-          <div className="bg-black border border-[#1a1a1a] border-l-4 border-l-[#00FF7F] p-4 rounded-xl flex flex-col gap-3">
-            <div className="flex items-center gap-2 text-[#00FF7F]">
-              <CheckCircle2 size={16} />
-              <span className="text-[10px] font-black">SUCCESSFUL TRANSFER</span>
-            </div>
-            <button onClick={() => window.location.reload()} className="bg-[#00FF7F] text-black font-black p-4 rounded-xl text-lg hover:scale-[1.02] transition-transform">SEND LEAD</button>
-            <span className="text-[8px] text-[#00FF7F] font-black opacity-60">DISPO: TRANSFERRED</span>
-          </div>
+        .tab-btn.active-security { background: var(--neon-red); color: black; }
 
-          {/* Card 2: Advisor Only */}
-          <div className="bg-black border border-[#1a1a1a] border-l-4 border-l-[#FFD700] p-4 rounded-xl flex flex-col gap-3">
-            <div className="flex items-center gap-2 text-[#FFD700]">
-              <UserCircle2 size={16} />
-              <span className="text-[10px] font-black">ADVISOR ONLY</span>
-            </div>
-            <div className="border border-dashed border-[#FFD700] p-3 rounded-lg text-[9px] text-gray-400">
-              EXPLAIN: "CLIENT WAS ON, BUT DROPPED. SENDING LEAD INFO NOW."
-            </div>
-            <button onClick={() => window.location.reload()} className="bg-[#FFD700] text-black font-black p-4 rounded-xl text-lg hover:scale-[1.02] transition-transform">SEND LEAD</button>
-            <span className="text-[8px] text-[#FFD700] font-black opacity-60">DISPO: TRANSFERRED</span>
-          </div>
+        .sidebar-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
 
-          {/* Card 3: Dropped */}
-          <div className="bg-black border border-[#1a1a1a] border-l-4 border-l-[#FF3B30] p-4 rounded-xl flex flex-col gap-3">
-            <div className="flex items-center gap-2 text-[#FF3B30]">
-              <XCircle size={16} />
-              <span className="text-[10px] font-black">CALL DROPPED</span>
-            </div>
-            <div className="bg-[#FF3B30] text-white font-black p-4 rounded-xl text-center flex flex-col">
-              <span className="text-lg">NO LEAD SENT</span>
-              <span className="text-[8px] opacity-70">NO CUSTOMER - NO SPECIALIST</span>
-            </div>
-            <span className="text-[8px] text-[#FF3B30] font-black text-center mt-1">DO NOT SEND IN TRACKER</span>
-          </div>
-        </section>
-      </main>
+        .script-area { 
+            background: #111; 
+            border-radius: 25px; 
+            padding: 25px; 
+            border: 1px solid #333; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
 
-      {/* MODAL OVERLAY */}
-      {showRebuttal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/90 backdrop-blur-md" onClick={() => setShowRebuttal(null)}>
-          <div className="bg-[#0a0a0a] border-2 border-[#00E5FF] p-10 rounded-3xl max-w-xl w-full shadow-2xl shadow-[#00E5FF]/20" onClick={e => e.stopPropagation()}>
-            <h2 className="text-[#00E5FF] font-black text-xl mb-6 tracking-widest">{showRebuttal.title}</h2>
-            <p className="text-2xl font-bold leading-relaxed mb-8 italic">"{showRebuttal.text}"</p>
-            <button onClick={() => setShowRebuttal(null)} className="w-full bg-[#00E5FF] text-black font-black p-4 rounded-xl text-lg">RESUME SCRIPT</button>
-          </div>
-        </div>
-      )}
+        .script-main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 220px;
+        }
+
+        /* Rebuttals Inline Styling */
+        .rebuttal-dock {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #222;
+            text-align: left;
+        }
+
+        .rebuttal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-rebuttal-chip {
+            background: #1a1a1a;
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-size: 0.6rem;
+            padding: 10px 5px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.1;
+        }
+
+        .btn-rebuttal-chip:hover {
+            background: var(--neon-blue);
+            color: black;
+            box-shadow: 0 0 10px rgba(0, 209, 255, 0.3);
+        }
+
+        .dispo-panel {
+            background: #000;
+            border: 2px solid var(--neon-blue);
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+        }
+
+        .dispo-section {
+            padding: 12px;
+            border-radius: 12px;
+            background: #111;
+            border: 1px solid #333;
+        }
+
+        .label-tag {
+            font-size: 0.65rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .btn { padding: 10px; border-radius: 10px; border: 2px solid transparent; background: #222; color: white; cursor: pointer; font-weight: 700; text-transform: uppercase; transition: 0.2s; }
+        .btn-green { background: var(--neon-green); color: black; border: none; }
+        .btn-red { background: var(--neon-red); color: white; border: none; }
+        
+        .btn-dispo-big {
+            width: 100%;
+            height: 60px;
+            font-size: 1.1rem;
+            font-weight: 900;
+            margin-top: 5px;
+        }
+
+        .tracker-subtext {
+            display: block;
+            font-size: 0.6rem;
+            opacity: 0.8;
+            margin-top: 2px;
+            font-weight: 700;
+        }
+
+        .explain-box {
+            border: 1px dashed var(--neon-gold);
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            background: rgba(255, 204, 0, 0.05);
+        }
+
+        .security-alert {
+            background: rgba(255, 49, 49, 0.1);
+            border: 2px solid var(--neon-red);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .industry-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 10px; }
+        .industry-grid .btn { font-size: 0.6rem; padding: 8px 4px; }
+        
+        .script-text { font-size: 1.4rem; line-height: 1.5; margin-bottom: 20px; }
+        .instruction { color: var(--neon-gold); font-size: 0.85rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; }
+        
+        .highlight { color: var(--neon-blue); font-weight: 900; }
+        
+        .rev-calc-container {
+            background: #1a1a1e;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #444;
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .rev-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #000;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .rev-label { font-size: 0.65rem; color: #888; font-weight: 900; }
+        .rev-value { font-size: 1.1rem; color: var(--neon-green); font-weight: 700; }
+        .rev-input {
+            width: 100%;
+            background: #000;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-green);
+            font-size: 1.4rem;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+
+        .rev-preset-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .btn-preset {
+            font-size: 0.6rem;
+            padding: 5px;
+            background: #222;
+            border: 1px solid #444;
+            color: #aaa;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-preset:hover { background: #333; color: white; }
+
+        .form-input { width: 100%; background: #000; border: 1px solid #444; padding: 8px; border-radius: 8px; color: white; box-sizing: border-box; }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+    </style>
+</head>
+<body onload="init()">
+
+<div id="form-overlay">
+    <div class="form-box">
+        <h2 style="color: var(--neon-green); margin-top: 0; text-align: center; font-size: 1.1rem;">LEAD DATA</h2>
+        <input type="text" class="form-input" id="form-biz-name" placeholder="Business Name" style="margin-bottom:10px">
+        <input type="text" class="form-input" id="form-owner-name" placeholder="Owner Name" style="margin-bottom:10px">
+        <button class="btn btn-green" style="width: 100%;" onclick="closeForm()">START WARM TRANSFER</button>
     </div>
-  );
-};
+</div>
 
-export default App;
+<div id="modal-overlay" onclick="closeModal()">
+    <div class="modal-box" id="modal-content" onclick="event.stopPropagation()"></div>
+</div>
+
+<div class="header">
+    <h1>BUSINESS TRACKER - <span style="color: var(--neon-blue);">DISPOSITIONS</span></h1>
+    <div id="quote-display" style="color: var(--neon-gold); font-weight: bold; font-size: 0.7rem;"></div>
+</div>
+
+<div class="main-container">
+    <div class="sidebar">
+        <div class="sidebar-tabs">
+            <button class="tab-btn active-security">🚨 SECURITY FLAGS</button>
+        </div>
+        
+        <div id="sidebar-security-content" class="sidebar-content">
+            <span class="label-tag" style="color:var(--neon-red)">Quick Exit</span>
+            <button class="btn" onclick="triggerSecurityExit('🔞 PROHIBITED INDUSTRY', 'ADULT / STRIP / PORN', 'SAY: &quot;I apologize, our underwriters do not provide funding for your specific industry at this time. Thank you for your time.&quot;')">🔞 ADULT / STRIP / PORN</button>
+            <button class="btn" onclick="triggerSecurityExit('👤 PRANK CALLER', 'FAKE NAMES / PRANK', 'SAY: &quot;This line is reserved for professional business funding inquiries only. We are ending the call now.&quot;')">👤 FAKE NAMES / PRANK</button>
+            <button class="btn" onclick="triggerSecurityExit('🚫 UNCOOPERATIVE', 'REFUSAL TO ANSWER', 'SAY: &quot;Since we cannot verify the basic business information needed, we are unable to proceed. Have a good day.&quot;')">🚫 REFUSAL TO ANSWER</button>
+            <button class="btn" onclick="triggerSecurityExit('📵 DNC REQUEST', 'DO NOT CALL LIST', 'SAY: &quot;Absolutely. I have marked your business as Do Not Call in our database. You will not be contacted again.&quot;')">📵 DNC REQUEST</button>
+        </div>
+    </div>
+
+    <div class="script-area">
+        <div id="script-engine">
+            <!-- Content Injected by JS -->
+        </div>
+
+        <div class="rebuttal-dock">
+            <span class="label-tag" style="color:var(--neon-blue)">🔄 LIVE REBUTTALS</span>
+            <div class="rebuttal-grid">
+                <div class="btn-rebuttal-chip" onclick="openModal('🏢 WHICH COMPANY?', 'SAY: &quot;We\'re the Business Loan Division. We help connect business owners to the right lending programs through our partner network.&quot;')">WHICH COMPANY?</div>
+                <div class="btn-rebuttal-chip" onclick="openModal('🛡️ IS THIS A SCAM?', 'SAY: &quot;I understand the concern. This is a legitimate outreach from the Business Loan Division in California. We work only with licensed financial institutions. My part is to confirm basic details.&quot;')">IS THIS A SCAM?</div>
+                <div class="btn-rebuttal-chip" onclick="openModal('📧 EMAIL FIRST?', 'SAY: &quot;Once I connect you with the senior advisor, they can send you all the information directly. I just need to confirm your business details first.&quot;')">EMAIL ME FIRST</div>
+                <div class="btn-rebuttal-chip" onclick="openModal('📞 WHY CALLING?', 'SAY: &quot;Phone is the quickest way to confirm eligibility and make sure the right person gets connected. It only takes a minute.&quot;')">WHY CALLING?</div>
+                <div class="btn-rebuttal-chip" onclick="openModal('🏦 ARE YOU A BANK?', 'SAY: &quot;No, we’re a direct private lender. We work with business-funding programs that provide working capital and lines of credit directly.&quot;')">ARE YOU A BANK?</div>
+                <div class="btn-rebuttal-chip" onclick="openModal('🔄 NOT INTERESTED', 'SAY: &quot;I completely understand. Most people aren\'t until they see the rates we\'re securing right now. Are you currently using any working capital?&quot;')">NOT INTERESTED</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dispo-panel">
+        <div class="dispo-section" style="border-left: 4px solid var(--neon-green)">
+            <span class="label-tag" style="color:var(--neon-green)">✅ SUCCESSFUL TRANSFER</span>
+            <button class="btn btn-green btn-dispo-big" onclick="location.reload()">
+                SEND LEAD
+                <span class="tracker-subtext">DISPO: TRANSFERRED</span>
+            </button>
+        </div>
+
+        <div class="dispo-section" style="border-left: 4px solid var(--neon-gold)">
+            <span class="label-tag" style="color:var(--neon-gold)">👤 ADVISOR ONLY</span>
+            <div class="explain-box">
+                <strong style="color:var(--neon-gold)">EXPLAIN:</strong><br>
+                "Client was on, but dropped. Sending lead info now."
+            </div>
+            <button class="btn btn-dispo-big" style="background:var(--neon-gold); color:black" onclick="location.reload()">
+                SEND LEAD
+                <span class="tracker-subtext">DISPO: TRANSFERRED</span>
+            </button>
+        </div>
+
+        <div class="dispo-section" style="border-left: 4px solid var(--neon-red)">
+            <span class="label-tag" style="color:var(--neon-red)">❌ CALL DROPPED</span>
+            <button class="btn btn-red btn-dispo-big" onclick="location.reload()">
+                NO LEAD SENT
+                <span class="tracker-subtext">NO CUSTOMER - NO LOAN SPECIALIST</span>
+                <span class="tracker-subtext" style="color:#ffaaaa">DO NOT SEND IN TRACKER</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const engine = document.getElementById('script-engine');
+    const quotes = ["SMILE WHILE YOU TALK", "TONE IS THE CLOSER", "ENERGY OVER EVERYTHING"];
+    let owner = "(Owner)";
+    let biz = "(Business)";
+
+    function init() { 
+        document.getElementById('quote-display').innerText = quotes[Math.floor(Math.random() * quotes.length)]; 
+        nextStep('start');
+    }
+
+    function triggerSecurityExit(title, reason, script) {
+        let html = `
+            <div class="security-alert">
+                <div class="instruction" style="color:var(--neon-red)">⚠️ EXIT PROTOCOL: ${title}</div>
+                <div style="font-size:0.75rem; margin-bottom: 10px; color: #888;">REASON: ${reason}</div>
+                <div class="script-text" style="margin-top:15px; border-top:1px solid #333; padding-top:15px;">
+                    ${script}
+                </div>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button class="btn btn-red" style="flex:1" onclick="location.reload()">TERMINATE CALL</button>
+                    <button class="btn" style="flex:1; background:#333;" onclick="nextStep('start')">RE-ENTRY (RESET)</button>
+                </div>
+            </div>
+        `;
+        engine.innerHTML = html;
+    }
+
+    function openModal(title, text) {
+        document.getElementById('modal-content').innerHTML = `
+            <h3 style="color: var(--neon-blue); text-transform: uppercase;">${title}</h3>
+            <p style="font-size: 1.1rem; line-height: 1.6; color: #fff; background: #000; padding: 20px; border-radius: 15px; border: 1px solid #333;">${text}</p>
+            <button class="btn btn-green" style="width: 100%" onclick="closeModal()">RESUME SCRIPT</button>`;
+        document.getElementById('modal-overlay').style.display = 'flex';
+    }
+    function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
+    function openForm() { document.getElementById('form-overlay').style.display = 'flex'; }
+    function closeForm() { 
+        biz = document.getElementById('form-biz-name').value || '(BIZ)';
+        owner = document.getElementById('form-owner-name').value || '(OWNER)';
+        document.getElementById('form-overlay').style.display = 'none'; 
+        nextStep('handoff'); 
+    }
+
+    function setPresetRevenue(val) {
+        const input = document.getElementById('rev-input-field');
+        if (input) {
+            input.value = val;
+            updateRevenue(val);
+        }
+    }
+
+    function updateRevenue(val) {
+        const monthly = parseFloat(val) || 0;
+        const yearly = monthly * 12;
+        document.getElementById('calc-monthly-display').innerText = '$' + monthly.toLocaleString();
+        document.getElementById('calc-yearly-display').innerText = '$' + yearly.toLocaleString();
+        
+        const btn = document.getElementById('rev-next-btn');
+        if (yearly >= 200000) {
+            btn.disabled = false;
+            btn.style.opacity = "1";
+            btn.innerText = "QUALIFIED - CONTINUE";
+            btn.className = "btn btn-green";
+        } else {
+            btn.disabled = true;
+            btn.style.opacity = "0.3";
+            btn.innerText = "MIN $200K REQUIRED";
+            btn.className = "btn";
+        }
+    }
+
+    function nextStep(step) {
+        let html = "";
+        switch(step) {
+            case 'start':
+                html = `<div class="script-main-content">
+                        <div class="instruction">Phase 1: The Opener</div>
+                        <div class="script-text">"Hi, this is <span class="highlight">(YOUR NAME)</span> from the <span class="highlight">BUSINESS LOAN DIVISION</span>. Am I speaking with the business owner?"</div>
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <button class="btn btn-green" onclick="nextStep('followup_direct')">YES (OWNER ON)</button>
+                            <button class="btn" style="border:1px solid #444" onclick="openModal('GATEKEEPER', 'SAY: &quot;Can I please speak with the owner, I\'ll hold&quot;')">NO (TRANSFERRED)</button>
+                        </div></div>`;
+                break;
+            case 'followup_direct':
+                html = `<div class="script-main-content">
+                        <div class="instruction">Transition</div><div class="script-text">"Perfect I'll be quick. We're following up because you were <span class='highlight'>prequalified for working capital</span>. I just have a few questions to see if you qualify."</div><button class="btn btn-green" onclick="nextStep('q1')">START QUESTIONS</button></div>`;
+                break;
+            case 'q1':
+                html = `<div class="script-main-content">
+                        <div class="instruction">Time in Business</div><div class="script-text">"Have you been in business for at least <span class='highlight'>1 year</span>?"</div><button class="btn btn-green" onclick="nextStep('q2')">YES (1 YEAR+)</button></div>`;
+                break;
+            case 'q2':
+                html = `<div class="script-main-content">
+                        <div class="instruction">Industry Check</div><div class="script-text">"What type of <span class='highlight'>industry</span> are you in?"</div>
+                <div class="industry-grid">
+                    <button class="btn" onclick="nextStep('qPartners')">RETAIL</button>
+                    <button class="btn" onclick="nextStep('qPartners')">CONSTRUCTION</button>
+                    <button class="btn" onclick="nextStep('qPartners')">HVAC/PLUMB</button>
+                    <button class="btn" onclick="nextStep('qPartners')">RESTAURANT</button>
+                    <button class="btn" onclick="nextStep('qPartners')">MFG / FACTORY</button>
+                    <button class="btn" onclick="nextStep('qPartners')">HEALTHCARE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">LOGISTICS</button>
+                    <button class="btn" onclick="nextStep('qPartners')">REAL ESTATE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">IT / TECH</button>
+                    <button class="btn" onclick="nextStep('qPartners')">SERVICES</button>
+                    <button class="btn" onclick="nextStep('qPartners')">WHOLESALE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">E-COMMERCE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">FITNESS/GYM</button>
+                    <button class="btn" onclick="nextStep('qPartners')">AUTOMOTIVE</button>
+                    <button class="btn" onclick="nextStep('qPartners')">OTHER QUALIFIED</button>
+                    <button class="btn btn-red" style="grid-column: span 3" onclick="nextStep('dq')">PROHIBITED (ADULT/TRUCKING/ATTORNEY)</button>
+                </div></div>`;
+                break;
+            case 'qPartners':
+                html = `<div class="script-main-content">
+                        <div class="instruction">Ownership</div><div class="script-text">"Are you at least <span class='highlight'>50% owner</span>?"</div>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button class="btn btn-green" onclick="nextStep('q3')">YES (OWNER)</button>
+                    <button class="btn btn-red" onclick="openModal('PARTNERS', 'We need to speak with the majority owner.')">NO</button>
+                </div></div>`;
+                break;
+            case 'q3':
+                html = `<div class="script-main-content">
+                        <div class="instruction">Revenue Verification</div>
+                        <div class="script-text" style="font-size: 1.1rem; margin-bottom: 10px;">"What is your <span class='highlight'>average monthly gross revenue</span>?"</div>
+                        <div class="rev-calc-container">
+                            <input type="number" id="rev-input-field" class="rev-input" placeholder="Enter Monthly Amount" oninput="updateRevenue(this.value)">
+                            <div class="rev-preset-grid">
+                                <button class="btn-preset" onclick="setPresetRevenue(17000)">$17K (Low)</button>
+                                <button class="btn-preset" onclick="setPresetRevenue(25000)">$25K (Med)</button>
+                                <button class="btn-preset" onclick="setPresetRevenue(50000)">$50K+ (High)</button>
+                            </div>
+                            <div class="rev-row" style="margin-top:5px;"><span class="rev-label">MONTHLY:</span><span class="rev-value" id="calc-monthly-display">$0</span></div>
+                            <div class="rev-row"><span class="rev-label">EST. ANNUAL:</span><span class="rev-value" id="calc-yearly-display" style="color:var(--neon-gold)">$0</span></div>
+                        </div>
+                        <button id="rev-next-btn" class="btn" style="width:100%; height:50px; opacity:0.3" disabled onclick="nextStep('qualify')">MIN $200K REQUIRED</button></div>`;
+                break;
+            case 'qualify':
+                html = `<div class="script-main-content">
+                        <div class="instruction">Transition</div><div class="script-text">"Great! It looks like you meet the pre-qualification criteria. I'm going to connect you with a <span class='highlight'>senior advisor</span> now."</div><button class="btn btn-green" onclick="openForm()">POP LEAD FORM</button></div>`;
+                break;
+            case 'handoff':
+                html = `<div class="script-main-content">
+                        <div class="instruction">THE HANDOFF</div><div class="script-text" style="font-size:1.4rem; border:2px solid var(--neon-green); padding:20px; border-radius: 15px;">"Hi, I have <span class='highlight'>${owner}</span> from <span class='highlight'>${biz}</span> on the line. They meet criteria for funding and would like to explore options."</div></div>`;
+                break;
+            case 'dq':
+                html = `<div class="script-main-content">
+                        <div class="script-text">"I apologize, we cannot move forward at this time."</div><button class="btn btn-red" onclick="location.reload()">NEXT CALL</button></div>`;
+                break;
+        }
+        engine.innerHTML = html;
+        engine.scrollTop = 0;
+    }
+</script>
+</body>
+</html>
