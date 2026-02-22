@@ -269,6 +269,135 @@
 
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        /* ── RESPONSIVE: TABLET (≤1024px) ── */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 220px 1fr 260px;
+                gap: 10px;
+                padding: 10px;
+            }
+            .script-text { font-size: 0.95rem; }
+            .btn-dispo-big { height: 52px; font-size: 0.9rem; }
+            .rebuttal-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ── RESPONSIVE: MOBILE (≤768px) ── */
+        @media (max-width: 768px) {
+            body { overflow: auto; height: auto; min-height: 100vh; }
+
+            .header { padding: 0 15px; height: 46px; }
+            .header h1 { font-size: 0.9rem; }
+
+            /* Stack layout vertically on mobile */
+            .main-container {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                padding: 0;
+                overflow: visible;
+                height: auto;
+            }
+
+            /* Mobile tab navigation to switch panels */
+            .mobile-nav {
+                display: flex;
+                background: #000;
+                border-bottom: 2px solid #222;
+                position: sticky;
+                top: 46px;
+                z-index: 100;
+            }
+            .mobile-nav-btn {
+                flex: 1;
+                padding: 10px 4px;
+                font-size: 0.55rem;
+                font-weight: 900;
+                text-transform: uppercase;
+                border: none;
+                background: #111;
+                color: #555;
+                cursor: pointer;
+                letter-spacing: 0.5px;
+                border-bottom: 3px solid transparent;
+                transition: 0.2s;
+            }
+            .mobile-nav-btn.active { color: var(--neon-blue); border-bottom-color: var(--neon-blue); background: #0a0a0c; }
+            .mobile-nav-btn.active-red { color: var(--neon-red); border-bottom-color: var(--neon-red); background: #0a0a0c; }
+            .mobile-nav-btn.active-green { color: var(--neon-green); border-bottom-color: var(--neon-green); background: #0a0a0c; }
+
+            /* Panel visibility control */
+            .panel-section { display: none; }
+            .panel-section.visible { display: flex; flex-direction: column; }
+
+            /* Script panel */
+            .script-area {
+                border-radius: 0;
+                padding: 15px;
+                min-height: calc(100vh - 100px);
+                overflow: visible;
+            }
+
+            .script-main-content { min-height: 150px; }
+            .script-text { font-size: 1rem; }
+            .instruction { font-size: 0.65rem; }
+
+            .rebuttal-dock { margin-top: 15px; }
+            .rebuttal-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+            .btn-rebuttal-chip { font-size: 0.62rem; padding: 12px 6px; }
+
+            /* Sidebar panel */
+            .sidebar {
+                border-radius: 0;
+                border: none;
+                border-top: 1px solid #222;
+            }
+            .sidebar-tabs { display: none; } /* replaced by mobile-nav */
+            .sidebar-content { padding: 15px; gap: 12px; overflow: visible; }
+            .sidebar-content .btn { padding: 14px 10px; font-size: 0.7rem; }
+
+            /* Dispo panel */
+            .dispo-panel {
+                border-radius: 0;
+                border: none;
+                border-top: 2px solid var(--neon-blue);
+                padding: 15px;
+                overflow: visible;
+            }
+            .btn-dispo-big { height: 64px; font-size: 1rem; }
+
+            /* Industry grid: single column on small phones */
+            .industry-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+            .industry-grid .btn { font-size: 0.6rem; padding: 10px 4px; }
+
+            /* Modal full-screen on mobile */
+            .modal-box {
+                padding: 20px 15px;
+                border-radius: 15px;
+                max-width: 95vw;
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+            .form-box { width: 90vw; padding: 20px; }
+
+            /* Revenue input */
+            .rev-input { font-size: 1.1rem; }
+            .rev-calc-container { padding: 10px; }
+
+            /* Modal script blocks */
+            .modal-script-block { font-size: 0.88rem; padding: 12px 14px; }
+        }
+
+        /* ── RESPONSIVE: SMALL PHONES (≤400px) ── */
+        @media (max-width: 400px) {
+            .rebuttal-grid { grid-template-columns: 1fr 1fr; }
+            .industry-grid { grid-template-columns: 1fr; }
+            .script-text { font-size: 0.9rem; }
+            .header h1 { font-size: 0.8rem; }
+        }
+
+        /* Hide mobile nav on desktop */
+        .mobile-nav { display: none; }
     </style>
 </head>
 <body onload="init()">
@@ -291,8 +420,15 @@
     <div id="quote-display" style="color: var(--neon-gold); font-weight: bold; font-size: 0.7rem;"></div>
 </div>
 
+<!-- Mobile tab navigation (hidden on desktop via CSS) -->
+<div class="mobile-nav" id="mobile-nav">
+    <button class="mobile-nav-btn active" id="mnav-script" onclick="showPanel('script')">📋 SCRIPT</button>
+    <button class="mobile-nav-btn" id="mnav-security" onclick="showPanel('security')">🚨 SECURITY</button>
+    <button class="mobile-nav-btn" id="mnav-dispo" onclick="showPanel('dispo')">✅ DISPO</button>
+</div>
+
 <div class="main-container">
-    <div class="sidebar">
+    <div class="sidebar panel-section" id="panel-security">
         <div class="sidebar-tabs">
             <button class="tab-btn active-security">🚨 SECURITY FLAGS</button>
         </div>
@@ -306,7 +442,7 @@
         </div>
     </div>
 
-    <div class="script-area">
+    <div class="script-area panel-section visible" id="panel-script">
         <div id="script-engine"></div>
 
         <div class="rebuttal-dock">
@@ -326,7 +462,7 @@
         </div>
     </div>
 
-    <div class="dispo-panel">
+    <div class="dispo-panel panel-section" id="panel-dispo">
         <div class="dispo-section" style="border-left: 4px solid var(--neon-green)">
             <span class="label-tag" style="color:var(--neon-green)">✅ SUCCESSFUL TRANSFER</span>
             <button class="btn btn-green btn-dispo-big" onclick="location.reload()">
@@ -364,12 +500,52 @@
     let owner = "(Owner)";
     let biz = "(Business)";
 
+    function isMobile() { return window.innerWidth <= 768; }
+
+    function showPanel(panel) {
+        const panels = ['script','security','dispo'];
+        const navBtns = { script: 'mnav-script', security: 'mnav-security', dispo: 'mnav-dispo' };
+        const activeClasses = { script: 'active', security: 'active-red', dispo: 'active-green' };
+
+        panels.forEach(p => {
+            const el = document.getElementById('panel-' + p);
+            const btn = document.getElementById(navBtns[p]);
+            if (el) el.classList.remove('visible');
+            if (btn) { btn.classList.remove('active','active-red','active-green'); }
+        });
+
+        const target = document.getElementById('panel-' + panel);
+        const activeBtn = document.getElementById(navBtns[panel]);
+        if (target) target.classList.add('visible');
+        if (activeBtn) activeBtn.classList.add(activeClasses[panel]);
+
+        // Scroll to top of page on mobile after panel switch
+        if (isMobile()) window.scrollTo(0, 0);
+    }
+
+    // On desktop, make all panels visible always
+    function handleResize() {
+        if (window.innerWidth > 768) {
+            ['script','security','dispo'].forEach(p => {
+                const el = document.getElementById('panel-' + p);
+                if (el) el.classList.add('visible');
+            });
+        } else {
+            // On mobile, only show currently active panel
+            const activeBtn = document.querySelector('.mobile-nav-btn.active, .mobile-nav-btn.active-red, .mobile-nav-btn.active-green');
+            if (!activeBtn) showPanel('script');
+        }
+    }
+    window.addEventListener('resize', handleResize);
+
     function init() { 
         document.getElementById('quote-display').innerText = quotes[Math.floor(Math.random() * quotes.length)]; 
+        handleResize();
         nextStep('start');
     }
 
     function triggerSecurityExit(title, reason, script) {
+        if (isMobile()) showPanel('script');
         let html = `
             <div class="security-alert">
                 <div class="instruction" style="color:var(--neon-red)">⚠️ EXIT PROTOCOL: ${title}</div>
