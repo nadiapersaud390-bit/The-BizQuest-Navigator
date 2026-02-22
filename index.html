@@ -314,10 +314,14 @@
             <div class="rebuttal-grid">
                 <div class="btn-rebuttal-chip" onclick="openRebuttal('WHICH COMPANY?')">WHICH COMPANY?</div>
                 <div class="btn-rebuttal-chip" onclick="openRebuttal('IS THIS A SCAM?')">IS THIS A SCAM?</div>
+                <div class="btn-rebuttal-chip" onclick="openRebuttal('INTEREST RATE?')">INTEREST RATE?</div>
+                <div class="btn-rebuttal-chip" onclick="openRebuttal('MY INFO?')">HOW'D YOU GET MY INFO?</div>
+                <div class="btn-rebuttal-chip" onclick="openRebuttal('HOW LONG?')">HOW LONG DOES THIS TAKE?</div>
                 <div class="btn-rebuttal-chip" onclick="openModal('📧 EMAIL FIRST?', '<p>SAY: &quot;Once I connect you with the senior advisor, they can send you all the information directly. I just need to confirm your business details first.&quot;</p>')">EMAIL ME FIRST</div>
                 <div class="btn-rebuttal-chip" onclick="openModal('📞 WHY CALLING?', '<p>SAY: &quot;Phone is the quickest way to confirm eligibility and make sure the right person gets connected. It only takes a minute.&quot;</p>')">WHY CALLING?</div>
                 <div class="btn-rebuttal-chip" onclick="openModal('🏦 ARE YOU A BANK?', '<p>SAY: &quot;No, we\'re a direct private lender. We work with business-funding programs that provide working capital and lines of credit directly.&quot;</p>')">ARE YOU A BANK?</div>
                 <div class="btn-rebuttal-chip" onclick="openModal('🔄 NOT INTERESTED', '<p>SAY: &quot;I completely understand. Most people aren\'t until they see the rates we\'re securing right now. Are you currently using any working capital?&quot;</p>')">NOT INTERESTED</div>
+                <div class="btn-rebuttal-chip" onclick="openRebuttal('RHYTHM TIPS')" style="border-color:var(--neon-gold); color:var(--neon-gold);">💡 RHYTHM TIPS</div>
             </div>
         </div>
     </div>
@@ -396,6 +400,59 @@
                     "We're the <strong style="color:var(--neon-blue)">Business Loan Division</strong>, a direct private lending group that provides working-capital programs or business lines of credit."
                 </div>
                 <button class="btn btn-green" style="width: 100%; margin-top:5px;" onclick="closeModal()">RESUME SCRIPT</button>
+            `;
+        } else if (type === 'INTEREST RATE?') {
+            content = `
+                <h3 style="color: var(--neon-blue); text-transform: uppercase; margin-top:0;">💰 WHAT'S THE INTEREST RATE?</h3>
+                <div class="modal-alt-label">OPTION 1 — Value-focused answer + Transition</div>
+                <div class="modal-script-block">
+                    "Great question — rates depend on a few factors like revenue and business history, but the key is finding the overall value that helps your business <strong style="color:var(--neon-green)">grow or save money</strong>. Once we verify the details, our specialist will go over all that clearly."<br><br>
+                    <span style="color:var(--neon-gold)">→ TRANSITION IMMEDIATELY:</span><br>
+                    "So let's make sure I've got your business details correct…"
+                </div>
+                <div class="modal-alt-label">OPTION 2 — Quick deflect to advisor</div>
+                <div class="modal-script-block">
+                    "That part's handled by the senior advisor once you're pre-qualified."<br><br>
+                    <span style="color:var(--neon-gold)">→ THEN PIVOT:</span><br>
+                    "Does your business generate at least <strong style="color:var(--neon-blue)">one million per year</strong> in revenue?"
+                </div>
+                <button class="btn btn-green" style="width: 100%; margin-top:5px;" onclick="closeModal()">RESUME SCRIPT</button>
+            `;
+        } else if (type === 'MY INFO?') {
+            content = `
+                <h3 style="color: var(--neon-blue); text-transform: uppercase; margin-top:0;">🔍 HOW DID YOU GET MY INFORMATION?</h3>
+                <div class="modal-alt-label">STAY PROFESSIONAL & STEADY</div>
+                <div class="modal-script-block">
+                    "That's a great question — we work with a network of financial partners who share information <strong style="color:var(--neon-green)">securely</strong> to match businesses with funding options. We follow strict privacy rules, and we only reach out when your business <strong style="color:var(--neon-green)">might actually qualify</strong>."
+                </div>
+                <div class="modal-alt-label">→ THEN CLOSE THE LOOP</div>
+                <div class="modal-script-block" style="border-color: var(--neon-gold); border-width: 2px;">
+                    "Our goal's just to help you explore what's available — <strong style="color:var(--neon-gold)">totally your choice from there.</strong> Sound fair?"
+                </div>
+                <button class="btn btn-green" style="width: 100%; margin-top:5px;" onclick="closeModal()">RESUME SCRIPT</button>
+            `;
+        } else if (type === 'HOW LONG?') {
+            content = `
+                <h3 style="color: var(--neon-blue); text-transform: uppercase; margin-top:0;">⏱️ HOW LONG DOES THIS TAKE?</h3>
+                <div class="modal-script-block">
+                    "Just a <strong style="color:var(--neon-green)">minute or two</strong> for me to confirm your business details — then I'll connect you with the senior advisor who can go over everything."
+                </div>
+                <button class="btn btn-green" style="width: 100%; margin-top:5px;" onclick="closeModal()">RESUME SCRIPT</button>
+            `;
+        } else if (type === 'RHYTHM TIPS') {
+            content = `
+                <h3 style="color: var(--neon-gold); text-transform: uppercase; margin-top:0;">💡 RHYTHM & MICRO-TRUST TIPS</h3>
+                <div class="modal-alt-label">AFTER EVERY 2 QUESTIONS — SAY ONE OF THESE:</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
+                    <div class="modal-script-block" style="text-align:center; font-size:1.1rem; padding:15px; border-color:var(--neon-gold);">"Perfect, thank you."</div>
+                    <div class="modal-script-block" style="text-align:center; font-size:1.1rem; padding:15px; border-color:var(--neon-gold);">"Got it, that helps."</div>
+                    <div class="modal-script-block" style="text-align:center; font-size:1.1rem; padding:15px; border-color:var(--neon-gold);">"That's great to know."</div>
+                    <div class="modal-script-block" style="text-align:center; font-size:1.1rem; padding:15px; border-color:var(--neon-gold);">"Appreciate that."</div>
+                </div>
+                <div style="background:rgba(255,204,0,0.07); border:1px dashed var(--neon-gold); padding:12px; border-radius:10px; font-size:0.8rem; color:#ccc; text-align:left;">
+                    <strong style="color:var(--neon-gold)">WHY IT WORKS:</strong> Short acknowledgments keep the rhythm <em>human</em>, prevent awkward silence, and build micro-trust between each question. The prospect feels heard — not interrogated.
+                </div>
+                <button class="btn btn-green" style="width: 100%; margin-top:15px;" onclick="closeModal()">GOT IT</button>
             `;
         } else if (type === 'IS THIS A SCAM?') {
             content = `
