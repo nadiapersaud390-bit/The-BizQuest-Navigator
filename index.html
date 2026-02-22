@@ -278,10 +278,10 @@
         
         <div id="sidebar-security-content" class="sidebar-content">
             <span class="label-tag" style="color:var(--neon-red)">Quick Exit</span>
-            <button class="btn" onclick="confirmSecurity('🔞 PROHIBITED INDUSTRY', 'ADULT / STRIP / PORN', 'I apologize, our underwriters do not provide funding for your specific industry at this time. Thank you for your time.')">🔞 ADULT / STRIP / PORN</button>
-            <button class="btn" onclick="confirmSecurity('👤 PRANK CALLER', 'FAKE NAMES / PRANK', 'This line is reserved for professional business funding inquiries only. We are ending the call now.')">👤 FAKE NAMES / PRANK</button>
-            <button class="btn" onclick="confirmSecurity('🚫 UNCOOPERATIVE', 'REFUSAL TO ANSWER', 'Since we cannot verify the basic business information needed, we are unable to proceed. Have a good day.')">🚫 REFUSAL TO ANSWER</button>
-            <button class="btn" onclick="confirmSecurity('📵 DNC REQUEST', 'DO NOT CALL LIST', 'Absolutely. I have marked your business as Do Not Call in our database. You will not be contacted again.')">📵 DNC REQUEST</button>
+            <button class="btn" onclick="triggerSecurityExit('🔞 PROHIBITED INDUSTRY', 'ADULT / STRIP / PORN', 'SAY: &quot;I apologize, our underwriters do not provide funding for your specific industry at this time. Thank you for your time.&quot;')">🔞 ADULT / STRIP / PORN</button>
+            <button class="btn" onclick="triggerSecurityExit('👤 PRANK CALLER', 'FAKE NAMES / PRANK', 'SAY: &quot;This line is reserved for professional business funding inquiries only. We are ending the call now.&quot;')">👤 FAKE NAMES / PRANK</button>
+            <button class="btn" onclick="triggerSecurityExit('🚫 UNCOOPERATIVE', 'REFUSAL TO ANSWER', 'SAY: &quot;Since we cannot verify the basic business information needed, we are unable to proceed. Have a good day.&quot;')">🚫 REFUSAL TO ANSWER</button>
+            <button class="btn" onclick="triggerSecurityExit('📵 DNC REQUEST', 'DO NOT CALL LIST', 'SAY: &quot;Absolutely. I have marked your business as Do Not Call in our database. You will not be contacted again.&quot;')">📵 DNC REQUEST</button>
         </div>
     </div>
 
@@ -344,27 +344,13 @@
         nextStep('start');
     }
 
-    // NEW FUNCTION: Confirmation warning for security flags
-    function confirmSecurity(title, reason, script) {
-        document.getElementById('modal-content').innerHTML = `
-            <div style="color: var(--neon-red); font-weight: 900; font-size: 2rem; margin-bottom: 10px;">⚠️ WARNING</div>
-            <h3 style="color: #fff; text-transform: uppercase;">ACTIVATE SECURITY EXIT?</h3>
-            <p style="color: #888;">You are about to flag this call as: <br><b style="color:var(--neon-red)">${title}</b></p>
-            <div style="display: flex; gap: 15px; margin-top: 25px;">
-                <button class="btn btn-red" style="flex: 1; padding: 15px;" onclick="closeModal(); triggerSecurityExit('${title}', '${reason}', '${script}')">CONFIRM & EXIT</button>
-                <button class="btn" style="flex: 1; background: #333;" onclick="closeModal()">CANCEL</button>
-            </div>
-        `;
-        document.getElementById('modal-overlay').style.display = 'flex';
-    }
-
     function triggerSecurityExit(title, reason, script) {
         let html = `
             <div class="security-alert">
                 <div class="instruction" style="color:var(--neon-red)">⚠️ EXIT PROTOCOL: ${title}</div>
                 <div style="font-size:0.75rem; margin-bottom: 10px; color: #888;">REASON: ${reason}</div>
                 <div class="script-text" style="margin-top:15px; border-top:1px solid #333; padding-top:15px;">
-                    SAY: "${script}"
+                    ${script}
                 </div>
                 <div style="display:flex; gap:10px; margin-top:20px;">
                     <button class="btn btn-red" style="flex:1" onclick="location.reload()">TERMINATE CALL</button>
@@ -561,3 +547,5 @@
 </script>
 </body>
 </html>
+
+
