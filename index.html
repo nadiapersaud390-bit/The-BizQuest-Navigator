@@ -457,7 +457,7 @@
                 <div class="btn-rebuttal-chip" onclick="openModal('📞 WHY CALLING?', '<p>SAY: &quot;Phone is the quickest way to confirm eligibility and make sure the right person gets connected. It only takes a minute.&quot;</p>')">WHY CALLING?</div>
                 <div class="btn-rebuttal-chip" onclick="openModal('🏦 ARE YOU A BANK?', '<p>SAY: &quot;No, we\'re a direct private lender. We work with business-funding programs that provide working capital and lines of credit directly.&quot;</p>')">ARE YOU A BANK?</div>
                 <div class="btn-rebuttal-chip" onclick="openModal('🔄 NOT INTERESTED', '<p>SAY: &quot;I completely understand. Most people aren\'t until they see the rates we\'re securing right now. Are you currently using any working capital?&quot;</p>')">NOT INTERESTED</div>
-                <div class="btn-rebuttal-chip" onclick="openRebuttal('RHYTHM TIPS')" style="border-color:var(--neon-gold); color:var(--neon-gold);">💡 RHYTHM TIPS</div>
+                <div class="btn-rebuttal-chip" onclick="openRebuttal('RHYTHM TIPS')" style="border-color:var(--neon-gold); color:var(--neon-gold);">💡 VOICE & DELIVERY</div>
             </div>
         </div>
     </div>
@@ -617,18 +617,77 @@
             `;
         } else if (type === 'RHYTHM TIPS') {
             content = `
-                <h3 style="color: var(--neon-gold); text-transform: uppercase; margin-top:0;">💡 RHYTHM & MICRO-TRUST TIPS</h3>
-                <div class="modal-alt-label">AFTER EVERY 2 QUESTIONS — SAY ONE OF THESE:</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
-                    <div class="modal-script-block" style="text-align:center; font-size:1.1rem; padding:15px; border-color:var(--neon-gold);">"Perfect, thank you."</div>
-                    <div class="modal-script-block" style="text-align:center; font-size:1.1rem; padding:15px; border-color:var(--neon-gold);">"Got it, that helps."</div>
-                    <div class="modal-script-block" style="text-align:center; font-size:1.1rem; padding:15px; border-color:var(--neon-gold);">"That's great to know."</div>
-                    <div class="modal-script-block" style="text-align:center; font-size:1.1rem; padding:15px; border-color:var(--neon-gold);">"Appreciate that."</div>
+                <h3 style="color: var(--neon-gold); text-transform: uppercase; margin-top:0;">💡 VOICE & DELIVERY COACHING</h3>
+
+                <!-- SPEED -->
+                <div class="modal-alt-label" style="color:var(--neon-blue);">🎙️ SPEAKING SPEED — THE GOLDILOCKS RULE</div>
+                <div class="modal-script-block" style="border-color:var(--neon-blue);">
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; text-align:center; margin-bottom:10px;">
+                        <div style="background:#2a0000; border:1px solid var(--neon-red); border-radius:8px; padding:10px;">
+                            <div style="color:var(--neon-red); font-weight:900; font-size:0.75rem;">TOO FAST ❌</div>
+                            <div style="font-size:0.7rem; color:#aaa; margin-top:5px;">They hear words but can't process meaning. They zone out or get suspicious.</div>
+                        </div>
+                        <div style="background:#002a00; border:2px solid var(--neon-green); border-radius:8px; padding:10px;">
+                            <div style="color:var(--neon-green); font-weight:900; font-size:0.75rem;">JUST RIGHT ✅</div>
+                            <div style="font-size:0.7rem; color:#aaa; margin-top:5px;">Calm, clear, confident. They feel respected. They listen and respond.</div>
+                        </div>
+                        <div style="background:#2a2a00; border:1px solid #666; border-radius:8px; padding:10px;">
+                            <div style="color:#888; font-weight:900; font-size:0.75rem;">TOO SLOW ⚠️</div>
+                            <div style="font-size:0.7rem; color:#aaa; margin-top:5px;">Sounds unsure or condescending. Business owners are busy — they'll cut you off.</div>
+                        </div>
+                    </div>
+                    <div style="font-size:0.78rem; color:#ccc; border-top:1px solid #333; padding-top:10px;">
+                        <strong style="color:var(--neon-gold)">RULE OF THUMB:</strong> Speak like you're explaining something important to a sharp friend — not reading a script, not rushing to finish.
+                    </div>
                 </div>
-                <div style="background:rgba(255,204,0,0.07); border:1px dashed var(--neon-gold); padding:12px; border-radius:10px; font-size:0.8rem; color:#ccc; text-align:left;">
-                    <strong style="color:var(--neon-gold)">WHY IT WORKS:</strong> Short acknowledgments keep the rhythm <em>human</em>, prevent awkward silence, and build micro-trust between each question. The prospect feels heard — not interrogated.
+
+                <!-- PAUSE -->
+                <div class="modal-alt-label" style="color:var(--neon-blue);">⏸️ THE POWER OF THE PAUSE</div>
+                <div class="modal-script-block" style="border-color:var(--neon-blue);">
+                    <div style="font-size:0.82rem; color:#ddd; line-height:1.7;">
+                        Pause <strong style="color:var(--neon-gold)">right after</strong> your punch word or key phrase — not before it.<br><br>
+                        <span style="color:#888">WRONG:</span> <em style="color:#aaa">"I want to talk to you about... working capital."</em><br>
+                        <span style="color:var(--neon-green)">RIGHT:</span> <em style="color:#fff">"We can get you access to <strong style="color:var(--neon-blue)">working capital.</strong> <span style="color:var(--neon-gold)">[PAUSE]</span> Does that interest you?"</em><br><br>
+                        The pause lets the word <strong style="color:var(--neon-green)">land</strong>. It gives them a second to feel it. Silence after a strong word = confidence.
+                    </div>
                 </div>
-                <button class="btn btn-green" style="width: 100%; margin-top:15px;" onclick="closeModal()">GOT IT</button>
+
+                <!-- PUNCH WORDS -->
+                <div class="modal-alt-label" style="color:var(--neon-blue);">👊 PUNCH WORDS — USE THESE WITH WEIGHT</div>
+                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:12px;">
+                    ${['PRE-QUALIFIED','WORKING CAPITAL','SENIOR ADVISOR','FUNDING OPTIONS','BUSINESS GROWTH','LICENSED','YOUR CHOICE','NO CREDIT PULL','DIRECTLY','RIGHT NOW'].map(w => 
+                        `<div style="background:#0a1a0a; border:1px solid var(--neon-green); border-radius:8px; padding:10px; text-align:center; font-size:0.65rem; font-weight:900; color:var(--neon-green);">${w}</div>`
+                    ).join('')}
+                </div>
+                <div style="background:rgba(0,209,255,0.05); border:1px dashed var(--neon-blue); padding:10px; border-radius:8px; font-size:0.76rem; color:#ccc;">
+                    <strong style="color:var(--neon-blue)">HOW TO USE THEM:</strong> Slow down slightly when you hit a punch word. Let your voice drop just a touch — not louder, but <em>heavier</em>. Then pause 1 beat. Then continue.
+                </div>
+
+                <!-- TONE -->
+                <div class="modal-alt-label" style="color:var(--neon-blue); margin-top:12px;">🧠 TONE RULES FOR BUSINESS OWNERS</div>
+                <div class="modal-script-block" style="border-color:#444;">
+                    <div style="font-size:0.8rem; line-height:1.8; color:#ddd;">
+                        <div style="margin-bottom:8px;">✅ <strong style="color:var(--neon-green)">Sound like a peer</strong> — not a salesperson, not a robot. They respect equals.</div>
+                        <div style="margin-bottom:8px;">✅ <strong style="color:var(--neon-green)">Keep your energy steady</strong> — calm confidence, never desperate. If they push back, don't speed up.</div>
+                        <div style="margin-bottom:8px;">✅ <strong style="color:var(--neon-green)">Smile as you talk</strong> — it physically changes your tone. They can't see you but they <em>feel</em> it.</div>
+                        <div style="margin-bottom:8px;">⚠️ <strong style="color:var(--neon-gold)">Don't fill silence with filler</strong> — no "um", "like", "you know." Silence is fine. Own it.</div>
+                        <div>⚠️ <strong style="color:var(--neon-gold)">Don't rush after a question</strong> — ask it, then wait. Let them answer. The first one to speak after a question loses.</div>
+                    </div>
+                </div>
+
+                <!-- MICRO ACKNOWLEDGMENTS -->
+                <div class="modal-alt-label" style="color:var(--neon-blue);">🔄 AFTER EVERY 2 QUESTIONS — DROP ONE OF THESE:</div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
+                    <div class="modal-script-block" style="text-align:center; font-size:0.95rem; padding:12px; border-color:var(--neon-gold);">"Perfect, thank you."</div>
+                    <div class="modal-script-block" style="text-align:center; font-size:0.95rem; padding:12px; border-color:var(--neon-gold);">"Got it, that helps."</div>
+                    <div class="modal-script-block" style="text-align:center; font-size:0.95rem; padding:12px; border-color:var(--neon-gold);">"That's great to know."</div>
+                    <div class="modal-script-block" style="text-align:center; font-size:0.95rem; padding:12px; border-color:var(--neon-gold);">"Appreciate that."</div>
+                </div>
+                <div style="background:rgba(255,204,0,0.06); border:1px dashed var(--neon-gold); padding:10px; border-radius:8px; font-size:0.76rem; color:#ccc;">
+                    <strong style="color:var(--neon-gold)">WHY IT WORKS:</strong> Acknowledgments make them feel <em>heard</em>, not interrogated. It breaks the Q&A pattern and builds micro-trust with every exchange.
+                </div>
+
+                <button class="btn btn-green" style="width: 100%; margin-top:15px;" onclick="closeModal()">GOT IT — BACK TO CALL</button>
             `;
         } else if (type === 'IS THIS A SCAM?') {
             content = `
